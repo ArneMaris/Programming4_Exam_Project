@@ -7,7 +7,7 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include <SDL.h>
-#include "TextObject.h"
+#include "TextComponent.h"
 #include "GameObject.h"
 #include "Scene.h"
 
@@ -40,7 +40,7 @@ void dae::Minigin::Initialize()
  */
 void dae::Minigin::LoadGame() const
 {
-	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
+	auto& scene = SceneManager::GetInstance().CreateScene(L"Demo");
 
 	auto go = std::make_shared<GameObject>();
 	go->SetTexture("background.jpg");
@@ -75,23 +75,28 @@ void dae::Minigin::Run()
 	LoadGame();
 
 	{
-		auto t = std::chrono::high_resolution_clock::now();
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
+		auto lastTime = std::chrono::high_resolution_clock::now();
 
+		float lag = 0.0f;
 		bool doContinue = true;
 		while (doContinue)
 		{
+			auto currentTime = std::chrono::high_resolution_clock::now();
+			GameInfo::deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
+			lastTime = currentTime;
+			lag += GameInfo::deltaTime;
+			
 			doContinue = input.ProcessInput();
-
-			sceneManager.Update();
+			while (lag >= GameInfo::fixedTime)
+			{
+				sceneManager.Update();
+				lag -= GameInfo::fixedTime;
+			}
 			renderer.Render();
-
-			t += std::chrono::milliseconds(msPerFrame);
-			std::this_thread::sleep_until(t);
 		}
 	}
-
 	Cleanup();
 }

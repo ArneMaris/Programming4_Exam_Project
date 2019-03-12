@@ -1,20 +1,25 @@
 #pragma once
 #include <memory>
 
-#include "Transform.h"
-#include "Texture2D.h"
-#include "SceneObject.h"
+#include "TransformComponent.h"
 
 namespace dae
 {
-	class GameObject : public SceneObject
+	class GameObject
 	{
 	public:
-		void Update() override;
-		void Render() const override;
+		virtual void Update() = 0;
+		virtual void Render() const = 0;
 
-		void SetTexture(const std::string& filename);
+		//template<T>
+		//void AddComponent<T>
+
 		void SetPosition(float x, float y);
+		const glm::vec3 GetPosition();
+		TransformComponent* GetTransform() const { return m_pTransform; }
+
+		void AddComponent(BaseComponent* pComp);
+		void RemoveComponent(BaseComponent* pComp);
 
 		GameObject() = default;
 		virtual ~GameObject();
@@ -23,8 +28,10 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
+	protected:
+
 	private:
-		Transform mTransform;
-		std::shared_ptr<Texture2D> mTexture;
+		TransformComponent* m_pTransform;
+		std::vector<BaseComponent*> m_pComponents;
 	};
 }

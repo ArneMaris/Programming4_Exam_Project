@@ -2,17 +2,18 @@
 #include "Texture2D.h"
 #include <SDL.h>
 
+dae::Texture2D::Texture2D(SDL_Texture* texture)
+{
+	m_pTexture = texture;
+}
+
 dae::Texture2D::~Texture2D()
 {
-	SDL_DestroyTexture(mTexture);
+	SDL_DestroyTexture(m_pTexture);
 }
 
 SDL_Texture* dae::Texture2D::GetSDLTexture() const
 {
-	return mTexture;
+	return m_pTexture;
 }
 
-dae::Texture2D::Texture2D(SDL_Texture* texture)
-{
-	mTexture = texture;
-}

@@ -2,16 +2,22 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
-#include "TextObject.h"
+#include "TextComponent.h"
 #include "Renderer.h"
 #include "Font.h"
-#include "Texture2D.h"
+#include "SpriteComponent.h"
+#include "GameObject.h"
 
-dae::TextObject::TextObject(const std::string& text, std::shared_ptr<Font> font) 
-	: mNeedsUpdate(true), mText(text), mFont(font), mTexture(nullptr)
-{ }
 
-void dae::TextObject::Update()
+dae::TextComponent::TextComponent(const std::string& text, std::shared_ptr<Font> font)
+	: mNeedsUpdate(true)
+	, mText(text)
+	, mFont(font)
+	, mTexture(nullptr)
+{ 
+}
+
+void dae::TextComponent::Update()
 {
 	if (mNeedsUpdate)
 	{
@@ -31,24 +37,19 @@ void dae::TextObject::Update()
 	}
 }
 
-void dae::TextObject::Render() const
+void dae::TextComponent::Render() const
 {
 	if (mTexture != nullptr)
 	{
-		const auto pos = mTransform.GetPosition();
+		const auto pos = m_pGameObject->GetPosition();
 		Renderer::GetInstance().RenderTexture(*mTexture, pos.x, pos.y);
 	}
 }
 
-void dae::TextObject::SetText(const std::string& text)
+void dae::TextComponent::SetText(const std::string& text)
 {
 	mText = text;
 	mNeedsUpdate = true;
-}
-
-void dae::TextObject::SetPosition(const float x, const float y)
-{
-	mTransform.SetPosition(x, y, 0.0f);
 }
 
 
