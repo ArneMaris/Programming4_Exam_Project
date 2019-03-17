@@ -7,10 +7,12 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include <SDL.h>
-#include "TextComponent.h"
 #include "GameObject.h"
-#include "Scene.h"
+#include "Components.h"
+#include "vld.h"
 
+//Scene includes
+#include "TestScene.h"
 
 void dae::Minigin::Initialize()
 {
@@ -23,8 +25,8 @@ void dae::Minigin::Initialize()
 		"Programming 4 assignment",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
-		640,
-		480,
+		GameInfo::GetInstance().windowWidth,
+		GameInfo::GetInstance().windowHeight,
 		SDL_WINDOW_OPENGL
 	);
 	if (window == nullptr) 
@@ -40,26 +42,13 @@ void dae::Minigin::Initialize()
  */
 void dae::Minigin::LoadGame() const
 {
-	auto& scene = SceneManager::GetInstance().CreateScene(L"Demo");
-
-	auto go = std::make_shared<GameObject>();
-	go->SetTexture("background.jpg");
-	scene.Add(go);
-
-	go = std::make_shared<GameObject>();
-	go->SetTexture("logo.png");
-	go->SetPosition(216, 180);
-	scene.Add(go);
-
-	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	auto to = std::make_shared<TextObject>("Programming 4 Assignment", font);
-	to->SetPosition(80, 20);
-	scene.Add(to);
+	SceneManager::GetInstance().AddScene(new TestScene());
 }
 
 void dae::Minigin::Cleanup()
 {
 	Renderer::GetInstance().Destroy();
+	SceneManager::GetInstance().CleanUp();
 	SDL_DestroyWindow(window);
 	window = nullptr;
 	SDL_Quit();
@@ -78,6 +67,7 @@ void dae::Minigin::Run()
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
+		//auto& GameInfo = GameInfo::GetInstance();
 		auto lastTime = std::chrono::high_resolution_clock::now();
 
 		float lag = 0.0f;

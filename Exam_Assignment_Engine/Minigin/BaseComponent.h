@@ -15,17 +15,14 @@ namespace dae
 		BaseComponent& operator=(const BaseComponent& other) = delete;
 		BaseComponent& operator=(BaseComponent&& other) noexcept = delete;
 		virtual ~BaseComponent() = default;
-
-		BaseComponent();
+		BaseComponent() = default;;
 
 		GameObject* GetGameObject() const { return m_pGameObject; }
 		TransformComponent* GetTransform() const;
 
 	protected:
-
-		virtual void Initialize() = 0;
 		virtual void Update() = 0;
-		virtual void Draw() = 0;
+		virtual void Render() const = 0;
 
 		GameObject* m_pGameObject;
 	};

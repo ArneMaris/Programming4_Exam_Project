@@ -6,9 +6,10 @@ namespace dae
 	class GameInfo final : public Singleton<GameInfo>
 	{
 	public:
-		GameInfo();
 		static float deltaTime;
 		static float fixedTime;
+		static int windowWidth;
+		static int windowHeight;
 	private:
 	};
 };

@@ -8,11 +8,8 @@ namespace dae
 	class GameObject
 	{
 	public:
-		virtual void Update() = 0;
-		virtual void Render() const = 0;
-
-		//template<T>
-		//void AddComponent<T>
+		virtual void Update();
+		virtual void Render() const;
 
 		void SetPosition(float x, float y);
 		const glm::vec3 GetPosition();
@@ -21,12 +18,41 @@ namespace dae
 		void AddComponent(BaseComponent* pComp);
 		void RemoveComponent(BaseComponent* pComp);
 
-		GameObject() = default;
+		GameObject();
 		virtual ~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
+
+#pragma region
+		template <class T>
+		T* GetComponent()
+		{
+			const type_info& ti = typeid(T);
+			for (auto* component : m_pComponents)
+			{
+				if (component && typeid(*component) == ti)
+					return static_cast<T*>(component);
+			}
+			return nullptr;
+		}
+
+		template <class T>
+		std::vector<T*> GetComponents()
+		{
+			const type_info& ti = typeid(T);
+			std::vector<T*> components;
+
+			for (auto* component : m_pComponents)
+			{
+				if (component && typeid(*component) == ti)
+					components.push_back(static_cast<T*>(component));
+			}
+
+			return components;
+		}
+#pragma endregion TemplateFunctions
 
 	protected:
 
@@ -34,4 +60,5 @@ namespace dae
 		TransformComponent* m_pTransform;
 		std::vector<BaseComponent*> m_pComponents;
 	};
+
 }

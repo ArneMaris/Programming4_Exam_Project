@@ -4,6 +4,11 @@
 #include "Renderer.h"
 #include "BaseComponent.h"
 
+dae::GameObject::GameObject()
+{
+	m_pTransform = new TransformComponent();
+}
+
 dae::GameObject::~GameObject() = default;
 
 
@@ -11,6 +16,22 @@ dae::GameObject::~GameObject() = default;
 //{
 //	mTexture = ResourceManager::GetInstance().LoadTexture(filename);
 //}
+
+void dae::GameObject::Update()
+{
+	for (BaseComponent* comp : m_pComponents)
+	{
+		comp->Update();
+	}
+}
+
+void dae::GameObject::Render() const
+{
+	for (BaseComponent* comp : m_pComponents)
+	{
+		comp->Render();
+	}
+}
 
 void dae::GameObject::SetPosition(float x, float y)
 {
@@ -25,7 +46,7 @@ const glm::vec3 dae::GameObject::GetPosition()
 void dae::GameObject::AddComponent(BaseComponent* pComp)
 {
 	m_pComponents.push_back(pComp);
-	pComp->m_pGameObject = this;
+	pComp->m_pGameObject = (this);
 }
 
 void dae::GameObject::RemoveComponent(BaseComponent* pComp)

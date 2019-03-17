@@ -5,23 +5,39 @@
 
 void dae::SceneManager::Update()
 {
-	for(auto scene : mScenes)
+	for(auto scene : m_pScenes)
 	{
-		scene->Update();
+		if (scene->GetIsActive())
+			scene->BaseUpdate();
 	}
 }
 
 void dae::SceneManager::Render()
 {
-	for (const auto scene : mScenes)
+	for (const auto scene : m_pScenes)
 	{
-		scene->Render();
+		if (scene->GetIsActive())
+			scene->BaseRender();
 	}
 }
 
-dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
+void dae::SceneManager::CleanUp()
 {
-	const auto scene = std::shared_ptr<Scene>(new Scene(name));
-	mScenes.push_back(scene);
-	return *scene;
+	for (std::vector<Scene*>::iterator it = m_pScenes.begin(); it != m_pScenes.end(); ++it)
+	{
+		(*it)->~Scene();
+		delete (*it);
+	}
+	m_pScenes.clear();
+}
+
+
+void dae::SceneManager::AddScene(Scene* scene)
+{
+	m_pScenes.push_back(scene);
+}
+void dae::SceneManager::RemoveScene(Scene* scene)
+{
+	auto it = find(m_pScenes.begin(), m_pScenes.end(), scene);
+	m_pScenes.erase(it);
 }

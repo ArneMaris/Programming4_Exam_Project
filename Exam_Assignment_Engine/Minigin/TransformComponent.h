@@ -9,9 +9,14 @@ namespace dae
 {
 	class TransformComponent final : public BaseComponent
 	{
-		glm::vec3 m_Positions;
 	public:
+		TransformComponent();
 		const glm::vec3& GetPosition() const { return m_Positions; }
 		void SetPosition(float x, float y, float z);
+	protected:
+		virtual void Update() override;
+		virtual void Render() const override;
+	private:
+		glm::vec3 m_Positions{};
 	};
 }

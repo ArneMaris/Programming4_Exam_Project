@@ -1,6 +1,9 @@
 #pragma once
-#include "TransformComponent.h"
 #include "BaseComponent.h"
+#pragma warning(push)
+#pragma warning (disable:4201)
+#include <glm/vec2.hpp>
+#pragma warning(pop)
 
 namespace dae
 {
@@ -11,25 +14,27 @@ namespace dae
 	class TextComponent final: public BaseComponent
 	{
 	public:
-		void Update();
-		void Render() const;
-
 		void SetText(const std::string& text);
+		void SetTextOffset(glm::vec2 m_Position);
+		const glm::vec2& GetTextOffset() const;
 
-		explicit TextComponent(const std::string& text, std::shared_ptr<Font> font);
+		explicit TextComponent(const std::string& text, Font* font);
 		virtual ~TextComponent() = default;
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
 		TextComponent& operator=(const TextComponent& other) = delete;
 		TextComponent& operator=(TextComponent&& other) = delete;
+
+	protected:
+		virtual void Update() override;
+		virtual void Render() const override;
+
 	private:
-
-		bool mNeedsUpdate;
-		std::string mText;
-		std::shared_ptr<Font> mFont;
-		std::shared_ptr<Texture2D> mTexture;
-
-		GameObject* m_pGameObject; // the gameObject this component is attached too;
+		bool m_NeedsUpdate;
+		std::string m_Text;
+		Font* m_pFont;
+		Texture2D* m_pTexture;
+		glm::vec2 m_Offset{};
 	};
 
 }

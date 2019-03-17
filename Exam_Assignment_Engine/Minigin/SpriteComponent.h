@@ -1,12 +1,15 @@
 #pragma once
-struct SDL_Texture;
-#include "BaseComponent.h";
+#include "BaseComponent.h"
+#pragma warning(push)
+#pragma warning (disable:4201)
+#include <glm/vec2.hpp>
+#pragma warning(pop)
 
 namespace dae
 {
+    class Texture2D;
 	class SpriteComponent final: public BaseComponent
 	{
-		class Texture2D;
 	public:
 		SpriteComponent(const std::string assetPath);
 		~SpriteComponent() = default;
@@ -15,7 +18,16 @@ namespace dae
 		SpriteComponent(SpriteComponent &&) = delete;
 		SpriteComponent & operator= (const SpriteComponent &) = delete;
 		SpriteComponent & operator= (const SpriteComponent &&) = delete;
+
+		void SetSpriteOffset(glm::vec2 newPosition);
+		const glm::vec2& GetSpriteOffset() const;
+
+	protected:
+		virtual void Update() override;
+		virtual void Render() const override;
+
 	private:
-		std::shared_ptr<Texture2D> m_pTexture2D;
+		Texture2D* m_pTexture;
+		glm::vec2 m_Offset{};
 	};
 }
