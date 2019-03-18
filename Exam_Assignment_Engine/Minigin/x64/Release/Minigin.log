@@ -1,0 +1,105 @@
+﻿  MiniginPCH.cpp
+  BaseComponent.cpp
+e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\basecomponent.cpp(12): error C2440: 'return': cannot convert from 'std::shared_ptr<dae::TransformComponent>' to 'dae::TransformComponent *'
+  e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\basecomponent.cpp(12): note: No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+  Font.cpp
+  GameInfo.cpp
+  GameObject.cpp
+c:\program files\visualstudios\vc\tools\msvc\14.16.27023\include\memory(1801): error C2664: 'dae::GameObject::GameObject(dae::GameObject &&)': cannot convert argument 1 from '_Ty' to 'const dae::GameObject &'
+          with
+          [
+              _Ty=dae::GameObject *
+          ]
+  c:\program files\visualstudios\vc\tools\msvc\14.16.27023\include\memory(1799): note: Reason: cannot convert from '_Ty' to 'const dae::GameObject'
+          with
+          [
+              _Ty=dae::GameObject *
+          ]
+  c:\program files\visualstudios\vc\tools\msvc\14.16.27023\include\memory(1799): note: No constructor could take the source type, or constructor overload resolution was ambiguous
+  c:\program files\visualstudios\vc\tools\msvc\14.16.27023\include\memory(1865): note: see reference to function template instantiation 'std::_Ref_count_obj<_Ty>::_Ref_count_obj<dae::GameObject*>(dae::GameObject *&&)' being compiled
+          with
+          [
+              _Ty=dae::GameObject
+          ]
+  c:\program files\visualstudios\vc\tools\msvc\14.16.27023\include\memory(1866): note: see reference to function template instantiation 'std::_Ref_count_obj<_Ty>::_Ref_count_obj<dae::GameObject*>(dae::GameObject *&&)' being compiled
+          with
+          [
+              _Ty=dae::GameObject
+          ]
+  e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\gameobject.cpp(44): note: see reference to function template instantiation 'std::shared_ptr<dae::GameObject> std::make_shared<dae::GameObject,dae::GameObject*>(dae::GameObject *&&)' being compiled
+  InputManager.cpp
+  Log.cpp
+  Main.cpp
+  Minigin.cpp
+e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(45): error C2220: warning treated as error - no 'object' file generated
+  e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(206): note: see reference to class template instantiation 'glm::tvec2<T,P>' being compiled
+e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(45): warning C4201: nonstandard extension used: nameless struct/union
+e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(46): warning C4201: nonstandard extension used: nameless struct/union
+e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(47): warning C4201: nonstandard extension used: nameless struct/union
+e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\minigin.cpp(46): error C2664: 'void dae::GameObject::AddComponent(std::shared_ptr<dae::BaseComponent>)': cannot convert argument 1 from 'dae::SpriteComponent *' to 'std::shared_ptr<dae::BaseComponent>'
+  e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\minigin.cpp(46): note: Constructor for class 'std::shared_ptr<dae::BaseComponent>' is declared 'explicit'
+e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\minigin.cpp(49): error C2040: 'obj': 'auto' differs in levels of indirection from 'dae::GameObject *'
+e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\minigin.cpp(55): error C2040: 'obj': 'auto' differs in levels of indirection from 'dae::GameObject *'
+e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\minigin.cpp(57): error C2065: 'TextObject': undeclared identifier
+e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\minigin.cpp(57): error C2672: 'std::make_shared': no matching overloaded function found
+e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\minigin.cpp(57): error C2974: 'std::make_shared': invalid template argument for '_Ty', type expected
+  c:\program files\visualstudios\vc\tools\msvc\14.16.27023\include\memory(1864): note: see declaration of 'std::make_shared'
+e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\minigin.cpp(58): error C3536: 'to': cannot be used before it is initialized
+e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\minigin.cpp(58): error C2664: 'void dae::Scene::Add(dae::GameObject *)': cannot convert argument 1 from 'int' to 'dae::GameObject *'
+  e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\minigin.cpp(58): note: Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or function-style cast
+  Renderer.cpp
+  ResourceManager.cpp
+e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(45): error C2220: warning treated as error - no 'object' file generated
+  e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(206): note: see reference to class template instantiation 'glm::tvec2<T,P>' being compiled
+e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(45): warning C4201: nonstandard extension used: nameless struct/union
+e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(46): warning C4201: nonstandard extension used: nameless struct/union
+e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(47): warning C4201: nonstandard extension used: nameless struct/union
+c:\program files\visualstudios\vc\tools\msvc\14.16.27023\include\type_traits(1350): error C2027: use of undefined type 'dae::Texture2D'
+  e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\renderer.h(9): note: see declaration of 'dae::Texture2D'
+  c:\program files\visualstudios\vc\tools\msvc\14.16.27023\include\memory(1820): note: see reference to class template instantiation 'std::aligned_union<1,_Ty>' being compiled
+          with
+          [
+              _Ty=dae::Texture2D
+          ]
+  c:\program files\visualstudios\vc\tools\msvc\14.16.27023\include\memory(1820): note: see reference to alias template instantiation 'std::aligned_union_t<1,dae::Texture2D>' being compiled
+  c:\program files\visualstudios\vc\tools\msvc\14.16.27023\include\memory(1865): note: see reference to class template instantiation 'std::_Ref_count_obj<_Ty>' being compiled
+          with
+          [
+              _Ty=dae::Texture2D
+          ]
+  e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\resourcemanager.cpp(41): note: see reference to function template instantiation 'std::shared_ptr<dae::Texture2D> std::make_shared<dae::Texture2D,SDL_Texture*&>(SDL_Texture *&)' being compiled
+c:\program files\visualstudios\vc\tools\msvc\14.16.27023\include\type_traits(1351): error C2027: use of undefined type 'dae::Texture2D'
+  e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\renderer.h(9): note: see declaration of 'dae::Texture2D'
+  Scene.cpp
+  SceneManager.cpp
+  TextComponent.cpp
+e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(45): error C2220: warning treated as error - no 'object' file generated
+  e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(206): note: see reference to class template instantiation 'glm::tvec2<T,P>' being compiled
+e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(45): warning C4201: nonstandard extension used: nameless struct/union
+e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(46): warning C4201: nonstandard extension used: nameless struct/union
+e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(47): warning C4201: nonstandard extension used: nameless struct/union
+c:\program files\visualstudios\vc\tools\msvc\14.16.27023\include\type_traits(1350): error C2027: use of undefined type 'dae::Texture2D'
+  e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\renderer.h(9): note: see declaration of 'dae::Texture2D'
+  c:\program files\visualstudios\vc\tools\msvc\14.16.27023\include\memory(1820): note: see reference to class template instantiation 'std::aligned_union<1,_Ty>' being compiled
+          with
+          [
+              _Ty=dae::Texture2D
+          ]
+  c:\program files\visualstudios\vc\tools\msvc\14.16.27023\include\memory(1820): note: see reference to alias template instantiation 'std::aligned_union_t<1,dae::Texture2D>' being compiled
+  c:\program files\visualstudios\vc\tools\msvc\14.16.27023\include\memory(1865): note: see reference to class template instantiation 'std::_Ref_count_obj<_Ty>' being compiled
+          with
+          [
+              _Ty=dae::Texture2D
+          ]
+  e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\textcomponent.cpp(37): note: see reference to function template instantiation 'std::shared_ptr<dae::Texture2D> std::make_shared<dae::Texture2D,SDL_Texture*&>(SDL_Texture *&)' being compiled
+c:\program files\visualstudios\vc\tools\msvc\14.16.27023\include\type_traits(1351): error C2027: use of undefined type 'dae::Texture2D'
+  e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\renderer.h(9): note: see declaration of 'dae::Texture2D'
+  Texture2D.cpp
+  SpriteComponent.cpp
+e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(45): error C2220: warning treated as error - no 'object' file generated
+  e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(206): note: see reference to class template instantiation 'glm::tvec2<T,P>' being compiled
+e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(45): warning C4201: nonstandard extension used: nameless struct/union
+e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(46): warning C4201: nonstandard extension used: nameless struct/union
+e:\aaa_programming4_exam_project\exam_assignment_engine\3rdparty\glm\glm\detail\type_vec2.hpp(47): warning C4201: nonstandard extension used: nameless struct/union
+e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\spritecomponent.cpp(24): error C3867: 'std::shared_ptr<dae::SpriteComponent::Texture2D>::unique': non-standard syntax; use '&' to create a pointer to member
+  TransformComponent.cpp
