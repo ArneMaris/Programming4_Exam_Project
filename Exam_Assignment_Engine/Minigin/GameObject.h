@@ -5,7 +5,7 @@
 
 namespace dae
 {
-	class GameObject
+	class GameObject final
 	{
 	public:
 		virtual void Update();
@@ -19,7 +19,7 @@ namespace dae
 		void RemoveComponent(BaseComponent* pComp);
 
 		GameObject();
-		virtual ~GameObject();
+		virtual ~GameObject() = default;
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;

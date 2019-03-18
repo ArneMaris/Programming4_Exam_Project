@@ -9,14 +9,6 @@ dae::GameObject::GameObject()
 	m_pTransform = new TransformComponent();
 }
 
-dae::GameObject::~GameObject() = default;
-
-
-//void dae::GameObject::SetTexture(const std::string& filename)
-//{
-//	mTexture = ResourceManager::GetInstance().LoadTexture(filename);
-//}
-
 void dae::GameObject::Update()
 {
 	for (BaseComponent* comp : m_pComponents)

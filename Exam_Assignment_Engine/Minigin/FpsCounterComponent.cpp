@@ -37,7 +37,7 @@ void dae::FpsCounterComponent::Update()
 		{
 			color = { 255,255,0 };
 		}
-		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), std::to_string(m_FPS).c_str(), color);
+		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), (std::to_string(m_FPS)+" FPS").c_str(), color);
 		if (surf == nullptr)
 		{
 			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
