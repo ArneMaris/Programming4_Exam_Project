@@ -7,6 +7,7 @@ unsigned int dae::Scene::s_idCounter = 0;
 dae::Scene::Scene(const std::string& name, bool startActive) 
 	:m_SceneName(name)
 	, m_IsActive{ startActive }
+	, m_IsInitialized{false}
 {
 }
 

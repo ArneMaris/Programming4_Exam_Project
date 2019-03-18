@@ -6,7 +6,7 @@
 #include "Renderer.h"
 #include "Font.h"
 #include "GameObject.h"
-#include "Texture2D.h"
+#include "SDL.h"
 
 
 dae::TextComponent::TextComponent(const std::string& text, Font* font)
@@ -27,13 +27,16 @@ void dae::TextComponent::Update()
 		{
 			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
 		}
+		if (m_pTexture != nullptr)
+			SDL_DestroyTexture(m_pTexture);
+
 		auto texture = SDL_CreateTextureFromSurface(Renderer::GetInstance().GetSDLRenderer(), surf);
 		if (texture == nullptr) 
 		{
 			throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
 		}
 		SDL_FreeSurface(surf);
-		m_pTexture = new Texture2D(texture);
+		m_pTexture = texture;
 	}
 }
 

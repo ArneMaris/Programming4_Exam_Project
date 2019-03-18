@@ -5,10 +5,11 @@
 #include <glm/vec2.hpp>
 #pragma warning(pop)
 
+struct SDL_Texture;
+
 namespace dae
 {
 	class Font;
-	class Texture2D;
 	class GameObject;
 
 	class TextComponent final: public BaseComponent
@@ -33,7 +34,7 @@ namespace dae
 		bool m_NeedsUpdate;
 		std::string m_Text;
 		Font* m_pFont;
-		Texture2D* m_pTexture;
+		SDL_Texture* m_pTexture;
 		glm::vec2 m_Offset{};
 	};
 

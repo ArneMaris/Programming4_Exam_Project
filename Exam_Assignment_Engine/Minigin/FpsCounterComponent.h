@@ -5,22 +5,15 @@
 #include <glm/vec2.hpp>
 #pragma warning(pop)
 
+struct SDL_Texture;
+
 namespace dae
 {
 	class Font;
-	class Texture2D;
 	class FpsCounterComponent final : public BaseComponent
 	{
 	public:
-		enum class Corner
-		{
-			leftTop,
-			rightTop,
-			leftBot,
-			rightBot
-		};
-
-		explicit FpsCounterComponent(Font* font, Corner corner = Corner::leftTop);
+		explicit FpsCounterComponent(Font* font, bool leftTopCorner = true);
 		virtual ~FpsCounterComponent() = default;
 		FpsCounterComponent(const FpsCounterComponent& other) = delete;
 		FpsCounterComponent(FpsCounterComponent&& other) = delete;
@@ -33,11 +26,12 @@ namespace dae
 
 	private:
 		Font* m_pFont;
-		Texture2D* m_pTexture;
+		SDL_Texture* m_pTexture;
+		bool m_LeftTop;
+
 		int m_FPS;
 		float m_FpsTimer;
 		int m_FpsCount;
-		Corner m_Corner;
 	};
 }
 

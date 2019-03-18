@@ -67,10 +67,9 @@ void dae::Minigin::Run()
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& input = InputManager::GetInstance();
-		//auto& GameInfo = GameInfo::GetInstance();
 		auto lastTime = std::chrono::high_resolution_clock::now();
-
 		float lag = 0.0f;
+
 		bool doContinue = true;
 		while (doContinue)
 		{
@@ -78,8 +77,9 @@ void dae::Minigin::Run()
 			GameInfo::deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 			lastTime = currentTime;
 			lag += GameInfo::deltaTime;
-			
+
 			doContinue = input.ProcessInput();
+
 			while (lag >= GameInfo::fixedTime)
 			{
 				sceneManager.Update();

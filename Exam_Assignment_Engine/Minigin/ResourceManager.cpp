@@ -7,7 +7,7 @@
 #include "Renderer.h"
 #include "SpriteComponent.h"
 #include "Font.h"
-#include "Texture2D.h"
+#include "SDL.h"
 
 void dae::ResourceManager::Init(std::string&& dataPath)
 {
@@ -31,7 +31,7 @@ void dae::ResourceManager::Init(std::string&& dataPath)
 	}
 }
 
-dae::Texture2D* dae::ResourceManager::LoadTexture(const std::string& file)
+SDL_Texture* dae::ResourceManager::LoadTexture(const std::string& file)
 {
 	std::string fullPath = mDataPath + file;
 	SDL_Texture *texture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
@@ -39,7 +39,7 @@ dae::Texture2D* dae::ResourceManager::LoadTexture(const std::string& file)
 	{
 		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());
 	}
-	return new Texture2D(texture);
+	return texture;
 }
 
 dae::Font* dae::ResourceManager::LoadFont(const std::string& file, unsigned int size)

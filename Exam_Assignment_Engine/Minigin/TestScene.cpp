@@ -14,6 +14,9 @@ TestScene::TestScene(bool autoInit)
 
 void TestScene::Initialize()
 {
+	if (m_IsInitialized)
+		return;
+
 	auto obj = new dae::GameObject();
 	obj->AddComponent(new dae::SpriteComponent("background.jpg"));
 	AddGameObject(obj);
@@ -29,11 +32,14 @@ void TestScene::Initialize()
 	obj->AddComponent(new dae::TextComponent("Programming 4 Assignment", font));
 	obj->AddComponent(new dae::FpsCounterComponent(font));
 	AddGameObject(obj);
+	m_IsInitialized = true;
 }
 void TestScene::Update()
 {
+
 }
 
 void TestScene::Render() const
 {
+
 }

@@ -4,10 +4,10 @@
 #pragma warning (disable:4201)
 #include <glm/vec2.hpp>
 #pragma warning(pop)
+struct SDL_Texture;
 
 namespace dae
 {
-    class Texture2D;
 	class SpriteComponent final: public BaseComponent
 	{
 	public:
@@ -27,7 +27,7 @@ namespace dae
 		virtual void Render() const override;
 
 	private:
-		Texture2D* m_pTexture;
+		SDL_Texture* m_pTexture;
 		glm::vec2 m_Offset{};
 	};
 }

@@ -1,5 +1,7 @@
+e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\win32\debug\engine.pch
 e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\win32\debug\vc141.pdb
 e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\win32\debug\vc141.idb
+e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\win32\debug\miniginpch.obj
 e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\win32\debug\transformcomponent.obj
 e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\win32\debug\spritecomponent.obj
 e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\win32\debug\texture2d.obj
@@ -15,10 +17,9 @@ e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\win32\debug\log.
 e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\win32\debug\inputmanager.obj
 e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\win32\debug\gameobject.obj
 e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\win32\debug\gameinfo.obj
+e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\win32\debug\fpscountercomponent.obj
 e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\win32\debug\font.obj
 e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\win32\debug\basecomponent.obj
-e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\win32\debug\engine.pch
-e:\aaa_programming4_exam_project\exam_assignment_engine\minigin\win32\debug\miniginpch.obj
 e:\aaa_programming4_exam_project\exam_assignment_engine\win32\debug\engine.lib
 e:\aaa_programming4_exam_project\exam_assignment_engine\win32\debug\engine.exp
 e:\aaa_programming4_exam_project\exam_assignment_engine\win32\debug\engine.exe

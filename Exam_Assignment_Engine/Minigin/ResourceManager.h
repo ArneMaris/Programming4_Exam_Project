@@ -1,9 +1,9 @@
 #pragma once
 #include "Singleton.h"
+struct SDL_Texture;
 
 namespace dae
 {
-	class Texture2D;
 	class Font;
 	class ResourceManager final : public Singleton<ResourceManager>
 	{
@@ -13,7 +13,7 @@ namespace dae
 
 		void Init(std::string&& data);
 
-		Texture2D* LoadTexture(const std::string& file);
+		SDL_Texture* LoadTexture(const std::string& file);
 		Font* LoadFont(const std::string& file, unsigned int size);
 	};
 

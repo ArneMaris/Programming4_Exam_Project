@@ -1,5 +1,7 @@
 ﻿C:\Program Files\VisualStudios\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: The intermediate directory (Win32\Debug\) contains files shared from another project (Minigin.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   FpsCounterComponent.cpp
+  TextComponent.cpp
+  Generating Code...
   Minigin.vcxproj -> E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Debug\Engine.exe
   E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2\lib\x86\SDL2.dll
   1 File(s) copied
