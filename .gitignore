@@ -31,7 +31,6 @@
 *.app
 
 # Folders
-x64/
-x84/
+Debug/
 .vs/
 
