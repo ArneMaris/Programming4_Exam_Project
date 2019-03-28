@@ -17,6 +17,14 @@ void dae::GameObject::Update()
 	}
 }
 
+void dae::GameObject::FixedUpdate()
+{
+	for (BaseComponent* comp : m_pComponents)
+	{
+		comp->FixedUpdate();
+	}
+}
+
 void dae::GameObject::Render() const
 {
 	for (BaseComponent* comp : m_pComponents)

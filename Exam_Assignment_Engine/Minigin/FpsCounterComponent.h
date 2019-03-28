@@ -1,9 +1,6 @@
 #pragma once
 #include "BaseComponent.h"
-#pragma warning(push)
-#pragma warning (disable:4201)
-#include <glm/vec2.hpp>
-#pragma warning(pop)
+#include "TextComponent.h"
 
 struct SDL_Texture;
 
@@ -25,8 +22,7 @@ namespace dae
 		virtual void Render() const override;
 
 	private:
-		Font* m_pFont;
-		SDL_Texture* m_pTexture;
+		TextComponent* m_TextComp;
 		bool m_LeftTop;
 
 		int m_FPS;

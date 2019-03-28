@@ -7,3 +7,8 @@ dae::TransformComponent* dae::BaseComponent::GetTransform() const
 {
 	return m_pGameObject->GetTransform();
 }
+
+void dae::BaseComponent::FixedUpdate()
+{
+	//only add physics stuff here, default not used
+}

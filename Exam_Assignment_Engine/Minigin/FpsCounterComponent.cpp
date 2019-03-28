@@ -9,16 +9,19 @@
 
 
 dae::FpsCounterComponent::FpsCounterComponent(Font* font, bool leftTopCorner)
-	:m_pFont{font}
+	:m_TextComp{nullptr}
 	, m_FPS{0}
 	, m_FpsCount{0}
 	, m_FpsTimer{0}
 	, m_LeftTop{ leftTopCorner }
-{
+{;
+	m_TextComp = new TextComponent(font, "0");
 }
 
 void dae::FpsCounterComponent::Update()
 {
+	if (m_TextComp->m_pGameObject == nullptr)
+		m_TextComp->m_pGameObject = GetGameObject();
 	//FPS LOGIC
 	m_FpsTimer += GameInfo::deltaTime;
 	++m_FpsCount;
@@ -27,7 +30,7 @@ void dae::FpsCounterComponent::Update()
 		m_FPS = m_FpsCount;
 		m_FpsCount = 0;
 		m_FpsTimer -= 1;
-
+		m_TextComp->m_Text = std::to_string(m_FPS);
 		SDL_Color color = { 255,0,0 };
 		if (m_FPS >= 60)
 		{
@@ -37,33 +40,12 @@ void dae::FpsCounterComponent::Update()
 		{
 			color = { 255,255,0 };
 		}
-		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), (std::to_string(m_FPS)+" FPS").c_str(), color);
-		if (surf == nullptr)
-		{
-			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
-		}
-		if (m_pTexture != nullptr)
-			SDL_DestroyTexture(m_pTexture);
-		auto texture = SDL_CreateTextureFromSurface(Renderer::GetInstance().GetSDLRenderer(), surf);
-		if (texture == nullptr)
-		{
-			throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
-		}
-		SDL_FreeSurface(surf);
-		m_pTexture = texture;
+		m_TextComp->m_TextColor = color;
 	}
+	m_TextComp->Update();
 }
 
 void dae::FpsCounterComponent::Render() const
 {
-	glm::vec2 pos{0,0};
-	if (m_pTexture != nullptr)
-	{
-		if (!m_LeftTop)
-		{
-			pos.x = float(GameInfo::GetInstance().windowWidth - m_pFont->GetFontSize() * 1.3f);
-			pos.y = 0;
-		}
-		Renderer::GetInstance().RenderTexture(m_pTexture, pos.x, pos.y);
-	}
+	m_TextComp->Render();
 }

@@ -12,6 +12,15 @@ void dae::SceneManager::Update()
 	}
 }
 
+void dae::SceneManager::FixedUpdate()
+{
+	for (auto scene : m_pScenes)
+	{
+		if (scene->GetIsActive())
+			scene->BaseUpdate();
+	}
+}
+
 void dae::SceneManager::Render()
 {
 	for (const auto scene : m_pScenes)

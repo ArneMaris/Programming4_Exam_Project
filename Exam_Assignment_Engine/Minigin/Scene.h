@@ -8,6 +8,7 @@ namespace dae
 	{
 	public:
 		void BaseUpdate(); // updates all gameObjects in this scene
+		void BaseFixedUpdate(); // updates all gameObjects in this scene by fixed time
 		void BaseRender() const; // renders all gameObjects in this scene
 		virtual void Initialize() = 0;
 		bool GetIsActive() const;
@@ -25,6 +26,7 @@ namespace dae
 	private: 
 		virtual void Update() = 0; // different Update for every scene, called in BaseUpdate
 		virtual void Render() const = 0; // different Render for every scene, called in BaseRender
+		virtual void FixedUpdate(); // different fixedUpdate for every scene, called in BaseFixedUpdate
 		bool m_IsActive;
 		std::string m_SceneName{};
 		std::vector <GameObject*> m_pObjects{};

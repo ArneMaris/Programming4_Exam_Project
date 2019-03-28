@@ -29,9 +29,13 @@ void TestScene::Initialize()
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	obj = new dae::GameObject();
 	obj->SetPosition(80, 20);
-	obj->AddComponent(new dae::TextComponent("Programming 4 Assignment", font));
+	obj->AddComponent(new dae::TextComponent(font, "Programming 4 Assignment"));
+	AddGameObject(obj);
+
+	obj = new dae::GameObject();
 	obj->AddComponent(new dae::FpsCounterComponent(font));
 	AddGameObject(obj);
+
 	m_IsInitialized = true;
 }
 void TestScene::Update()

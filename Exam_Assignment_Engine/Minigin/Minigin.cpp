@@ -79,10 +79,10 @@ void dae::Minigin::Run()
 			lag += GameInfo::deltaTime;
 
 			doContinue = input.ProcessInput();
-
+			sceneManager.Update();
 			while (lag >= GameInfo::fixedTime)
 			{
-				sceneManager.Update();
+				sceneManager.FixedUpdate();
 				lag -= GameInfo::fixedTime;
 			}
 			renderer.Render();

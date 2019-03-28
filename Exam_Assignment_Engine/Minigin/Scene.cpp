@@ -34,6 +34,15 @@ void dae::Scene::BaseUpdate()
 	Update();
 }
 
+void dae::Scene::BaseFixedUpdate()
+{
+	for (auto gameObject : m_pObjects)
+	{
+		gameObject->FixedUpdate();
+	}
+	FixedUpdate();
+}
+
 void dae::Scene::BaseRender() const
 {
 	for (const auto gameObject : m_pObjects)
@@ -53,3 +62,7 @@ void dae::Scene::SetIsActive(bool value)
 	m_IsActive = value;
 }
 
+void dae::Scene::FixedUpdate()
+{
+	//standard nothing to do here (only physics  or fixed stuff
+}

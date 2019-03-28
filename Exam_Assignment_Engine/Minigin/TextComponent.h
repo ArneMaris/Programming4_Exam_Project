@@ -4,8 +4,7 @@
 #pragma warning (disable:4201)
 #include <glm/vec2.hpp>
 #pragma warning(pop)
-
-struct SDL_Texture;
+#include "SDL.h"
 
 namespace dae
 {
@@ -14,12 +13,14 @@ namespace dae
 
 	class TextComponent final: public BaseComponent
 	{
+		friend class FpsCounterComponent;
 	public:
 		void SetText(const std::string& text);
+		void SetTextColor(const SDL_Color& color);
 		void SetTextOffset(glm::vec2 m_Position);
 		const glm::vec2& GetTextOffset() const;
 
-		explicit TextComponent(const std::string& text, Font* font);
+		explicit TextComponent(Font* font, const std::string& text, const SDL_Color& color = { 255,255,255 });
 		virtual ~TextComponent() = default;
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
@@ -34,6 +35,7 @@ namespace dae
 		bool m_NeedsUpdate;
 		std::string m_Text;
 		Font* m_pFont;
+		SDL_Color m_TextColor;
 		SDL_Texture* m_pTexture;
 		glm::vec2 m_Offset{};
 	};
