@@ -32,7 +32,7 @@
 # Folders
 Debug/
 .vs/
-Resources/
+Private/
 
 *.rar
 
