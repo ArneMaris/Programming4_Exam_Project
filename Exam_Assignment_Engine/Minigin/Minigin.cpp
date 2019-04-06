@@ -16,6 +16,7 @@
 
 void dae::Minigin::Initialize()
 {
+	GameInfo::GetInstance();
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
@@ -25,8 +26,8 @@ void dae::Minigin::Initialize()
 		"Programming 4 assignment",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
-		GameInfo::GetInstance().windowWidth,
-		GameInfo::GetInstance().windowHeight,
+		GameInfo::windowWidth,
+		GameInfo::windowHeight,
 		SDL_WINDOW_OPENGL
 	);
 	if (window == nullptr) 
@@ -37,9 +38,6 @@ void dae::Minigin::Initialize()
 	Renderer::GetInstance().Init(window);
 }
 
-/**
- * Code constructing the scene world starts here
- */
 void dae::Minigin::LoadGame() const
 {
 	SceneManager::GetInstance().AddScene(new TestScene());
@@ -62,7 +60,6 @@ void dae::Minigin::Run()
 	ResourceManager::GetInstance().Init("../Data/");
 
 	LoadGame();
-
 	{
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
