@@ -48,3 +48,14 @@ void dae::Renderer::RenderTexture(SDL_Texture* texture, const float x, const flo
 	dst.h = static_cast<int>(height);
 	SDL_RenderCopy(GetSDLRenderer(), texture, nullptr, &dst);
 }
+
+void dae::Renderer::RenderTexture(SDL_Texture* texture, const SDL_Rect& destRect, const SDL_Rect& srcRect) const
+{
+	SDL_RenderCopy(GetSDLRenderer(), texture, &srcRect, &destRect);
+}
+
+void dae::Renderer::RenderTexture(SDL_Texture* texture, const SDL_Rect& destRect, const SDL_Rect& srcRect, float angle, const SDL_Point& rotationCenter, const SDL_RendererFlip& flip) const
+{
+	double dbAngle = static_cast<double>(angle);
+	SDL_RenderCopyEx(GetSDLRenderer(), texture, &srcRect, &destRect, dbAngle, &rotationCenter, flip);
+}

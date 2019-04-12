@@ -1,5 +1,6 @@
 #pragma once
 #include "Singleton.h"
+#include <map>
 struct SDL_Texture;
 
 namespace dae
@@ -7,14 +8,18 @@ namespace dae
 	class Font;
 	class ResourceManager final : public Singleton<ResourceManager>
 	{
-		std::string mDataPath;
+		std::string m_ResourcesPath;
 	public:
 		ResourceManager() = default;
 
-		void Init(std::string&& data);
+		void Init(std::string&& resourcesPath);
 
-		SDL_Texture* LoadTexture(const std::string& file);
-		Font* LoadFont(const std::string& file, unsigned int size);
+		Font* LoadFont(const std::string& fileName, unsigned int size);
+		std::map<const std::string, Font*> m_pFontMap;
+
+		SDL_Texture* LoadTexture(const std::string& fileName);
+		std::map<const std::string, SDL_Texture*> m_pTexturesMap;
+
 	};
 
 }

@@ -11,7 +11,7 @@
 
 void dae::ResourceManager::Init(std::string&& dataPath)
 {
-	mDataPath = std::move(dataPath);
+	m_ResourcesPath = std::move(dataPath);
 
 	// load support for png and jpg, this takes a while!
 
@@ -33,16 +33,24 @@ void dae::ResourceManager::Init(std::string&& dataPath)
 
 SDL_Texture* dae::ResourceManager::LoadTexture(const std::string& file)
 {
-	std::string fullPath = mDataPath + file;
-	SDL_Texture *texture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
+	std::string fullPath = m_ResourcesPath + file;
+	SDL_Texture* texture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
 	if (texture == nullptr) 
 	{
 		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());
 	}
-	return texture;
+
+	std::pair<std::map<const std::string, SDL_Texture*>::iterator, bool> returnValue;
+	returnValue = m_pTexturesMap.insert(std::pair<std::string, SDL_Texture*>(file, texture));
+	return returnValue.first->second;
 }
 
 dae::Font* dae::ResourceManager::LoadFont(const std::string& file, unsigned int size)
 {
-	return new Font(mDataPath + file, size);
+	std::string fullPath = m_ResourcesPath + file;
+	Font* font = new Font(fullPath, size);
+
+	std::pair<std::map<const std::string, Font*>::iterator, bool> returnValue;
+	returnValue = m_pFontMap.insert(std::pair<std::string, Font*>(file, font));
+	return returnValue.first->second;
 }

@@ -9,7 +9,6 @@ namespace dae
 	{
 	public:
 		virtual void Update();
-		virtual void FixedUpdate();
 		virtual void Render() const;
 
 		void SetPosition(float x, float y);

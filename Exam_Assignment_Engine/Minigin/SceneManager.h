@@ -11,7 +11,6 @@ namespace dae
 		void RemoveScene(Scene* scene);
 
 		void Update();
-		void FixedUpdate();
 		void Render();
 
 		void CleanUp();

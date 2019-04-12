@@ -17,7 +17,7 @@
 void dae::Minigin::Initialize()
 {
 	GameInfo::GetInstance();
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
+	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
@@ -30,7 +30,7 @@ void dae::Minigin::Initialize()
 		GameInfo::windowHeight,
 		SDL_WINDOW_OPENGL
 	);
-	if (window == nullptr) 
+	if (window == nullptr)
 	{
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
@@ -57,33 +57,26 @@ void dae::Minigin::Run()
 	Initialize();
 
 	// tell the resource manager where he can find the game data
-	ResourceManager::GetInstance().Init("../Data/");
+	ResourceManager::GetInstance().Init("../Resources/");
 
 	LoadGame();
+
+	auto& renderer = Renderer::GetInstance();
+	auto& sceneManager = SceneManager::GetInstance();
+	auto& input = InputManager::GetInstance();
+	auto lastTime = std::chrono::high_resolution_clock::now();
+
+	bool doContinue = true;
+	while (doContinue)
 	{
-		auto& renderer = Renderer::GetInstance();
-		auto& sceneManager = SceneManager::GetInstance();
-		auto& input = InputManager::GetInstance();
-		auto lastTime = std::chrono::high_resolution_clock::now();
-		float lag = 0.0f;
+		auto currentTime = std::chrono::high_resolution_clock::now();
+		GameInfo::deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
+		lastTime = currentTime;
 
-		bool doContinue = true;
-		while (doContinue)
-		{
-			auto currentTime = std::chrono::high_resolution_clock::now();
-			GameInfo::deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
-			lastTime = currentTime;
-			lag += GameInfo::deltaTime;
-
-			doContinue = input.ProcessInput();
-			sceneManager.Update();
-			while (lag >= GameInfo::fixedTime)
-			{
-				sceneManager.FixedUpdate();
-				lag -= GameInfo::fixedTime;
-			}
-			renderer.Render();
-		}
+		doContinue = input.ProcessInput();
+		sceneManager.Update();
+		renderer.Render();
 	}
+
 	Cleanup();
 }
