@@ -1,3 +1,4 @@
+// MADE USING MY PROGRAMMING 1-2 SPRITESHEET CODE AS REFERENCE
 #pragma once
 #include "BaseComponent.h"
 #include "SpriteComponent.h"
@@ -19,8 +20,12 @@ namespace dae
 			horizontal,
 			both
 		};
-		explicit AnimatedSpriteComponent(const std::string& assetName, int nrCols, int nrRows, 
-			float scale = 1, float secPerFrame = 0.1f, int startRow = 1, int startColumn = 1, const glm::vec2& offset = { 0,0 }, const FlipDirection& flipDir = FlipDirection::none);
+		AnimatedSpriteComponent(const std::string& assetName, int nrCols, int nrRows, 
+			float scale = 1, float secPerFrame = 0.1f, int startRow = 1, int startColumn = 1, const glm::vec2& offset = { 0,0 }, 
+			const FlipDirection& flipDir = FlipDirection::none, float angle = 0, const glm::vec2& rotationCenter = { 0,0 });
+
+		AnimatedSpriteComponent(const std::string& assetName, int nrCols, int nrRows, float secPerFrame);
+
 		~AnimatedSpriteComponent() = default;
 		AnimatedSpriteComponent(const AnimatedSpriteComponent& other) = delete;
 		AnimatedSpriteComponent(AnimatedSpriteComponent&& other) = delete;
@@ -56,7 +61,7 @@ namespace dae
 
 		float m_Angle;
 		glm::vec2 m_RotationCenter;
-		FlipDirection m_FlipDirection = FlipDirection::none;
+		FlipDirection m_FlipDirection;
 
 		int GetNrFrames() const;
 

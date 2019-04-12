@@ -5,7 +5,7 @@
 #include "Renderer.h"
 
 dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::string& assetName, int nrCols, int nrRows,
-	float scale, float secPerFrame, int startRow, int startColumn, const glm::vec2& offset, const FlipDirection& flipDir)
+	float scale, float secPerFrame, int startRow, int startColumn, const glm::vec2& offset, const FlipDirection& flipDir, float angle, const glm::vec2& rotationCenter)
 	:SpriteComponent(assetName, scale, offset)
 	, m_Cols{ nrCols }
 	, m_Rows{ nrRows }
@@ -18,9 +18,27 @@ dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::string& assetNa
 	, m_MinRow {1}
 	, m_MaxColumn{nrCols}
 	, m_MaxRow{nrRows}
+	, m_Angle{ angle }
+	, m_RotationCenter{ rotationCenter }
 {
-	SetSpriteOffset(offset);
+}
 
+dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::string & assetName, int nrCols, int nrRows, float secPerFrame)
+	:SpriteComponent(assetName, 1, { 0,0 })
+	, m_Cols{ nrCols }
+	, m_Rows{ nrRows }
+	, m_SecPerFrame{ secPerFrame }
+	, m_AccuSec{ 0 }
+	, m_CurrRow{ 1 }
+	, m_CurrColumn{ 1 }
+	, m_FlipDirection{ FlipDirection::none }
+	, m_MinColumn{ 1 }
+	, m_MinRow{ 1 }
+	, m_MaxColumn{ nrCols }
+	, m_MaxRow{ nrRows }
+	, m_Angle{ 0 }
+	, m_RotationCenter{ 0,0 }
+{
 }
 
 void dae::AnimatedSpriteComponent::Update()
