@@ -9,7 +9,7 @@
 #include <SDL.h>
 #include "GameObject.h"
 #include "Components.h"
-#include "vld.h"
+
 
 //Scene includes
 #include "TestScene.h"
@@ -65,6 +65,7 @@ void dae::Minigin::Run()
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
 	auto lastTime = std::chrono::high_resolution_clock::now();
+	float lag = 0.0;
 
 	bool doContinue = true;
 	while (doContinue)
@@ -72,9 +73,16 @@ void dae::Minigin::Run()
 		auto currentTime = std::chrono::high_resolution_clock::now();
 		GameInfo::deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 		lastTime = currentTime;
+		lag += GameInfo::deltaTime;
 
 		doContinue = input.ProcessInput();
 		sceneManager.Update();
+		while (lag >= GameInfo::fixedTime)
+		{
+			sceneManager.FixedUpdate();
+			lag -= GameInfo::fixedTime;
+		}
+
 		renderer.Render();
 	}
 

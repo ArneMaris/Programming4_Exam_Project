@@ -8,8 +8,10 @@ dae::Scene::Scene(const std::string& name, bool startActive)
 	:m_SceneName(name)
 	, m_IsActive{ startActive }
 	, m_IsInitialized{false}
-{
+{ 
+
 }
+
 
 dae::Scene::~Scene()
 {
@@ -18,6 +20,7 @@ dae::Scene::~Scene()
 		delete (*it);
 	}
 	m_pObjects.clear();
+
 }
 
 void dae::Scene::AddGameObject(GameObject* object)
@@ -41,6 +44,14 @@ void dae::Scene::BaseRender() const
 		gameObject->Render();
 	}
 	Render();
+}
+
+void dae::Scene::FixedUpdate()
+{
+	for (auto gameObject : m_pObjects)
+	{
+		gameObject->FixedUpdate();
+	}
 }
 
 bool dae::Scene::GetIsActive() const

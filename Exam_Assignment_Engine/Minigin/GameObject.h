@@ -1,6 +1,5 @@
 #pragma once
 #include <memory>
-
 #include "TransformComponent.h"
 
 namespace dae
@@ -10,9 +9,10 @@ namespace dae
 	public:
 		virtual void Update();
 		virtual void Render() const;
+		virtual void FixedUpdate();
 
 		void SetPosition(float x, float y);
-		const glm::vec3 GetPosition();
+		const b2Vec3 GetPosition();
 		TransformComponent* GetTransform() const { return m_pTransform; }
 
 		void AddComponent(BaseComponent* pComp);

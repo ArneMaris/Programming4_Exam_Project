@@ -8,3 +8,12 @@ dae::TransformComponent* dae::BaseComponent::GetTransform() const
 	return m_pGameObject->GetTransform();
 }
 
+void dae::BaseComponent::Render() const
+{
+}
+
+void dae::BaseComponent::FixedUpdate()
+{
+	//
+}
+

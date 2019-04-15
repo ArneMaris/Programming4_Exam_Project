@@ -5,7 +5,7 @@
 #include "Renderer.h"
 
 dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::string& assetName, int nrCols, int nrRows,
-	float scale, float secPerFrame, int startRow, int startColumn, const glm::vec2& offset, const FlipDirection& flipDir, float angle, const glm::vec2& rotationCenter)
+	float scale, float secPerFrame, int startRow, int startColumn, const b2Vec2& offset, const FlipDirection& flipDir, float angle, const b2Vec2& rotationCenter)
 	:SpriteComponent(assetName, scale, offset)
 	, m_Cols{ nrCols }
 	, m_Rows{ nrRows }
@@ -90,7 +90,7 @@ void dae::AnimatedSpriteComponent::SetAngleRadians(float newAngle)
 	m_Angle = float(newAngle * 180 / M_PI);
 }
 
-void dae::AnimatedSpriteComponent::SetRotationCenter(glm::vec2 newCenter)
+void dae::AnimatedSpriteComponent::SetRotationCenter(b2Vec2 newCenter)
 {
 	m_RotationCenter = { newCenter.x, newCenter.y };
 }

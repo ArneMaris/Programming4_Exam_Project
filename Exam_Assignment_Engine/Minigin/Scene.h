@@ -1,6 +1,7 @@
 #pragma once
 #include "SceneManager.h"
 
+
 namespace dae
 {
 	class GameObject;
@@ -9,6 +10,8 @@ namespace dae
 	public:
 		void BaseUpdate(); // updates all gameObjects in this scene
 		void BaseRender() const; // renders all gameObjects in this scene
+		void FixedUpdate();
+
 		virtual void Initialize() = 0;
 		bool GetIsActive() const;
 		void SetIsActive(bool value);
@@ -30,6 +33,7 @@ namespace dae
 		std::vector <GameObject*> m_pObjects{};
 
 		static unsigned int s_idCounter; 
+
 	};
 
 }

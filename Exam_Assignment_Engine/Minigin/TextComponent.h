@@ -1,9 +1,5 @@
 #pragma once
 #include "BaseComponent.h"
-#pragma warning(push)
-#pragma warning (disable:4201)
-#include <glm/vec2.hpp>
-#pragma warning(pop)
 #include "SDL.h"
 
 namespace dae
@@ -17,8 +13,8 @@ namespace dae
 	public:
 		void SetText(const std::string& text);
 		void SetTextColor(const SDL_Color& color);
-		void SetTextOffset(glm::vec2 m_Position);
-		const glm::vec2& GetTextOffset() const;
+		void SetTextOffset(b2Vec2 newOffset);
+		const b2Vec2& GetTextOffset() const;
 
 		explicit TextComponent(Font* font, const std::string& text, const SDL_Color& color = { 255,255,255 });
 		virtual ~TextComponent() = default;
@@ -37,7 +33,7 @@ namespace dae
 		Font* m_pFont;
 		SDL_Color m_TextColor;
 		SDL_Texture* m_pTexture;
-		glm::vec2 m_Offset{};
+		b2Vec2 m_Offset{};
 	};
 
 }

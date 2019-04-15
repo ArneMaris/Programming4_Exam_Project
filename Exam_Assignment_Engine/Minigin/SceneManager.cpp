@@ -21,6 +21,16 @@ void dae::SceneManager::Render()
 	}
 }
 
+void dae::SceneManager::FixedUpdate()
+{
+	for (const auto scene : m_pScenes)
+	{
+		if (scene->GetIsActive())
+			scene->FixedUpdate();
+	}
+
+}
+
 void dae::SceneManager::CleanUp()
 {
 	for (std::vector<Scene*>::iterator it = m_pScenes.begin(); it != m_pScenes.end(); ++it)

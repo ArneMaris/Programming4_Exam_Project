@@ -26,12 +26,20 @@ void dae::GameObject::Render() const
 	}
 }
 
+void dae::GameObject::FixedUpdate()
+{
+	for (BaseComponent* comp : m_pComponents)
+	{
+		comp->FixedUpdate();
+	}
+}
+
 void dae::GameObject::SetPosition(float x, float y)
 {
 	m_pTransform->SetPosition(x, y, 0.0f);
 }
 
-const glm::vec3 dae::GameObject::GetPosition()
+const b2Vec3 dae::GameObject::GetPosition()
 {
 	return m_pTransform->GetPosition();
 }

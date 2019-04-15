@@ -1,11 +1,6 @@
 // MADE USING MY PROGRAMMING 1-2 SPRITESHEET CODE AS REFERENCE
 #pragma once
-#include "BaseComponent.h"
 #include "SpriteComponent.h"
-#pragma warning(push)
-#pragma warning (disable:4201)
-#include <glm/vec2.hpp>
-#pragma warning(pop)
 struct SDL_Texture;
 
 namespace dae
@@ -21,8 +16,8 @@ namespace dae
 			both
 		};
 		AnimatedSpriteComponent(const std::string& assetName, int nrCols, int nrRows, 
-			float scale = 1, float secPerFrame = 0.1f, int startRow = 1, int startColumn = 1, const glm::vec2& offset = { 0,0 }, 
-			const FlipDirection& flipDir = FlipDirection::none, float angle = 0, const glm::vec2& rotationCenter = { 0,0 });
+			float scale = 1, float secPerFrame = 0.1f, int startRow = 1, int startColumn = 1, const b2Vec2& offset = { 0,0 },
+			const FlipDirection& flipDir = FlipDirection::none, float angle = 0, const b2Vec2& rotationCenter = { 0,0 });
 
 		AnimatedSpriteComponent(const std::string& assetName, int nrCols, int nrRows, float secPerFrame);
 
@@ -35,7 +30,7 @@ namespace dae
 		void SetFlipDirection(const FlipDirection& flipDir);
 		void SetAngleDegrees(float newAngle);
 		void SetAngleRadians(float newAngle);
-		void SetRotationCenter(glm::vec2 newCenter);
+		void SetRotationCenter(b2Vec2 newCenter);
 		void SetActiveRow(int newRow, bool reset = true);
 		void SetActiveColumn(int newColumn, bool reset = true);
 		void SetRowLimit(int min, int max);
@@ -60,7 +55,7 @@ namespace dae
 		int m_CurrColumn;
 
 		float m_Angle;
-		glm::vec2 m_RotationCenter;
+		b2Vec2 m_RotationCenter;
 		FlipDirection m_FlipDirection;
 
 		int GetNrFrames() const;

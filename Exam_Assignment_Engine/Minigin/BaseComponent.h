@@ -1,5 +1,6 @@
 #pragma once
-
+#include <string>
+#include "Box2D/Common/b2Math.h"
 
 namespace dae
 {
@@ -22,7 +23,8 @@ namespace dae
 
 	protected:
 		virtual void Update() = 0;
-		virtual void Render() const = 0;
+		virtual void Render() const;
+		virtual void FixedUpdate(); //for most components this does nothing
 
 		GameObject* m_pGameObject;
 	};

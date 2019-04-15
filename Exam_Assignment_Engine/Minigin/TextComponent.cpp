@@ -62,12 +62,12 @@ void dae::TextComponent::SetTextColor(const SDL_Color& color)
 	m_NeedsUpdate = true;
 }
 
-void dae::TextComponent::SetTextOffset(glm::vec2 newOffset)
+void dae::TextComponent::SetTextOffset(b2Vec2 newOffset)
 {
 	m_Offset = newOffset;
 }
 
-const glm::vec2& dae::TextComponent::GetTextOffset() const
+const b2Vec2& dae::TextComponent::GetTextOffset() const
 {
 	return m_Offset;
 }
