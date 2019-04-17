@@ -1,0 +1,37 @@
+﻿  MiniginPCH.cpp
+  AnimatedSpriteComponent.cpp
+  BaseComponent.cpp
+  Font.cpp
+  FpsCounterComponent.cpp
+  GameInfo.cpp
+  GameObject.cpp
+  InputManager.cpp
+  Log.cpp
+  Main.cpp
+  Minigin.cpp
+  Renderer.cpp
+  ResourceManager.cpp
+  Scene.cpp
+  SceneManager.cpp
+  TestScene.cpp
+  TextComponent.cpp
+  Texture2D.cpp
+  SpriteComponent.cpp
+  TransformComponent.cpp
+     Creating library E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Minigin.lib and object E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Minigin.exp
+  Generating code
+  All 678 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Minigin.vcxproj -> E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Minigin.exe
+  E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2\lib\x86\SDL2.dll
+  1 File(s) copied
+  E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2_image\lib\x86\libjpeg-9.dll
+  E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2_image\lib\x86\libpng16-16.dll
+  E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2_image\lib\x86\libtiff-5.dll
+  E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2_image\lib\x86\libwebp-7.dll
+  E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2_image\lib\x86\SDL2_image.dll
+  E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2_image\lib\x86\zlib1.dll
+  6 File(s) copied
+  E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2_ttf\lib\x86\libfreetype-6.dll
+  E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2_ttf\lib\x86\SDL2_ttf.dll
+  2 File(s) copied

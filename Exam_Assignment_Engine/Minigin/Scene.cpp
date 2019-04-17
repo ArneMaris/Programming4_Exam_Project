@@ -2,14 +2,15 @@
 #include "Scene.h"
 #include "GameObject.h"
 
+
 unsigned int dae::Scene::s_idCounter = 0;
 
-dae::Scene::Scene(const std::string& name, bool startActive) 
+dae::Scene::Scene(const std::string& name, bool startActive, const b2Vec2& gravity) 
 	:m_SceneName(name)
 	, m_IsActive{ startActive }
 	, m_IsInitialized{false}
 { 
-
+	m_pPhysicsWorld = new b2World(gravity);
 }
 
 
@@ -20,7 +21,7 @@ dae::Scene::~Scene()
 		delete (*it);
 	}
 	m_pObjects.clear();
-
+	delete m_pPhysicsWorld;
 }
 
 void dae::Scene::AddGameObject(GameObject* object)

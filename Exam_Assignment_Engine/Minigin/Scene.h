@@ -1,6 +1,7 @@
 #pragma once
 #include "SceneManager.h"
 
+class b2World;
 
 namespace dae
 {
@@ -17,7 +18,7 @@ namespace dae
 		void SetIsActive(bool value);
 		void AddGameObject(GameObject* object);
 
-		Scene(const std::string& name, bool autoActivate = true);
+		Scene(const std::string& name, bool autoActivate = true, const b2Vec2& gravity = { 0, -10 });
 		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
@@ -33,7 +34,7 @@ namespace dae
 		std::vector <GameObject*> m_pObjects{};
 
 		static unsigned int s_idCounter; 
-
+		b2World *m_pPhysicsWorld;
 	};
 
 }
