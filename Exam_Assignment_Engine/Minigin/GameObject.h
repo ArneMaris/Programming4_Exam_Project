@@ -9,7 +9,6 @@ namespace dae
 	public:
 		virtual void Update();
 		virtual void Render() const;
-		virtual void FixedUpdate();
 
 		void SetPosition(float x, float y);
 		const b2Vec3 GetPosition();
@@ -17,6 +16,9 @@ namespace dae
 
 		void AddComponent(BaseComponent* pComp);
 		void RemoveComponent(BaseComponent* pComp);
+
+		void SetPhysicsWorld(b2World* physicsWorld);
+		b2World* GetPhysicsWorld();
 
 		GameObject();
 		virtual ~GameObject() = default;
@@ -55,7 +57,7 @@ namespace dae
 #pragma endregion TemplateFunctions
 
 	protected:
-
+		b2World* m_pPhysicsWorldRef;
 	private:
 		TransformComponent* m_pTransform;
 		std::vector<BaseComponent*> m_pComponents;

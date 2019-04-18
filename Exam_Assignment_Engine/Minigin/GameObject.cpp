@@ -26,14 +26,6 @@ void dae::GameObject::Render() const
 	}
 }
 
-void dae::GameObject::FixedUpdate()
-{
-	for (BaseComponent* comp : m_pComponents)
-	{
-		comp->FixedUpdate();
-	}
-}
-
 void dae::GameObject::SetPosition(float x, float y)
 {
 	m_pTransform->SetPosition(x, y, 0.0f);
@@ -55,5 +47,15 @@ void dae::GameObject::RemoveComponent(BaseComponent* pComp)
 	auto it = find(m_pComponents.begin(), m_pComponents.end(), pComp);
 	m_pComponents.erase(it);
 	pComp->m_pGameObject = nullptr;
+}
+
+void dae::GameObject::SetPhysicsWorld(b2World * physicsWorld)
+{
+	m_pPhysicsWorldRef = physicsWorld;
+}
+
+b2World *dae::GameObject::GetPhysicsWorld()
+{
+	return m_pPhysicsWorldRef;
 }
 

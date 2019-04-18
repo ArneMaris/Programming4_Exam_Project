@@ -4,6 +4,7 @@
 dae::TransformComponent::TransformComponent()
 	:m_Position{0,0,0}
 {
+
 }
 
 void dae::TransformComponent::SetPosition(const float x, const float y, const float z)
@@ -15,4 +16,5 @@ void dae::TransformComponent::SetPosition(const float x, const float y, const fl
 
 void dae::TransformComponent::Update()
 {
+
 }

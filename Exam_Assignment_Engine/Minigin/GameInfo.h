@@ -10,6 +10,8 @@ namespace dae
 		static float fixedTime;
 		static int windowWidth;
 		static int windowHeight;
+		static int physicsVelocityIterations;
+		static int physicsPositionIterations;
 	private:
 	};
 };

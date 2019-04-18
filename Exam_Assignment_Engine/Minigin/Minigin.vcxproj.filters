@@ -1,14 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{55a0bc56-b55f-4e3a-9f54-0ac4df2d405f}</UniqueIdentifier>
     </Filter>
@@ -20,6 +12,10 @@
     </Filter>
     <Filter Include="Managers">
       <UniqueIdentifier>{9d6bc59b-efda-4c64-96c0-8293ee0c4bd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainAndTests">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -34,9 +30,6 @@
     </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="Log.h">
-      <Filter>Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Helpers</Filter>
@@ -81,7 +74,7 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="TestScene.h">
-      <Filter>Source Files</Filter>
+      <Filter>MainAndTests</Filter>
     </ClInclude>
     <ClInclude Include="FpsCounterComponent.h">
       <Filter>Components</Filter>
@@ -89,10 +82,19 @@
     <ClInclude Include="AnimatedSpriteComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsBodyComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>MainAndTests</Filter>
     </ClCompile>
     <ClCompile Include="GameInfo.cpp">
       <Filter>Helpers</Filter>
@@ -107,9 +109,6 @@
       <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Log.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
@@ -143,12 +142,21 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="TestScene.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>MainAndTests</Filter>
     </ClCompile>
     <ClCompile Include="FpsCounterComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="AnimatedSpriteComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsBodyComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

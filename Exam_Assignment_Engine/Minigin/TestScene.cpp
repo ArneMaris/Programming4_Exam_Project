@@ -17,6 +17,13 @@ void TestScene::Initialize()
 	if (m_IsInitialized)
 		return;
 
+	//dae::Logger::EnableInterupOnError();
+	//dae::Logger::LogError("testError");
+	//dae::Logger::LogWarning("testWarning");
+	dae::Logger::EnableInfoLogging();
+	//dae::Logger::LogInfo("testInfo");
+
+
 	auto obj = new dae::GameObject();
 	obj->AddComponent(new dae::SpriteComponent("background.jpg"));
 	AddGameObject(obj);

@@ -12,8 +12,3 @@ void dae::BaseComponent::Render() const
 {
 }
 
-void dae::BaseComponent::FixedUpdate()
-{
-	//
-}
-

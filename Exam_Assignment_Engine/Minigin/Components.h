@@ -4,3 +4,5 @@
 #include "TransformComponent.h"
 #include "FpsCounterComponent.h"
 #include "AnimatedSpriteComponent.h"
+#include "ColliderComponent.h"
+#include "PhysicsBodyComponent.h"

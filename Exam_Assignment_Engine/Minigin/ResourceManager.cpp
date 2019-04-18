@@ -29,6 +29,8 @@ void dae::ResourceManager::Init(std::string&& dataPath)
 	{
 		throw std::runtime_error(std::string("Failed to load support for fonts: ") + SDL_GetError());
 	}
+
+	Logger::LogInfo("ResourcesManager initialize succesfull!");
 }
 
 SDL_Texture* dae::ResourceManager::LoadTexture(const std::string& file)
@@ -49,6 +51,10 @@ dae::Font* dae::ResourceManager::LoadFont(const std::string& file, unsigned int 
 {
 	std::string fullPath = m_ResourcesPath + file;
 	Font* font = new Font(fullPath, size);
+	if (font == nullptr)
+	{
+		throw std::runtime_error(std::string("Failed to load font: ") + SDL_GetError());
+	}
 
 	std::pair<std::map<const std::string, Font*>::iterator, bool> returnValue;
 	returnValue = m_pFontMap.insert(std::pair<std::string, Font*>(file, font));

@@ -16,7 +16,7 @@ namespace dae
 		BaseComponent& operator=(const BaseComponent& other) = delete;
 		BaseComponent& operator=(BaseComponent&& other) noexcept = delete;
 		virtual ~BaseComponent() = default;
-		BaseComponent() = default;;
+		BaseComponent() = default;
 
 		GameObject* GetGameObject() const { return m_pGameObject; }
 		TransformComponent* GetTransform() const;
@@ -24,7 +24,6 @@ namespace dae
 	protected:
 		virtual void Update() = 0;
 		virtual void Render() const;
-		virtual void FixedUpdate(); //for most components this does nothing
 
 		GameObject* m_pGameObject;
 	};

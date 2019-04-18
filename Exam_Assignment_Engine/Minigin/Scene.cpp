@@ -11,6 +11,9 @@ dae::Scene::Scene(const std::string& name, bool startActive, const b2Vec2& gravi
 	, m_IsInitialized{false}
 { 
 	m_pPhysicsWorld = new b2World(gravity);
+
+	if (m_pPhysicsWorld != nullptr)
+		Logger::LogInfo("PhysicsWorld created succesfully in scene: " + m_SceneName);
 }
 
 
@@ -26,6 +29,7 @@ dae::Scene::~Scene()
 
 void dae::Scene::AddGameObject(GameObject* object)
 {
+	object->SetPhysicsWorld(m_pPhysicsWorld);
 	m_pObjects.push_back(object);
 }
 
@@ -49,10 +53,7 @@ void dae::Scene::BaseRender() const
 
 void dae::Scene::FixedUpdate()
 {
-	for (auto gameObject : m_pObjects)
-	{
-		gameObject->FixedUpdate();
-	}
+	m_pPhysicsWorld->Step(GameInfo::fixedTime, GameInfo::physicsVelocityIterations, GameInfo::physicsPositionIterations);
 }
 
 bool dae::Scene::GetIsActive() const

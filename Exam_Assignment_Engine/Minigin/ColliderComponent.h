@@ -3,7 +3,6 @@
 
 namespace dae
 {
-
 	class ColliderComponent :public BaseComponent
 	{
 	public:
@@ -16,7 +15,6 @@ namespace dae
 
 	protected:
 		virtual void Update() override;
-		virtual void FixedUpdate() override;
 	};
 
 }

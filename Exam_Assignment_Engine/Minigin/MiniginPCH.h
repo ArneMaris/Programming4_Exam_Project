@@ -13,7 +13,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-#include "Log.h" // Various logging functions
+#include "Logger.h" // Various logging functions
 #include "GameInfo.h"
 
 #include "Box2D.h" //physics, vectors, etc

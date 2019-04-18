@@ -3,12 +3,11 @@
 
 dae::ColliderComponent::ColliderComponent()
 {
+
 }
 
 void dae::ColliderComponent::Update()
 {
+
 }
 
-void dae::ColliderComponent::FixedUpdate()
-{
-}
