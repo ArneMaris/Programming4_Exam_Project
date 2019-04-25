@@ -1,0 +1,6 @@
+Clipper library for polygon clipping
+Box2D for collision
+
+=> Destructable environment that can easily be edited by
+   adding extra polygons to clip
+
