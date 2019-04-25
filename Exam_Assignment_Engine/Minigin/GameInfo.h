@@ -12,6 +12,7 @@ namespace dae
 		static int windowHeight;
 		static int physicsVelocityIterations;
 		static int physicsPositionIterations;
+		static bool enableVsync;
 	private:
 	};
 };

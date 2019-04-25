@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include <SDL.h>
 #include "SceneManager.h"
+#include "imgui_sdl.h"
 
 void dae::Renderer::Init(SDL_Window * window)
 {
@@ -12,6 +13,9 @@ void dae::Renderer::Init(SDL_Window * window)
 	}
 	else
 	{
+		// init ImGuiSDL renderer only when SDL started succesfully
+		ImGui::CreateContext();
+		ImGuiSDL::Initialize(mRenderer, GameInfo::windowWidth, GameInfo::windowHeight);
 		Logger::LogInfo("Renderer initialize succesfull!");
 	}
 }
@@ -21,8 +25,12 @@ void dae::Renderer::Render()
 	SDL_RenderClear(mRenderer);
 
 	SceneManager::GetInstance().Render();
+	//render ImGui
+	ImGui::Render();
+	ImGuiSDL::Render(ImGui::GetDrawData());
 	
 	SDL_RenderPresent(mRenderer);
+
 }
 
 void dae::Renderer::Destroy()
@@ -32,6 +40,8 @@ void dae::Renderer::Destroy()
 		SDL_DestroyRenderer(mRenderer);
 		mRenderer = nullptr;
 	}
+	ImGuiSDL::Deinitialize();
+	ImGui::DestroyContext();
 }
 
 void dae::Renderer::RenderTexture(SDL_Texture* texture, const float x, const float y) const

@@ -9,3 +9,5 @@ int dae::GameInfo::windowHeight = 480;
 // increasing these increases the accuracy of your physics but also the computing time!
 int dae::GameInfo::physicsVelocityIterations = 6; 
 int dae::GameInfo::physicsPositionIterations = 3;
+
+bool dae::GameInfo::enableVsync = false;

@@ -6,8 +6,8 @@ namespace dae
 	class Logger : public Singleton<Logger>
 	{
 	public:
-		Logger() = default;
-		~Logger() = default;
+		Logger();
+		~Logger();
 
 		static void LogWarning(const std::string& message);
 		static void LogError(const std::string& message);

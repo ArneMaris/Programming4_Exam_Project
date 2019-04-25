@@ -1,26 +1,8 @@
-﻿  MiniginPCH.cpp
-  AnimatedSpriteComponent.cpp
-  BaseComponent.cpp
-  Font.cpp
-  FpsCounterComponent.cpp
-  GameInfo.cpp
-  GameObject.cpp
-  InputManager.cpp
-  Log.cpp
-  Main.cpp
-  Minigin.cpp
-  Renderer.cpp
-  ResourceManager.cpp
-  Scene.cpp
-  SceneManager.cpp
-  TestScene.cpp
-  TextComponent.cpp
-  Texture2D.cpp
-  SpriteComponent.cpp
-  TransformComponent.cpp
-     Creating library E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\x64\Release\Minigin.lib and object E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\x64\Release\Minigin.exp
+﻿     Creating library E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\x64\Release\Minigin.lib and object E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\x64\Release\Minigin.exp
   Generating code
-  All 678 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  2018 of 2638 functions (76.5%) were compiled, the rest were copied from previous compilation.
+    1965 functions were new in current compilation
+    75 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Minigin.vcxproj -> E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\x64\Release\Minigin.exe
   E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2\lib\x64\SDL2.dll

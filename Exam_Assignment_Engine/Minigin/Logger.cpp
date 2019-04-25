@@ -5,6 +5,16 @@
 bool dae::Logger::m_logInfo{ false };
 bool dae::Logger::m_interuptOnError{ false };
 
+dae::Logger::Logger()
+{
+
+}
+
+dae::Logger::~Logger()
+{
+
+}
+
 void dae::Logger::LogWarning(const std::string& message)
 {
 	std::thread warning([message]
