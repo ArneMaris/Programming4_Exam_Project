@@ -54,8 +54,6 @@ void dae::Minigin::Run()
 	ResourceManager::GetInstance().Init("../Resources/");
 	LoadGame();
 
-	auto io = ImGui::GetIO();
-
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();

@@ -30,8 +30,8 @@
 *.app
 
 # Folders
-Debug/
 .vs/
+Debug/
 Private/
 
 *.rar
