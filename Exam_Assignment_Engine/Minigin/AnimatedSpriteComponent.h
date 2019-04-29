@@ -1,7 +1,7 @@
 // MADE USING MY PROGRAMMING 1-2 SPRITESHEET CODE AS REFERENCE
 #pragma once
 #include "SpriteComponent.h"
-struct SDL_Texture;
+#include "SDL.h"
 
 namespace dae
 {
@@ -12,8 +12,7 @@ namespace dae
 		{
 			none,
 			vertical,
-			horizontal,
-			both
+			horizontal
 		};
 		AnimatedSpriteComponent(const std::string& assetName, int nrCols, int nrRows, 
 			float scale = 1, float secPerFrame = 0.1f, int startRow = 1, int startColumn = 1, const b2Vec2& offset = { 0,0 },
@@ -55,7 +54,7 @@ namespace dae
 		int m_CurrColumn;
 
 		float m_Angle;
-		b2Vec2 m_RotationCenter;
+		SDL_Point m_RotationCenter;
 		FlipDirection m_FlipDirection;
 
 		int GetNrFrames() const;

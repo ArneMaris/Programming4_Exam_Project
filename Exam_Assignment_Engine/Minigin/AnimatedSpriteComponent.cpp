@@ -19,7 +19,7 @@ dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::string& assetNa
 	, m_MaxColumn{nrCols}
 	, m_MaxRow{nrRows}
 	, m_Angle{ angle }
-	, m_RotationCenter{ rotationCenter }
+	, m_RotationCenter{ rotationCenter.x, rotationCenter.y }
 {
 }
 
@@ -67,10 +67,20 @@ void dae::AnimatedSpriteComponent::Render() const
 		const auto pos = m_pGameObject->GetPosition();
 		int frameWidth{ m_TextureWidth / m_Cols };
 		int frameHeight{ m_TextureHeight / m_Rows };
-		SDL_Rect destRect{ int(pos.x + m_Offset.x), int(pos.y + m_Offset.y), int(frameWidth * m_Scale), int(frameHeight * m_Scale) };
-		SDL_Rect srcRect{ frameWidth * (m_CurrColumn-1), frameHeight * (m_CurrRow-1), frameWidth, frameHeight };
+		const SDL_Rect destRect{ int(pos.x + m_Offset.x), int(pos.y + m_Offset.y), int(frameWidth * m_Scale), int(frameHeight * m_Scale) };
+		const SDL_Rect srcRect{ frameWidth * (m_CurrColumn-1), frameHeight * (m_CurrRow-1), frameWidth, frameHeight };
+		SDL_RendererFlip flip = SDL_RendererFlip::SDL_FLIP_NONE;
+		switch (m_FlipDirection)
+		{
+		case dae::AnimatedSpriteComponent::vertical:
+			flip = SDL_RendererFlip::SDL_FLIP_VERTICAL;
+			break;
+		case dae::AnimatedSpriteComponent::horizontal:
+			flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+			break;
+		}
 
-		Renderer::GetInstance().RenderTexture(m_pTexture, destRect, srcRect);
+		Renderer::GetInstance().RenderTexture(m_pTexture, destRect, srcRect, m_Angle, m_RotationCenter, flip);
 	}
 }
 
