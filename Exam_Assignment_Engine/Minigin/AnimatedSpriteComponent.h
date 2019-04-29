@@ -14,11 +14,11 @@ namespace dae
 			vertical,
 			horizontal
 		};
-		AnimatedSpriteComponent(const std::string& assetName, int nrCols, int nrRows, 
+		AnimatedSpriteComponent(const std::wstring& assetName, int nrCols, int nrRows, 
 			float scale = 1, float secPerFrame = 0.1f, int startRow = 1, int startColumn = 1, const b2Vec2& offset = { 0,0 },
 			const FlipDirection& flipDir = FlipDirection::none, float angle = 0, const b2Vec2& rotationCenter = { 0,0 });
 
-		AnimatedSpriteComponent(const std::string& assetName, int nrCols, int nrRows, float secPerFrame);
+		AnimatedSpriteComponent(const std::wstring& assetName, int nrCols, int nrRows, float secPerFrame);
 
 		~AnimatedSpriteComponent() = default;
 		AnimatedSpriteComponent(const AnimatedSpriteComponent& other) = delete;

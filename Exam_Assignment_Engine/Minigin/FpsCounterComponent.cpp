@@ -15,7 +15,7 @@ dae::FpsCounterComponent::FpsCounterComponent(Font* font, bool leftTopCorner)
 	, m_FpsTimer{0}
 	, m_LeftTop{ leftTopCorner }
 {;
-	m_TextComp = new TextComponent(font, "0");
+	m_TextComp = new TextComponent(font, L"0");
 }
 
 void dae::FpsCounterComponent::Update()
@@ -30,7 +30,7 @@ void dae::FpsCounterComponent::Update()
 		m_FPS = m_FpsCount;
 		m_FpsCount = 0;
 		m_FpsTimer -= 1;
-		m_TextComp->m_Text = std::to_string(m_FPS);
+		m_TextComp->m_Text = std::to_wstring(m_FPS);
 		SDL_Color color = { 255,0,0 };
 		if (m_FPS >= 60)
 		{

@@ -11,12 +11,12 @@ namespace dae
 	{
 		friend class FpsCounterComponent;
 	public:
-		void SetText(const std::string& text);
+		void SetText(const std::wstring& text);
 		void SetTextColor(const SDL_Color& color);
 		void SetTextOffset(b2Vec2 newOffset);
 		const b2Vec2& GetTextOffset() const;
 
-		explicit TextComponent(Font* font, const std::string& text, const SDL_Color& color = { 255,255,255 });
+		explicit TextComponent(Font* font, const std::wstring& text, const SDL_Color& color = { 255,255,255 });
 		virtual ~TextComponent() = default;
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
@@ -29,7 +29,7 @@ namespace dae
 
 	private:
 		bool m_NeedsUpdate;
-		std::string m_Text;
+		std::wstring m_Text;
 		Font* m_pFont;
 		SDL_Color m_TextColor;
 		SDL_Texture* m_pTexture;

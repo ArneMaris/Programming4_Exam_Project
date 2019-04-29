@@ -91,6 +91,9 @@
     <ClInclude Include="PhysicsBodyComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="InputAction.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -158,6 +161,9 @@
     </ClCompile>
     <ClCompile Include="ColliderComponent.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="InputAction.cpp">
+      <Filter>Helpers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -44,7 +44,7 @@ void dae::Minigin::LoadGame() const
 
 void dae::Minigin::Cleanup()
 {
-	Logger::LogInfo("Cleaning up!");
+	Logger::LogInfo(L"Cleaning up!");
 	Renderer::GetInstance().Destroy(); // also destroys ImGuiSDL renderer
 	SceneManager::GetInstance().CleanUp();
 	InputManager::GetInstance().CleanUp();
@@ -59,7 +59,7 @@ void dae::Minigin::Run()
 	Initialize();
 
 	// tell the resource manager where he can find the game data
-	ResourceManager::GetInstance().Init("../Resources/");
+	ResourceManager::GetInstance().Init(L"../Resources/");
 	LoadGame();
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
@@ -74,7 +74,7 @@ void dae::Minigin::Run()
 		GameInfo::deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 		lastTime = currentTime;
 		lag += GameInfo::deltaTime;
-		doContinue = input.ProcessInput(); //process the input for this frame
+		doContinue = input.ProcessInput(); //process the input for this frame and set the Current Event State to later check for input
 
 		ImGui_ImplSDL2_NewFrame(window);
 		ImGui::NewFrame();

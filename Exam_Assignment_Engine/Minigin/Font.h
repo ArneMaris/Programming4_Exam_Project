@@ -7,7 +7,7 @@ namespace dae
 	{
 	public:
 		TTF_Font* GetFont() const;
-		explicit Font(const std::string& fullPath, unsigned int size);
+		explicit Font(const std::wstring& fullPath, unsigned int size);
 		~Font();
 
 		unsigned int GetFontSize() const;

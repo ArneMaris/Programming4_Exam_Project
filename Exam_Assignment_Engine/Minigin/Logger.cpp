@@ -15,38 +15,41 @@ dae::Logger::~Logger()
 
 }
 
-void dae::Logger::LogWarning(const std::string& message)
+void dae::Logger::LogWarning(const std::wstring& message)
 {
-	std::thread warning([message]
+	std::string str{ message.begin(), message.end() };
+	std::thread warning([str]
 		{
-			MessageBox(NULL, message.c_str(), "Warning, be carefull!", MB_ICONWARNING);
+			MessageBox(NULL, str.c_str(), "Warning, be carefull!", MB_ICONWARNING);
 		});
 	warning.detach();
 }
 
-void dae::Logger::LogError(const std::string& message)
+void dae::Logger::LogError(const std::wstring& message)
 {
+	std::string str{ message.begin(), message.end() };
 	if (!m_interuptOnError)
 	{
-		std::thread error([message]
+		std::thread error([str]
 			{
-				MessageBox(NULL, message.c_str(), "Error, you should shut down!", MB_ICONERROR);
+				MessageBox(NULL,str.c_str(), "Error, you should shut down!", MB_ICONERROR);
 			});
 		error.detach();
 	}
 	else
 	{
-		MessageBox(NULL, message.c_str(), "Error, you should shut down!", MB_ICONERROR);
+		MessageBox(NULL, str.c_str(), "Error, you should shut down!", MB_ICONERROR);
 	}
 }
 
-void dae::Logger::LogInfo(const std::string& message)
+void dae::Logger::LogInfo(const std::wstring& message)
 {
+	std::string str{ message.begin(), message.end() };
 	if (m_logInfo)
 	{
-		std::thread info([message]
+		std::thread info([str]
 		{
-			MessageBox(NULL, message.c_str(), "Info, just so you know!", MB_ICONINFORMATION);
+			MessageBox(NULL, str.c_str(), "Info, just so you know!", MB_ICONINFORMATION);
 		});
 		info.detach();
 	}
@@ -65,11 +68,11 @@ void dae::Logger::DisableInfoLogging()
 void dae::Logger::EnableInterupOnError()
 {
 	m_interuptOnError = true;
-	LogInfo("Errors will interupt main program now!");
+	LogInfo(L"Errors will interupt main program now!");
 }
 
 void dae::Logger::DisableInterupOnError()
 {
 	m_interuptOnError = false;
-	LogInfo("Errors won't interupt main program now!");
+	LogInfo(L"Errors won't interupt main program now!");
 }

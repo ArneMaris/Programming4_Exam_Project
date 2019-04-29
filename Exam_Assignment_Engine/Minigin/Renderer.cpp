@@ -13,7 +13,7 @@ void dae::Renderer::Init(SDL_Window * window)
 	}
 	else
 	{
-		Logger::LogInfo("Renderer initialize succesfull!");
+		Logger::LogInfo(L"Renderer initialize succesfull!");
 	}
 }
 

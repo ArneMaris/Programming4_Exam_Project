@@ -5,7 +5,7 @@
 
 unsigned int dae::Scene::s_idCounter = 0;
 
-dae::Scene::Scene(const std::string& name, bool startActive, const b2Vec2& gravity) 
+dae::Scene::Scene(const std::wstring& name, bool startActive, const b2Vec2& gravity) 
 	:m_SceneName(name)
 	, m_IsActive{ startActive }
 	, m_IsInitialized{false}
@@ -13,9 +13,8 @@ dae::Scene::Scene(const std::string& name, bool startActive, const b2Vec2& gravi
 	m_pPhysicsWorld = new b2World(gravity);
 
 	if (m_pPhysicsWorld != nullptr)
-		Logger::LogInfo("PhysicsWorld created succesfully in scene: " + m_SceneName);
+		Logger::LogInfo(L"PhysicsWorld created succesfully in scene: " + m_SceneName);
 }
-
 
 dae::Scene::~Scene()
 {

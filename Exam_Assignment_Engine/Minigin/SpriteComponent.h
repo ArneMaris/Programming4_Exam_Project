@@ -8,7 +8,7 @@ namespace dae
 	{
 		friend class AnimatedSpriteComponent;
 	public:
-		SpriteComponent(const std::string& assetName, float scale = 1, b2Vec2 offset = { 0,0 });
+		SpriteComponent(const std::wstring& assetName, float scale = 1, b2Vec2 offset = { 0,0 });
 		virtual ~SpriteComponent() = default;
 
 		SpriteComponent(const SpriteComponent &) = delete;
@@ -17,7 +17,7 @@ namespace dae
 		SpriteComponent & operator= (const SpriteComponent &&) = delete;
 
 		void SetSpriteOffset(b2Vec2 newPosition);
-		void SetTexture(const std::string& assetPathNewTexture);
+		void SetTexture(const std::wstring& assetPathNewTexture);
 		const b2Vec2& GetSpriteOffset() const;
 		void SetScale(float newScale);
 

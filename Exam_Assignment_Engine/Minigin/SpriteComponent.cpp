@@ -4,7 +4,7 @@
 #include "Renderer.h"
 #include "GameObject.h"
 
-dae::SpriteComponent::SpriteComponent(const std::string& assetPath, float scale, b2Vec2 offset)
+dae::SpriteComponent::SpriteComponent(const std::wstring& assetPath, float scale, b2Vec2 offset)
 	: m_pTexture{nullptr}
 	, m_Offset{ offset }
 	, m_TextureWidth{0}
@@ -35,7 +35,7 @@ void dae::SpriteComponent::SetSpriteOffset(b2Vec2 newOffset)
 	m_Offset = newOffset;
 }
 
-void dae::SpriteComponent::SetTexture(const std::string& assetPathNewTexture)
+void dae::SpriteComponent::SetTexture(const std::wstring& assetPathNewTexture)
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(assetPathNewTexture);
 }

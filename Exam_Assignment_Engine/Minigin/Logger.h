@@ -9,9 +9,9 @@ namespace dae
 		Logger();
 		~Logger();
 
-		static void LogWarning(const std::string& message);
-		static void LogError(const std::string& message);
-		static void LogInfo(const std::string& message);
+		static void LogWarning(const std::wstring& message);
+		static void LogError(const std::wstring& message);
+		static void LogInfo(const std::wstring& message);
 
 		static void EnableInfoLogging();
 		static void DisableInfoLogging();

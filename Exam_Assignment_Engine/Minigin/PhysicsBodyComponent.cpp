@@ -8,6 +8,11 @@ dae::PhysicsBodyComponent::PhysicsBodyComponent(b2BodyType bodyType)
 	,m_Fixture{nullptr}
 {
 	m_pPhysicsWorldRef = GetGameObject()->GetPhysicsWorld();
+	if (m_pPhysicsWorldRef == nullptr)
+	{
+		Logger::LogError(L"No physics world to make physicsBodies!");
+		return;
+	}
 	b2BodyDef def{};
 	def.type = bodyType;
 	m_Body = m_pPhysicsWorldRef->CreateBody(&def);
@@ -17,6 +22,12 @@ dae::PhysicsBodyComponent::PhysicsBodyComponent(b2BodyType bodyType, const b2Vec
 	:m_Body{ nullptr }
 	, m_pPhysicsWorldRef{ nullptr }
 {
+	m_pPhysicsWorldRef = GetGameObject()->GetPhysicsWorld();
+	if (m_pPhysicsWorldRef == nullptr)
+	{
+		Logger::LogError(L"No physics world to make physicsBodies!");
+		return;
+	}
 	b2BodyDef def{};
 	def.type = bodyType;
 	def.position = pos;
@@ -27,7 +38,6 @@ dae::PhysicsBodyComponent::PhysicsBodyComponent(b2BodyType bodyType, const b2Vec
 	def.bullet = isFastTraveling;
 	m_Body = m_pPhysicsWorldRef->CreateBody(&def);
 }
-
 
 void dae::PhysicsBodyComponent::AddCollisionShape(b2Shape * shape)
 {
@@ -43,17 +53,17 @@ void dae::PhysicsBodyComponent::AddCollisionShape(b2Shape* shape, bool isSensor,
 {
 	if (shape == nullptr)
 	{
-		Logger::LogWarning("Trying to add an invalid shape to a PhysicsBody!");
+		Logger::LogWarning(L"Trying to add an invalid shape to a PhysicsBody!");
 		return;
 	}
 	else if (m_Body == nullptr)
 	{
-		Logger::LogWarning("Trying to add a shape to an invalid PhysicsBody!");
+		Logger::LogWarning(L"Trying to add a shape to an invalid PhysicsBody!");
 		return;
 	}
 	else if (m_Fixture != nullptr)
 	{
-		Logger::LogInfo("Body already has a fixture, but adding another!");
+		Logger::LogInfo(L"Body already has a fixture, but adding another!");
 	}
 
 	b2FixtureDef fixDef{};
@@ -69,7 +79,7 @@ b2Body * dae::PhysicsBodyComponent::GetPhysicsBody() const
 {
 	if (m_Body == nullptr)
 	{
-		Logger::LogError("Trying to get nullptr body!");
+		Logger::LogError(L"Trying to get nullptr body!");
 	}
 	return m_Body;
 }
@@ -78,7 +88,7 @@ b2Fixture* dae::PhysicsBodyComponent::GetFixture() const
 {
 	if (m_Fixture == nullptr)
 	{
-		Logger::LogError("Trying to get nullptr fixture!");
+		Logger::LogError(L"Trying to get nullptr fixture!");
 	}
 	return m_Fixture;
 }

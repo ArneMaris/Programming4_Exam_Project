@@ -9,7 +9,7 @@
 #include "Font.h"
 #include "SDL.h"
 
-void dae::ResourceManager::Init(std::string&& dataPath)
+void dae::ResourceManager::Init(std::wstring&& dataPath)
 {
 	m_ResourcesPath = std::move(dataPath);
 
@@ -30,33 +30,34 @@ void dae::ResourceManager::Init(std::string&& dataPath)
 		throw std::runtime_error(std::string("Failed to load support for fonts: ") + SDL_GetError());
 	}
 
-	Logger::LogInfo("ResourcesManager initialize succesfull!");
+	Logger::LogInfo(L"ResourcesManager initialize succesfull!");
 }
 
-SDL_Texture* dae::ResourceManager::LoadTexture(const std::string& file)
+SDL_Texture* dae::ResourceManager::LoadTexture(const std::wstring& file)
 {
-	std::string fullPath = m_ResourcesPath + file;
+	std::string fullPath = { m_ResourcesPath.begin(), m_ResourcesPath.end() };
+	fullPath.append(std::string(file.begin(), file.end()));
 	SDL_Texture* texture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
 	if (texture == nullptr) 
 	{
 		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());
 	}
 
-	std::pair<std::unordered_map<const std::string, SDL_Texture*>::iterator, bool> returnValue;
-	returnValue = m_pTexturesMap.insert(std::pair<std::string, SDL_Texture*>(file, texture));
+	std::pair<std::map<const std::wstring, SDL_Texture*>::iterator, bool> returnValue;
+	returnValue = m_TexturesMap.insert(std::pair<const std::wstring, SDL_Texture*>(file, texture));
 	return returnValue.first->second;
 }
 
-dae::Font* dae::ResourceManager::LoadFont(const std::string& file, unsigned int size)
+dae::Font* dae::ResourceManager::LoadFont(const std::wstring& file, unsigned int size)
 {
-	std::string fullPath = m_ResourcesPath + file;
+	std::wstring fullPath = m_ResourcesPath + file;
 	Font* font = new Font(fullPath, size);
 	if (font == nullptr)
 	{
 		throw std::runtime_error(std::string("Failed to load font: ") + SDL_GetError());
 	}
 
-	std::pair<std::unordered_map<const std::string, Font*>::iterator, bool> returnValue;
-	returnValue = m_pFontMap.insert(std::pair<std::string, Font*>(file, font));
+	std::pair<std::map<const std::wstring, Font*>::iterator, bool> returnValue;
+	returnValue = m_FontMap.insert(std::pair<const std::wstring, Font*>(file, font));
 	return returnValue.first->second;
 }

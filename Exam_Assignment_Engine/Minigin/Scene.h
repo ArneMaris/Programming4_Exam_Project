@@ -18,7 +18,7 @@ namespace dae
 		void SetIsActive(bool value);
 		void AddGameObject(GameObject* object);
 
-		Scene(const std::string& name, bool autoActivate = true, const b2Vec2& gravity = { 0, -10 });
+		Scene(const std::wstring& name, bool autoActivate = true, const b2Vec2& gravity = { 0, -10 });
 		~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
@@ -30,7 +30,7 @@ namespace dae
 		virtual void Update() = 0; // different Update for every scene, called in BaseUpdate
 		virtual void Render() const = 0; // different Render for every scene, called in BaseRender
 		bool m_IsActive;
-		std::string m_SceneName{};
+		std::wstring m_SceneName{};
 		std::vector <GameObject*> m_pObjects{};
 
 		static unsigned int s_idCounter; 

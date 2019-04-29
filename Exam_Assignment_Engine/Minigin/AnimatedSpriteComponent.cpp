@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include "Renderer.h"
 
-dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::string& assetName, int nrCols, int nrRows,
+dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::wstring& assetName, int nrCols, int nrRows,
 	float scale, float secPerFrame, int startRow, int startColumn, const b2Vec2& offset, const FlipDirection& flipDir, float angle, const b2Vec2& rotationCenter)
 	:SpriteComponent(assetName, scale, offset)
 	, m_Cols{ nrCols }
@@ -23,7 +23,7 @@ dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::string& assetNa
 {
 }
 
-dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::string & assetName, int nrCols, int nrRows, float secPerFrame)
+dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::wstring & assetName, int nrCols, int nrRows, float secPerFrame)
 	:SpriteComponent(assetName, 1, { 0,0 })
 	, m_Cols{ nrCols }
 	, m_Rows{ nrRows }

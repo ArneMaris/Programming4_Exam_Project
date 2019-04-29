@@ -9,7 +9,7 @@
 #include "SDL.h"
 
 
-dae::TextComponent::TextComponent(Font* font, const std::string& text, const SDL_Color& color)
+dae::TextComponent::TextComponent(Font* font, const std::wstring& text, const SDL_Color& color)
 	: m_NeedsUpdate(true)
 	, m_Text(text)
 	, m_pFont(font)
@@ -23,7 +23,7 @@ void dae::TextComponent::Update()
 	if (m_NeedsUpdate)
 	{
 		const SDL_Color color = m_TextColor;
-		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), m_Text.c_str(), color);
+		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), reinterpret_cast<const char*>(m_Text.c_str()), color);
 		if (surf == nullptr) 
 		{
 			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
@@ -50,7 +50,7 @@ void dae::TextComponent::Render() const
 	}
 }
 
-void dae::TextComponent::SetText(const std::string& text)
+void dae::TextComponent::SetText(const std::wstring& text)
 {
 	m_Text = text;
 	m_NeedsUpdate = true;
