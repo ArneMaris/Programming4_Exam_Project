@@ -39,6 +39,7 @@ void dae::Minigin::LoadGame() const
 
 void dae::Minigin::Cleanup()
 {
+	Logger::LogInfo("Cleaning up!");
 	Renderer::GetInstance().Destroy();
 	SceneManager::GetInstance().CleanUp();
 	SDL_DestroyWindow(window);
@@ -69,7 +70,6 @@ void dae::Minigin::Run()
 		lag += GameInfo::deltaTime;
 		ImGui_ImplSDL2_NewFrame(window);
 		ImGui::NewFrame();
-
 		doContinue = input.ProcessInput(window);
 		sceneManager.Update();
 		while (lag >= GameInfo::fixedTime)
@@ -77,6 +77,7 @@ void dae::Minigin::Run()
 			sceneManager.FixedUpdate();
 			lag -= GameInfo::fixedTime;
 		}
+
 		bool show_another_window = true;
 		if (show_another_window)
 		{

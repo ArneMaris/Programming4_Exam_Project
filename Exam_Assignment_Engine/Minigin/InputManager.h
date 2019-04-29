@@ -15,6 +15,7 @@ namespace dae
 	class InputManager final : public Singleton<InputManager>
 	{
 	public:
+		InputManager() = default;
 		bool ProcessInput(SDL_Window* window);
 		bool IsPressed(ControllerButton button) const;
 	private:

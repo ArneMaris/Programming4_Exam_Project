@@ -1,7 +1,7 @@
 #include "MiniginPCH.h"
 #include "Scene.h"
 #include "GameObject.h"
-
+#define SAFE_RELEASE(p) { if ( (p) ) { (p)->Release(); (p) = 0; } }
 
 unsigned int dae::Scene::s_idCounter = 0;
 
@@ -24,7 +24,7 @@ dae::Scene::~Scene()
 		delete (*it);
 	}
 	m_pObjects.clear();
-	delete m_pPhysicsWorld;
+	//SAFE_RELEASE(m_pPhysicsWorld);
 }
 
 void dae::Scene::AddGameObject(GameObject* object)

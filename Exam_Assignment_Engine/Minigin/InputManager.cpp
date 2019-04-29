@@ -2,7 +2,6 @@
 #include "InputManager.h"
 #include <SDL.h>
 
-
 bool dae::InputManager::ProcessInput(SDL_Window* window)
 {
 	ZeroMemory(&currentState, sizeof(XINPUT_STATE));
@@ -12,14 +11,16 @@ bool dae::InputManager::ProcessInput(SDL_Window* window)
 	while (SDL_PollEvent(&event))
 	{
 		ImGui_ImplSDL2_ProcessEvent(&event);
-		auto& io = ImGui::GetIO();
-		Logger::LogInfo(std::to_string(io.MousePos.x));
 		if (event.type == SDL_QUIT)
 			return false;
 		if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(window))
 			return false;
+		if (event.type == SDL_EventType::SDL_MOUSEBUTTONDOWN)
+		{
+			Logger::LogInfo("MouseClicked");
+			return true;
+		}
 	}
-
 	return true;
 }
 

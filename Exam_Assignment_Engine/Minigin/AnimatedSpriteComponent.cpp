@@ -19,7 +19,7 @@ dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::string& assetNa
 	, m_MaxColumn{nrCols}
 	, m_MaxRow{nrRows}
 	, m_Angle{ angle }
-	, m_RotationCenter{ rotationCenter.x, rotationCenter.y }
+	, m_RotationCenter{ int(rotationCenter.x), int(rotationCenter.y) }
 {
 }
 
@@ -102,7 +102,7 @@ void dae::AnimatedSpriteComponent::SetAngleRadians(float newAngle)
 
 void dae::AnimatedSpriteComponent::SetRotationCenter(b2Vec2 newCenter)
 {
-	m_RotationCenter = { newCenter.x, newCenter.y };
+	m_RotationCenter = { int(newCenter.x), int(newCenter.y) };
 }
 
 void dae::AnimatedSpriteComponent::SetActiveRow(int newRow, bool reset)

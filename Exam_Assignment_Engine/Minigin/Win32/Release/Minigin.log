@@ -1,39 +1,68 @@
-﻿  MiniginPCH.cpp
-  AnimatedSpriteComponent.cpp
-  BaseComponent.cpp
-  ColliderComponent.cpp
-  Font.cpp
-  FpsCounterComponent.cpp
-  GameInfo.cpp
-  GameObject.cpp
-  InputManager.cpp
-  Logger.cpp
-  Main.cpp
-  Minigin.cpp
-  PhysicsBodyComponent.cpp
-  Renderer.cpp
-  ResourceManager.cpp
-  Scene.cpp
-  SceneManager.cpp
-  TestScene.cpp
-  TextComponent.cpp
-  Texture2D.cpp
-  SpriteComponent.cpp
-  Compiling...
-  TransformComponent.cpp
+﻿  InputManager.cpp
      Creating library E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Minigin.lib and object E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Minigin.exp
-InputManager.obj : error LNK2001: unresolved external symbol "bool __cdecl ImGui_ImplSDL2_ProcessEvent(union SDL_Event const *)" (?ImGui_ImplSDL2_ProcessEvent@@YA_NPBTSDL_Event@@@Z)
-Minigin.obj : error LNK2001: unresolved external symbol "void __cdecl ImGui_ImplSDL2_NewFrame(struct SDL_Window *)" (?ImGui_ImplSDL2_NewFrame@@YAXPAUSDL_Window@@@Z)
-Minigin.obj : error LNK2001: unresolved external symbol "void __cdecl ImGui::NewFrame(void)" (?NewFrame@ImGui@@YAXXZ)
-Minigin.obj : error LNK2001: unresolved external symbol "bool __cdecl ImGui::Begin(char const *,bool *,int)" (?Begin@ImGui@@YA_NPBDPA_NH@Z)
-Minigin.obj : error LNK2001: unresolved external symbol "bool __cdecl ImGui::Checkbox(char const *,bool *)" (?Checkbox@ImGui@@YA_NPBDPA_N@Z)
-Minigin.obj : error LNK2001: unresolved external symbol "bool __cdecl ImGui::Button(char const *,struct ImVec2 const &)" (?Button@ImGui@@YA_NPBDABUImVec2@@@Z)
-Minigin.obj : error LNK2001: unresolved external symbol "void __cdecl ImGui::End(void)" (?End@ImGui@@YAXXZ)
-Renderer.obj : error LNK2001: unresolved external symbol "struct ImGuiContext * __cdecl ImGui::CreateContext(struct ImFontAtlas *)" (?CreateContext@ImGui@@YAPAUImGuiContext@@PAUImFontAtlas@@@Z)
-Renderer.obj : error LNK2001: unresolved external symbol "void __cdecl ImGuiSDL::Initialize(struct SDL_Renderer *,int,int)" (?Initialize@ImGuiSDL@@YAXPAUSDL_Renderer@@HH@Z)
-Renderer.obj : error LNK2001: unresolved external symbol "void __cdecl ImGui::Render(void)" (?Render@ImGui@@YAXXZ)
-Renderer.obj : error LNK2001: unresolved external symbol "void __cdecl ImGuiSDL::Render(struct ImDrawData *)" (?Render@ImGuiSDL@@YAXPAUImDrawData@@@Z)
-Renderer.obj : error LNK2001: unresolved external symbol "struct ImDrawData * __cdecl ImGui::GetDrawData(void)" (?GetDrawData@ImGui@@YAPAUImDrawData@@XZ)
-Renderer.obj : error LNK2001: unresolved external symbol "void __cdecl ImGuiSDL::Deinitialize(void)" (?Deinitialize@ImGuiSDL@@YAXXZ)
-Renderer.obj : error LNK2001: unresolved external symbol "void __cdecl ImGui::DestroyContext(struct ImGuiContext *)" (?DestroyContext@ImGui@@YAXPAUImGuiContext@@@Z)
-E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Minigin.exe : fatal error LNK1120: 14 unresolved externals
+  Generating code
+  6 of 2643 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    7 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+ImGui.lib(imgui_impl_sdl.obj) : warning LNK4099: PDB 'ImGui.pdb' was not found with 'ImGui.lib(imgui_impl_sdl.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\ImGui.pdb'; linking object as if no debug info
+ImGui.lib(imgui.obj) : warning LNK4099: PDB 'ImGui.pdb' was not found with 'ImGui.lib(imgui.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\ImGui.pdb'; linking object as if no debug info
+ImGui.lib(imgui_widgets.obj) : warning LNK4099: PDB 'ImGui.pdb' was not found with 'ImGui.lib(imgui_widgets.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\ImGui.pdb'; linking object as if no debug info
+ImGui.lib(imgui_sdl.obj) : warning LNK4099: PDB 'ImGui.pdb' was not found with 'ImGui.lib(imgui_sdl.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\ImGui.pdb'; linking object as if no debug info
+ImGui.lib(imgui_draw.obj) : warning LNK4099: PDB 'ImGui.pdb' was not found with 'ImGui.lib(imgui_draw.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\ImGui.pdb'; linking object as if no debug info
+Box2D.lib(b2BroadPhase.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2BroadPhase.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2CollideCircle.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2CollideCircle.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2CollideEdge.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2CollideEdge.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2CollidePolygon.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2CollidePolygon.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Collision.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Collision.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Distance.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Distance.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2DynamicTree.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2DynamicTree.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2TimeOfImpact.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2TimeOfImpact.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2ChainShape.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2ChainShape.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2EdgeShape.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2EdgeShape.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2BlockAllocator.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2BlockAllocator.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Draw.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Draw.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Math.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Math.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Settings.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Settings.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2StackAllocator.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2StackAllocator.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Timer.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Timer.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Body.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Body.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2ContactManager.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2ContactManager.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Fixture.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Fixture.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Island.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Island.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2World.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2World.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2WorldCallbacks.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2WorldCallbacks.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2ChainAndCircleContact.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2ChainAndCircleContact.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2ChainAndPolygonContact.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2ChainAndPolygonContact.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2CircleContact.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2CircleContact.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Contact.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Contact.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2ContactSolver.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2ContactSolver.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2EdgeAndCircleContact.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2EdgeAndCircleContact.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2EdgeAndPolygonContact.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2EdgeAndPolygonContact.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2PolygonAndCircleContact.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2PolygonAndCircleContact.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2PolygonContact.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2PolygonContact.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2DistanceJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2DistanceJoint.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2FrictionJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2FrictionJoint.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2GearJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2GearJoint.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2Joint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2Joint.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2MotorJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2MotorJoint.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2MouseJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2MouseJoint.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2PrismaticJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2PrismaticJoint.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2PulleyJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2PulleyJoint.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2RevoluteJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2RevoluteJoint.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2RopeJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2RopeJoint.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2WeldJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2WeldJoint.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+Box2D.lib(b2WheelJoint.obj) : warning LNK4099: PDB 'Box2D.pdb' was not found with 'Box2D.lib(b2WheelJoint.obj)' or at 'E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Box2D.pdb'; linking object as if no debug info
+  Minigin.vcxproj -> E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Minigin.exe
+  E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2\lib\x86\SDL2.dll
+  1 File(s) copied
+  E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2_image\lib\x86\libjpeg-9.dll
+  E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2_image\lib\x86\libpng16-16.dll
+  E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2_image\lib\x86\libtiff-5.dll
+  E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2_image\lib\x86\libwebp-7.dll
+  E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2_image\lib\x86\SDL2_image.dll
+  E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2_image\lib\x86\zlib1.dll
+  6 File(s) copied
+  E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2_ttf\lib\x86\libfreetype-6.dll
+  E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2_ttf\lib\x86\SDL2_ttf.dll
+  2 File(s) copied
