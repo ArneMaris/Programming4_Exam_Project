@@ -13,9 +13,6 @@ void dae::Renderer::Init(SDL_Window * window)
 	}
 	else
 	{
-		// init ImGuiSDL renderer only when SDL started succesfully
-		ImGui::CreateContext();
-		ImGuiSDL::Initialize(mRenderer, GameInfo::windowWidth, GameInfo::windowHeight);
 		Logger::LogInfo("Renderer initialize succesfull!");
 	}
 }
@@ -25,6 +22,7 @@ void dae::Renderer::Render()
 	SDL_RenderClear(mRenderer);
 
 	SceneManager::GetInstance().Render();
+
 	//render ImGui
 	ImGui::Render();
 	ImGuiSDL::Render(ImGui::GetDrawData());

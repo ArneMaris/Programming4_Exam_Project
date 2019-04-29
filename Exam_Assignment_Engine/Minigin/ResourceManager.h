@@ -1,6 +1,6 @@
 #pragma once
 #include "Singleton.h"
-#include <map>
+#include <unordered_map>
 struct SDL_Texture;
 
 namespace dae
@@ -15,10 +15,10 @@ namespace dae
 		void Init(std::string&& resourcesPath);
 
 		Font* LoadFont(const std::string& fileName, unsigned int size);
-		std::map<const std::string, Font*> m_pFontMap;
+		std::unordered_map<const std::string, Font*> m_pFontMap;
 
 		SDL_Texture* LoadTexture(const std::string& fileName);
-		std::map<const std::string, SDL_Texture*> m_pTexturesMap;
+		std::unordered_map<const std::string, SDL_Texture*> m_pTexturesMap;
 
 	};
 

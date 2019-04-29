@@ -42,7 +42,7 @@ SDL_Texture* dae::ResourceManager::LoadTexture(const std::string& file)
 		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());
 	}
 
-	std::pair<std::map<const std::string, SDL_Texture*>::iterator, bool> returnValue;
+	std::pair<std::unordered_map<const std::string, SDL_Texture*>::iterator, bool> returnValue;
 	returnValue = m_pTexturesMap.insert(std::pair<std::string, SDL_Texture*>(file, texture));
 	return returnValue.first->second;
 }
@@ -56,7 +56,7 @@ dae::Font* dae::ResourceManager::LoadFont(const std::string& file, unsigned int 
 		throw std::runtime_error(std::string("Failed to load font: ") + SDL_GetError());
 	}
 
-	std::pair<std::map<const std::string, Font*>::iterator, bool> returnValue;
+	std::pair<std::unordered_map<const std::string, Font*>::iterator, bool> returnValue;
 	returnValue = m_pFontMap.insert(std::pair<std::string, Font*>(file, font));
 	return returnValue.first->second;
 }

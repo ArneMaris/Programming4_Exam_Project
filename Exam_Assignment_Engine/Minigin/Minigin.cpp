@@ -9,7 +9,7 @@
 #include <SDL.h>
 #include "GameObject.h"
 #include "Components.h"
-
+#include "imgui_sdl.h"
 
 //Scene includes
 #include "TestScene.h"
@@ -30,6 +30,11 @@ void dae::Minigin::Initialize()
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
 	Renderer::GetInstance().Init(window);
+
+	// init ImGui
+	ImGui::CreateContext();
+	ImGuiSDL::Initialize(Renderer::GetInstance().GetSDLRenderer(), GameInfo::windowWidth, GameInfo::windowHeight);
+	ImGui_ImplSDL2_InitForVulkan(window);
 }
 
 void dae::Minigin::LoadGame() const
@@ -40,8 +45,10 @@ void dae::Minigin::LoadGame() const
 void dae::Minigin::Cleanup()
 {
 	Logger::LogInfo("Cleaning up!");
-	Renderer::GetInstance().Destroy();
+	Renderer::GetInstance().Destroy(); // also destroys ImGuiSDL renderer
 	SceneManager::GetInstance().CleanUp();
+	InputManager::GetInstance().CleanUp();
+	ImGui_ImplSDL2_Shutdown();
 	SDL_DestroyWindow(window);
 	window = nullptr;
 	SDL_Quit();
@@ -54,7 +61,6 @@ void dae::Minigin::Run()
 	// tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init("../Resources/");
 	LoadGame();
-
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
@@ -68,9 +74,11 @@ void dae::Minigin::Run()
 		GameInfo::deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 		lastTime = currentTime;
 		lag += GameInfo::deltaTime;
+		doContinue = input.ProcessInput(); //process the input for this frame
+
 		ImGui_ImplSDL2_NewFrame(window);
 		ImGui::NewFrame();
-		doContinue = input.ProcessInput(window);
+
 		sceneManager.Update();
 		while (lag >= GameInfo::fixedTime)
 		{
@@ -89,7 +97,9 @@ void dae::Minigin::Run()
 		}
 		
 		ImGui::EndFrame();
-		renderer.Render();
+
+		input.SwapInputBuffer(); //swap input buffers after everything is updated;
+		renderer.Render(); // also renders ImGui
 	}
 
 	Cleanup();
