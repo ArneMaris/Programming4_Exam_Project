@@ -7,8 +7,11 @@ using namespace dae;
 
 dae::InputManager::InputManager()
 {
-	m_CurrentGpState = new XINPUT_STATE();
-	m_PreviousGpState = new XINPUT_STATE();
+	for (int i = 0; i < 4; ++i)
+	{
+		m_CurrentGpState[i] = new XINPUT_STATE();
+		m_PreviousGpState[i] = new XINPUT_STATE();
+	}
 	ZeroMemory(&m_PreviousGpState, sizeof(XINPUT_STATE));
 
 	m_CurrentEvent = new SDL_Event;
@@ -30,7 +33,12 @@ void dae::InputManager::CleanUp()
 
 bool dae::InputManager::ProcessInput()
 {
-	XInputGetState(0, m_CurrentGpState);
+	for (int i = 0; i < 4; ++i)
+	{
+		DWORD result = XInputGetState(i, m_CurrentGpState[i]);
+		if (result != ERROR_SUCCESS) // if not succes means controller not connected zero out memory to make sure you have no trash there
+			ZeroMemory(&m_CurrentGpState, sizeof(XINPUT_STATE));
+	}
 	SDL_Event ev;
 	while (SDL_PollEvent(&ev))
 	{
@@ -49,9 +57,11 @@ bool dae::InputManager::ProcessInput()
 
 void dae::InputManager::SwapInputBuffer()
 {
+	for (int i = 0; i < 4; ++i)
+	{
+		m_PreviousGpState[i] = m_CurrentGpState[i];
+	}
 	m_PreviousEvent = m_CurrentEvent;
-	m_PreviousGpState = m_PreviousGpState;
-	ZeroMemory(&m_CurrentGpState, sizeof(XINPUT_STATE));
 }
 
 InputAction* dae::InputManager::AddInputAction(const std::wstring& name, SDL_Scancode keyBoardScanecode, ControllerInput controllerInput)
@@ -86,45 +96,52 @@ InputAction* dae::InputManager::AddInputAction(const std::wstring & name, Contro
 	return AddInputAction(name, SDL_SCANCODE_UNKNOWN, controllerInput);;
 }
 
-bool dae::InputManager::IsPressed(const std::wstring & inputActionName)
+bool dae::InputManager::IsPressed(const std::wstring & inputActionName, unsigned int controllerId)
 {
-	return IsPressed(m_InputActions.at(inputActionName));;
+	return IsPressed(m_InputActions.at(inputActionName), controllerId);;
 }
 
-bool dae::InputManager::IsReleased(const std::wstring & inputActionName)
+bool dae::InputManager::IsReleased(const std::wstring & inputActionName, unsigned int controllerId)
 {
-	return IsReleased(m_InputActions.at(inputActionName));;
+	return IsReleased(m_InputActions.at(inputActionName), controllerId);;
 }
 
-bool dae::InputManager::IsHolding(const std::wstring & inputActionName)
+bool dae::InputManager::IsHolding(const std::wstring & inputActionName, unsigned int controllerId)
 {
-	return IsHolding(m_InputActions.at(inputActionName));;
+	return IsHolding(m_InputActions.at(inputActionName), controllerId);;
 }
 
-bool dae::InputManager::IsPressed(InputAction * inputActionPointer)
+bool dae::InputManager::IsPressed(InputAction * inputActionPointer, unsigned int controllerId)
 {
-	return inputActionPointer->IsPressed(m_CurrentEvent, m_PreviousEvent, m_CurrentGpState, m_PreviousGpState);
+	if (m_CurrentEvent != nullptr && m_PreviousEvent != nullptr && m_CurrentGpState[controllerId] != nullptr && m_PreviousGpState[controllerId] != nullptr)
+		return inputActionPointer->IsPressed(m_CurrentEvent, m_PreviousEvent, m_CurrentGpState[controllerId], m_PreviousGpState[controllerId]);
+	return false;
 }
 
-bool dae::InputManager::IsReleased(InputAction * inputActionPointer)
+bool dae::InputManager::IsReleased(InputAction * inputActionPointer, unsigned int controllerId)
 {
-	return inputActionPointer->IsReleased(m_CurrentEvent, m_PreviousEvent, m_CurrentGpState, m_PreviousGpState);
+	if (m_CurrentEvent != nullptr && m_PreviousEvent != nullptr && m_CurrentGpState[controllerId] != nullptr && m_PreviousGpState[controllerId] != nullptr)
+		return inputActionPointer->IsReleased(m_CurrentEvent, m_PreviousEvent, m_CurrentGpState[controllerId], m_PreviousGpState[controllerId]);
+	return false;
 }
 
-bool dae::InputManager::IsHolding(InputAction * inputActionPointer)
+bool dae::InputManager::IsHolding(InputAction * inputActionPointer, unsigned int controllerId)
 {
-
-	return inputActionPointer->IsHolding(m_CurrentEvent, m_PreviousEvent, m_CurrentGpState, m_PreviousGpState);
+	if (m_CurrentEvent != nullptr && m_PreviousEvent != nullptr && m_CurrentGpState[controllerId] != nullptr && m_PreviousGpState[controllerId] != nullptr)
+		return inputActionPointer->IsHolding(m_CurrentEvent, m_PreviousEvent, m_CurrentGpState[controllerId], m_PreviousGpState[controllerId]);
+	return false;
 }
 
-b2Vec2 dae::InputManager::GetControllerAxis(const std::wstring & inputActionName)
+b2Vec2 dae::InputManager::GetControllerAxis(const std::wstring & inputActionName, unsigned int controllerId)
 {
-	return GetControllerAxis(m_InputActions.at(inputActionName));
+	return GetControllerAxis(m_InputActions.at(inputActionName), controllerId);
 }
 
-b2Vec2 dae::InputManager::GetControllerAxis(InputAction * inputActionPointer)
+b2Vec2 dae::InputManager::GetControllerAxis(InputAction * inputActionPointer, unsigned int controllerId)
 {
-	return inputActionPointer->GetAxis(m_CurrentGpState);
+	if (m_CurrentEvent != nullptr && m_PreviousEvent != nullptr && m_CurrentGpState[controllerId] != nullptr)
+		return inputActionPointer->GetAxis(m_CurrentGpState[controllerId]);
+	return { 0,0 };
 }
 
 

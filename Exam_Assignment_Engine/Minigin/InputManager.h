@@ -4,6 +4,7 @@
 #include "SDL_scancode.h"
 #include <map>
 
+#define MAX_CONTROLLERS 4;
 
 namespace dae
 {
@@ -40,21 +41,21 @@ namespace dae
 		InputAction* AddInputAction(const std::wstring& name, SDL_Scancode keyBoardScanecode, ControllerInput controllerInput);
 		InputAction* AddInputAction(const std::wstring& name, SDL_Scancode keyBoardScanecode);
 		InputAction* AddInputAction(const std::wstring& name, ControllerInput controllerInput);
-		bool IsPressed(const std::wstring& inputActionName);
-		bool IsReleased(const std::wstring& inputActionName);
-		bool IsHolding(const std::wstring& inputActionName);
-		bool IsPressed(InputAction* inputActionPointer);
-		bool IsReleased(InputAction* inputActionPointer);
-		bool IsHolding(InputAction* inputActionPointer);
+		bool IsPressed(const std::wstring& inputActionName, unsigned int controllerId);
+		bool IsReleased(const std::wstring& inputActionName, unsigned int controllerId);
+		bool IsHolding(const std::wstring& inputActionName, unsigned int controllerId);
+		bool IsPressed(InputAction* inputActionPointer, unsigned int controllerId);
+		bool IsReleased(InputAction* inputActionPointer, unsigned int controllerId);
+		bool IsHolding(InputAction* inputActionPointer, unsigned int controllerId);
 
-		b2Vec2 GetControllerAxis(const std::wstring& inputActionName); // used for triggers and joysticks
-		b2Vec2 GetControllerAxis(dae::InputAction* inputActionPointer);
+		b2Vec2 GetControllerAxis(const std::wstring& inputActionName, unsigned int controllerId); // used for triggers and joysticks
+		b2Vec2 GetControllerAxis(InputAction* inputActionPointer, unsigned int controllerId);
 	private:
-		XINPUT_STATE* m_CurrentGpState{};
-		XINPUT_STATE* m_PreviousGpState{};
+		XINPUT_STATE* m_CurrentGpState[4]{};
+		XINPUT_STATE* m_PreviousGpState[4]{};
 		SDL_Event* m_CurrentEvent{};
 		SDL_Event* m_PreviousEvent{};
-		std::map<const std::wstring, dae::InputAction*> m_InputActions{};
+		std::map<const std::wstring, InputAction*> m_InputActions{};
 	};
 
 
