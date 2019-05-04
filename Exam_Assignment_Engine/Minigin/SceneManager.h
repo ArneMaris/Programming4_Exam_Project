@@ -7,17 +7,23 @@ namespace dae
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
-		void AddScene(std::shared_ptr<Scene> scene);
-		void RemoveScene(std::shared_ptr<Scene> scene);
+		void AddScene(Scene* scene, bool setActive = true);
+		void RemoveScene(Scene* scene);
 
+		Scene* GetActiveScene();
+		void SetActiveScene(const std::wstring& sceneName);
+
+		void Initialize();
 		void Update();
 		void Render();
 		void FixedUpdate();
 
+		b2World* GetPhysicsWorld();
+
 		void CleanUp();
 
 	private:
-		std::vector<std::shared_ptr<Scene>> m_pScenes;
+		std::vector<Scene*> m_pScenes;
 	};
 
 }

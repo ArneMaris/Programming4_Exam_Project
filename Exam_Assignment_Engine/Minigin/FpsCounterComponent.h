@@ -9,7 +9,7 @@ namespace dae
 	{
 	public:
 		explicit FpsCounterComponent(std::shared_ptr<Font> font, bool leftTopCorner = true);
-		virtual ~FpsCounterComponent() = default;
+		~FpsCounterComponent() = default;
 		FpsCounterComponent(const FpsCounterComponent& other) = delete;
 		FpsCounterComponent(FpsCounterComponent&& other) = delete;
 		FpsCounterComponent& operator=(const FpsCounterComponent& other) = delete;
@@ -20,7 +20,7 @@ namespace dae
 		virtual void Render() const override;
 
 	private:
-		std::unique_ptr<TextComponent> m_pTextComp;
+		TextComponent* m_pTextComp;
 		bool m_LeftTop;
 
 		int m_FPS;

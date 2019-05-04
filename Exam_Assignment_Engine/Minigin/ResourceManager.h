@@ -2,6 +2,7 @@
 #include "Singleton.h"
 #include <map>
 #include <SDL.h>
+struct B2Vec2;
 
 namespace dae
 {
@@ -21,6 +22,8 @@ namespace dae
 
 		std::shared_ptr<SDL_Texture> LoadTexture(const std::wstring& fileName);
 		std::map<const std::wstring, std::shared_ptr<SDL_Texture>> m_TexturesMap{};
+
+		std::vector<b2Vec2> GetVerticesFromSVG(const std::wstring& fileName);
 
 	};
 

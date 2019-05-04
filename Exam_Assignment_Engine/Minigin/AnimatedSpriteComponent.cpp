@@ -67,16 +67,18 @@ void dae::AnimatedSpriteComponent::Render() const
 		const auto pos = m_pGameObject->GetPosition();
 		int frameWidth{ m_TextureWidth / m_Cols };
 		int frameHeight{ m_TextureHeight / m_Rows };
-		const SDL_Rect destRect{ int(pos.x + m_Offset.x), int(pos.y + m_Offset.y), int(frameWidth * m_Scale), int(frameHeight * m_Scale) };
-		const SDL_Rect srcRect{ frameWidth * (m_CurrColumn-1), frameHeight * (m_CurrRow-1), frameWidth, frameHeight };
+		SDL_Rect destRect{ int(pos.x + m_Offset.x), int(pos.y + m_Offset.y), int(frameWidth * m_Scale), int(frameHeight * m_Scale) };
+		SDL_Rect srcRect{ frameWidth * (m_CurrColumn-1), frameHeight * (m_CurrRow-1), frameWidth, frameHeight };
 		SDL_RendererFlip flip = SDL_RendererFlip::SDL_FLIP_NONE;
 		switch (m_FlipDirection)
 		{
 		case dae::AnimatedSpriteComponent::vertical:
 			flip = SDL_RendererFlip::SDL_FLIP_VERTICAL;
+			srcRect = { frameWidth * (m_CurrColumn - 1), m_TextureHeight - (frameHeight * (m_CurrRow - 1)), frameWidth, m_TextureHeight - frameHeight };
 			break;
 		case dae::AnimatedSpriteComponent::horizontal:
 			flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
+			srcRect = { m_TextureWidth - (frameWidth * (m_CurrColumn - 1)), frameHeight * (m_CurrRow - 1), m_TextureWidth - frameWidth, frameHeight };
 			break;
 		}
 

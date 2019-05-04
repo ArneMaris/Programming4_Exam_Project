@@ -6,11 +6,10 @@
 #include "InputManager.h"
 #include "InputAction.h"
 
-TestScene::TestScene(bool autoInit)
+TestScene::TestScene()
 	:dae::Scene(L"TestScene")
 {
-	if (autoInit)
-		Initialize();
+
 }
 
 void TestScene::Initialize()
@@ -25,14 +24,16 @@ void TestScene::Initialize()
 	//dae::Logger::LogInfo("testInfo");
 
 
-	auto obj = std::make_shared<dae::GameObject>();
-	//obj->AddComponent(std::make_shared<dae::SpriteComponent>(L"background.jpg"));
+	auto obj = new dae::GameObject();
+	obj->AddComponent(new dae::SpriteComponent(L"background.jpg"));
+	obj->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_kinematicBody));
+	obj->AddComponent(new dae::ColliderComponent(obj->GetComponent<dae::PhysicsBodyComponent>()));
 	AddGameObject(obj);
 
-	//obj = std::make_shared<dae::GameObject>();
-	//obj->SetPosition(216, 180);
-	//obj->AddComponent(std::make_shared<dae::SpriteComponent>(L"logo.png"));
-	//AddGameObject(obj);
+	obj = new dae::GameObject();
+	obj->SetPosition(216, 180);
+	obj->AddComponent(new dae::SpriteComponent(L"logo.png"));
+	AddGameObject(obj);
 
 	//auto font = dae::ResourceManager::GetInstance().LoadFont(L"Lingua.otf", 36);
 	//obj = new dae::GameObject();
@@ -70,6 +71,7 @@ void TestScene::Initialize()
 
 	m_IsInitialized = true;
 }
+
 void TestScene::Update()
 {
 	if (dae::InputManager::GetInstance().IsPressed(L"MoveUp",0))
@@ -94,6 +96,16 @@ void TestScene::Update()
 }
 
 void TestScene::Render() const
+{
+
+}
+
+void TestScene::OnCollisionStart()
+{
+
+}
+
+void TestScene::OnCollisionEnd()
 {
 
 }

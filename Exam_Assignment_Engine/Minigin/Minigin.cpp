@@ -38,7 +38,11 @@ void dae::Minigin::Initialize()
 
 void dae::Minigin::LoadGame() const
 {
-	SceneManager::GetInstance().AddScene(std::make_shared<TestScene>());
+	SceneManager::GetInstance().AddScene(new TestScene());
+
+	SceneManager::GetInstance().Initialize();
+
+	SceneManager::GetInstance().SetActiveScene(L"TestScene");
 }
 
 void dae::Minigin::Cleanup()
@@ -58,15 +62,16 @@ void dae::Minigin::Cleanup()
 void dae::Minigin::Run()
 {
 	Initialize();
-
 	// tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init(L"../Resources/");
-	LoadGame();
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
 	auto lastTime = std::chrono::high_resolution_clock::now();
 	float lag = 0.0;
+
+	LoadGame();
+
 
 	bool doContinue = true;
 	while (doContinue)
@@ -76,7 +81,6 @@ void dae::Minigin::Run()
 		lastTime = currentTime;
 		lag += GameInfo::deltaTime;
 		doContinue = input.ProcessInput(); //process the input for this frame and set the Current Event State to later check for input
-
 		ImGui_ImplSDL2_NewFrame(window);
 		ImGui::NewFrame();
 

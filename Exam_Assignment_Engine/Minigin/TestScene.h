@@ -4,10 +4,12 @@
 class TestScene final: public dae::Scene
 {
 public:
-	TestScene(bool autoInit = true);
+	TestScene();
 	virtual void Update() override;
 	virtual void Render() const override;
 	virtual void Initialize() override;
+	virtual void OnCollisionStart() override;
+	virtual void OnCollisionEnd() override;
 
 	~TestScene() = default;
 };

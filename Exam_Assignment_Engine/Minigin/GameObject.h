@@ -12,10 +12,10 @@ namespace dae
 
 		void SetPosition(float x, float y);
 		const b2Vec3 GetPosition();
-		std::shared_ptr<TransformComponent> GetTransform() const { return m_pTransform; }
+		TransformComponent* GetTransform() const;
 
-		void AddComponent(std::shared_ptr<BaseComponent> pComp);
-		void RemoveComponent(std::shared_ptr<BaseComponent> pComp);
+		BaseComponent* AddComponent(BaseComponent* pComp);
+		void RemoveComponent(BaseComponent* pComp);
 
 		void SetPhysicsWorld(b2World* physicsWorld);
 		b2World* GetPhysicsWorld();
@@ -33,7 +33,7 @@ namespace dae
 		T* GetComponent()
 		{
 			const type_info& ti = typeid(T);
-			for (auto* component : m_pComponents)
+			for (auto component : m_pComponents)
 			{
 				if (component && typeid(*component) == ti)
 					return static_cast<T*>(component);
@@ -47,7 +47,7 @@ namespace dae
 			const type_info& ti = typeid(T);
 			std::vector<T*> components;
 
-			for (auto* component : m_pComponents)
+			for (auto component : m_pComponents)
 			{
 				if (component && typeid(*component) == ti)
 					components.push_back(static_cast<T*>(component));
@@ -60,8 +60,7 @@ namespace dae
 	protected:
 		b2World* m_pPhysicsWorldRef;
 	private:
-		std::shared_ptr<TransformComponent> m_pTransform;
-		std::vector<std::shared_ptr<BaseComponent>> m_pComponents;
+		std::vector<BaseComponent*> m_pComponents;
 	};
 
 }

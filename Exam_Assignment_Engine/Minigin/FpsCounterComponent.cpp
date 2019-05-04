@@ -6,12 +6,12 @@
 
 
 dae::FpsCounterComponent::FpsCounterComponent(std::shared_ptr<Font> font, bool leftTopCorner)
-	:m_pTextComp{ std::make_unique<TextComponent>(font, "0") }
-	, m_FPS{0}
+	: m_FPS{0}
 	, m_FpsCount{0}
 	, m_FpsTimer{0}
 	, m_LeftTop{ leftTopCorner }
 {
+	m_pTextComp = static_cast<TextComponent*>(GetGameObject()->AddComponent(new TextComponent(font, "0")));
 }
 
 void dae::FpsCounterComponent::Update()

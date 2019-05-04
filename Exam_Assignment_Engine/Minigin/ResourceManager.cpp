@@ -9,6 +9,9 @@
 
 #include "Utility.h"
 
+#define NANOSVG_IMPLEMENTATION
+#include "nanosvg.h"
+
 
 void dae::ResourceManager::CleanUp()
 {
@@ -42,9 +45,9 @@ void dae::ResourceManager::Init(std::wstring&& dataPath)
 
 std::shared_ptr<SDL_Texture> dae::ResourceManager::LoadTexture(const std::wstring& file)
 {
-	std::string fullPath = { m_ResourcesPath.begin(), m_ResourcesPath.end() };
-	fullPath.append(std::string(file.begin(), file.end()));
-	auto texture = SDL_SharedPointer(IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str()));
+	std::wstring fullPath = m_ResourcesPath + file;
+	std::string path = { fullPath.begin(), fullPath.end() };
+	auto texture = SDL_SharedPointer(IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), path.c_str()));
 	if (texture == nullptr) 
 	{
 		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());
@@ -54,6 +57,7 @@ std::shared_ptr<SDL_Texture> dae::ResourceManager::LoadTexture(const std::wstrin
 	returnValue = m_TexturesMap.insert(std::pair<const std::wstring, std::shared_ptr<SDL_Texture>>(file, texture));
 	return returnValue.first->second;
 }
+
 
 std::shared_ptr<dae::Font> dae::ResourceManager::LoadFont(const std::wstring& file, unsigned int size)
 {
@@ -67,4 +71,30 @@ std::shared_ptr<dae::Font> dae::ResourceManager::LoadFont(const std::wstring& fi
 	std::pair<std::map<const std::wstring, std::shared_ptr<Font>>::iterator, bool> returnValue;
 	returnValue = m_FontMap.insert(std::pair<const std::wstring, std::shared_ptr<Font>>(file, font));
 	return returnValue.first->second;
+}
+
+std::vector<b2Vec2> dae::ResourceManager::GetVerticesFromSVG(const std::wstring & fileName)
+{
+	std::vector<b2Vec2> vertices{};
+	std::wstring fullPath = m_ResourcesPath + fileName;
+	std::string pathStr = { fullPath.begin(), fullPath.end() };
+
+	//Sample code from NANOSVG documentation
+	NSVGimage* image;
+	image = nsvgParseFromFile(pathStr.c_str(), "px", 96);
+	for (NSVGshape *shape = image->shapes; shape != nullptr; shape = shape->next)
+	{
+		for (NSVGpath *path = shape->paths; path != nullptr; path = path->next) 
+		{
+			for (int i = 0; i < path->npts - 1; i += 3) 
+			{
+				float* p = &path->pts[i * 2];
+				UNREFERENCED_PARAMETER(p);
+				//std::cout<< p[0] << p[1] << p[2] << p[3] << p[4] << p[5] << p[6] << p[7];
+			}
+		}
+	}
+	nsvgDelete(image);
+
+	return vertices;
 }

@@ -4,31 +4,38 @@
 
 unsigned int dae::Scene::s_idCounter = 0;
 
-dae::Scene::Scene(const std::wstring& name, bool startActive, const b2Vec2& gravity) 
+dae::Scene::Scene(const std::wstring& name, const b2Vec2& gravity) 
 	:m_SceneName(name)
-	, m_IsActive{ startActive }
 	, m_IsInitialized{false}
+	, m_IsActive { true }
 { 
 	m_pPhysicsWorld = new b2World(gravity);
-	UNREFERENCED_PARAMETER(gravity);
 	if (m_pPhysicsWorld != nullptr)
 	{
 		Logger::LogInfo(L"PhysicsWorld created succesfully in scene: " + m_SceneName);
-		m_pPhysicsWorld->CreateBody(new b2BodyDef());
 	}
 }
 
 dae::Scene::~Scene()
 {
+	for (auto it = m_pObjects.begin(); it != m_pObjects.end(); ++it)
+	{
+		delete (*it);
+	}
 	m_pObjects.clear();
 	
 	delete m_pPhysicsWorld;
 }
 
-void dae::Scene::AddGameObject(std::shared_ptr<GameObject> object)
+void dae::Scene::AddGameObject(GameObject* object)
 {
 	object->SetPhysicsWorld(m_pPhysicsWorld);
 	m_pObjects.push_back(object);
+}
+
+const std::wstring & dae::Scene::GetSceneName() const
+{
+	return m_SceneName;
 }
 
 void dae::Scene::BaseUpdate()
@@ -66,4 +73,9 @@ bool dae::Scene::GetIsActive() const
 void dae::Scene::SetIsActive(bool value)
 {
 	m_IsActive = value;
+}
+
+b2World* dae::Scene::GetPhysicsWorld() const
+{
+	return m_pPhysicsWorld;
 }

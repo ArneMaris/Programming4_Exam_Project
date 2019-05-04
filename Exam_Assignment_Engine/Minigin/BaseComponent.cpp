@@ -4,11 +4,6 @@
 #include "GameObject.h"
 
 
-std::shared_ptr<dae::TransformComponent> dae::BaseComponent::GetTransform() const
-{
-	return m_pGameObject->GetTransform();
-}
-
 void dae::BaseComponent::Render() const
 {
 }

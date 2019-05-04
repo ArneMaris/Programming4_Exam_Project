@@ -16,9 +16,11 @@ namespace dae
 		virtual void Initialize() = 0;
 		bool GetIsActive() const;
 		void SetIsActive(bool value);
-		void AddGameObject(std::shared_ptr<GameObject> object);
+		b2World* GetPhysicsWorld() const;
+		void AddGameObject(GameObject* object);
+		const std::wstring& GetSceneName() const;
 
-		Scene(const std::wstring& name, bool autoActivate = true, const b2Vec2& gravity = { 0, -10 });
+		Scene(const std::wstring& name, const b2Vec2& gravity = { 0, -10 });
 		virtual ~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
@@ -29,9 +31,13 @@ namespace dae
 	private: 
 		virtual void Update() = 0; // different Update for every scene, called in BaseUpdate
 		virtual void Render() const = 0; // different Render for every scene, called in BaseRender
+
+		virtual void OnCollisionStart() = 0;
+		virtual void OnCollisionEnd() = 0;
+
 		bool m_IsActive;
 		std::wstring m_SceneName{};
-		std::vector <std::shared_ptr<GameObject>> m_pObjects{};
+		std::vector<GameObject*> m_pObjects{};
 
 		static unsigned int s_idCounter; 
 		b2World *m_pPhysicsWorld;
