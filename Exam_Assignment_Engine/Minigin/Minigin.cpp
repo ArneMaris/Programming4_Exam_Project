@@ -6,7 +6,6 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
-#include <SDL.h>
 #include "GameObject.h"
 #include "Components.h"
 #include "imgui_sdl.h"
@@ -39,7 +38,7 @@ void dae::Minigin::Initialize()
 
 void dae::Minigin::LoadGame() const
 {
-	SceneManager::GetInstance().AddScene(new TestScene());
+	SceneManager::GetInstance().AddScene(std::make_shared<TestScene>());
 }
 
 void dae::Minigin::Cleanup()
@@ -48,6 +47,8 @@ void dae::Minigin::Cleanup()
 	Renderer::GetInstance().Destroy(); // also destroys ImGuiSDL renderer
 	SceneManager::GetInstance().CleanUp();
 	InputManager::GetInstance().CleanUp();
+	ResourceManager::GetInstance().CleanUp();
+
 	ImGui_ImplSDL2_Shutdown();
 	SDL_DestroyWindow(window);
 	window = nullptr;
@@ -99,7 +100,8 @@ void dae::Minigin::Run()
 		ImGui::EndFrame();
 
 		input.SwapInputBuffer(); //swap input buffers after everything is updated;
-		renderer.Render(); // also renders ImGui
+		renderer.Render();
+		renderer.RenderImGui();
 	}
 
 	Cleanup();

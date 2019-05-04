@@ -64,9 +64,6 @@
     <ClInclude Include="BaseComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="Texture2D.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="SpriteComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -92,6 +89,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="InputAction.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
       <Filter>Helpers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -134,9 +134,6 @@
     </ClCompile>
     <ClCompile Include="TransformComponent.cpp">
       <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture2D.cpp">
-      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="SpriteComponent.cpp">
       <Filter>Components</Filter>

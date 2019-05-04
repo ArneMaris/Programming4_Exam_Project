@@ -13,7 +13,7 @@ dae::SpriteComponent::SpriteComponent(const std::wstring& assetPath, float scale
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(assetPath);
 	if (m_pTexture != nullptr)
-		SDL_QueryTexture(m_pTexture, static_cast<Uint32>(SDL_PIXELFORMAT_UNKNOWN), static_cast<int>(SDL_TEXTUREACCESS_STATIC), &m_TextureWidth, &m_TextureHeight);
+		SDL_QueryTexture(m_pTexture.get(), static_cast<Uint32>(SDL_PIXELFORMAT_UNKNOWN), static_cast<int>(SDL_TEXTUREACCESS_STATIC), &m_TextureWidth, &m_TextureHeight);
 }
 
 void dae::SpriteComponent::Update()

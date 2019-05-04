@@ -1,6 +1,5 @@
 #pragma once
 #include "BaseComponent.h"
-struct SDL_Texture;
 
 namespace dae
 {
@@ -28,7 +27,7 @@ namespace dae
 		virtual void Update() override;
 		virtual void Render() const override;
 
-		SDL_Texture* m_pTexture;
+		std::shared_ptr<SDL_Texture> m_pTexture;
 		b2Vec2 m_Offset;
 		int m_TextureWidth;
 		int m_TextureHeight;

@@ -19,19 +19,19 @@ dae::InputAction::InputAction(SDL_Scancode scanCode, ControllerInput controllerI
 	}
 }
 
-bool dae::InputAction::IsPressed(SDL_Event* e, SDL_Event* ePrev, XINPUT_STATE* gamePadState, XINPUT_STATE* prevGamePadState)
+bool dae::InputAction::IsPressed(SDL_Event& e, SDL_Event& ePrev, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState)
 {
 	//KEYBOARD INPUT
 	if (m_ScanCode != SDL_SCANCODE_UNKNOWN)
 	{
-		if (e->key.keysym.scancode == m_ScanCode && ePrev->key.keysym.scancode != m_ScanCode) // if now is true and prev is false key is just pressed
+		if (e.key.keysym.scancode == m_ScanCode && ePrev.key.keysym.scancode != m_ScanCode) // if now is true and prev is false key is just pressed
 			return true;
 	}
 
 	//CONTROLLER INPUT
 	if (!m_ControllerInputIsAxis)
 	{
-		if (gamePadState->Gamepad.wButtons == DWORD(m_ControllerInput) && prevGamePadState->Gamepad.wButtons != DWORD(m_ControllerInput))
+		if (gamePadState.Gamepad.wButtons == DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons != DWORD(m_ControllerInput))
 			return true;
 	}
 	else
@@ -42,19 +42,19 @@ bool dae::InputAction::IsPressed(SDL_Event* e, SDL_Event* ePrev, XINPUT_STATE* g
 	return false;
 }
 
-bool dae::InputAction::IsReleased(SDL_Event* e, SDL_Event* ePrev, XINPUT_STATE* gamePadState, XINPUT_STATE* prevGamePadState)
+bool dae::InputAction::IsReleased(SDL_Event& e, SDL_Event& ePrev, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState)
 {
 	//KEYBOARD INPUT
 	if (m_ScanCode != SDL_SCANCODE_UNKNOWN)
 	{
-		if (e->key.keysym.scancode != m_ScanCode && ePrev->key.keysym.scancode == m_ScanCode) // if now is false and prev is true key is just released
+		if (e.key.keysym.scancode != m_ScanCode && ePrev.key.keysym.scancode == m_ScanCode) // if now is false and prev is true key is just released
 			return true;
 	}
 
 	//CONTROLLER INPUT
 	if (!m_ControllerInputIsAxis)
 	{
-		if (gamePadState->Gamepad.wButtons != DWORD(m_ControllerInput) && prevGamePadState->Gamepad.wButtons == DWORD(m_ControllerInput))
+		if (gamePadState.Gamepad.wButtons != DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons == DWORD(m_ControllerInput))
 			return true;
 	}
 	else
@@ -65,19 +65,19 @@ bool dae::InputAction::IsReleased(SDL_Event* e, SDL_Event* ePrev, XINPUT_STATE* 
 	return false;
 }
 
-bool dae::InputAction::IsHolding(SDL_Event* e, SDL_Event* ePrev, XINPUT_STATE* gamePadState, XINPUT_STATE* prevGamePadState)
+bool dae::InputAction::IsHolding(SDL_Event& e, SDL_Event& ePrev, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState)
 {
 	//KEYBOARD INPUT
 	if (m_ScanCode != SDL_SCANCODE_UNKNOWN)
 	{
-		if (e->key.keysym.scancode == m_ScanCode && ePrev->key.keysym.scancode == m_ScanCode) //if both prev and now is true means button is being held
+		if (e.key.keysym.scancode == m_ScanCode && ePrev.key.keysym.scancode == m_ScanCode) //if both prev and now is true means button is being held
 			return true;
 	}
 
 	//CONTROLLER INPUT
 	if (!m_ControllerInputIsAxis)
 	{
-		if (gamePadState->Gamepad.wButtons == DWORD(m_ControllerInput) && prevGamePadState->Gamepad.wButtons == DWORD(m_ControllerInput))
+		if (gamePadState.Gamepad.wButtons == DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons == DWORD(m_ControllerInput))
 			return true;
 	}
 	else
@@ -89,23 +89,23 @@ bool dae::InputAction::IsHolding(SDL_Event* e, SDL_Event* ePrev, XINPUT_STATE* g
 	return false;
 }
 
-b2Vec2 dae::InputAction::GetAxis(XINPUT_STATE * gamePadState)
+b2Vec2 dae::InputAction::GetAxis(XINPUT_STATE& gamePadState)
 {
 	b2Vec2 stickInput{ 0,0 };
 	switch (m_ControllerInput)
 	{
 	case ControllerInput::JoyStickLeft:
-		stickInput = { float32(gamePadState->Gamepad.sThumbLX), float32(gamePadState->Gamepad.sThumbLY) };
+		stickInput = { float32(gamePadState.Gamepad.sThumbLX), float32(gamePadState.Gamepad.sThumbLY) };
 		ClampStickInput(stickInput, XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);
 	case ControllerInput::JoyStickRight:
-		stickInput = { float32(gamePadState->Gamepad.sThumbRX), float32(gamePadState->Gamepad.sThumbRY) };
+		stickInput = { float32(gamePadState.Gamepad.sThumbRX), float32(gamePadState.Gamepad.sThumbRY) };
 		ClampStickInput(stickInput, XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE);
 		break;
 	case ControllerInput::TriggerLeft:
-		stickInput = { (int(gamePadState->Gamepad.bLeftTrigger) / 255.0f), 0 };
+		stickInput = { (int(gamePadState.Gamepad.bLeftTrigger) / 255.0f), 0 };
 		break;
 	case ControllerInput::TriggerRight:
-		stickInput = { (int(gamePadState->Gamepad.bRightTrigger) / 255.0f), 0 };
+		stickInput = { (int(gamePadState.Gamepad.bRightTrigger) / 255.0f), 0 };
 		break;
 	default:
 		Logger::LogWarning(L"Trying to do GetAxis() on a button, this only works on JoySticks and Triggers, will now return {0,0}");

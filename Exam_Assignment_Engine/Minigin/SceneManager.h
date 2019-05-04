@@ -7,8 +7,8 @@ namespace dae
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
-		void AddScene(Scene* scene);
-		void RemoveScene(Scene* scene);
+		void AddScene(std::shared_ptr<Scene> scene);
+		void RemoveScene(std::shared_ptr<Scene> scene);
 
 		void Update();
 		void Render();
@@ -17,7 +17,7 @@ namespace dae
 		void CleanUp();
 
 	private:
-		std::vector<Scene*> m_pScenes;
+		std::vector<std::shared_ptr<Scene>> m_pScenes;
 	};
 
 }

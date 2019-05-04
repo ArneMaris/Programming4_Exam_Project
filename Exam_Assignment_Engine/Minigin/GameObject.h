@@ -12,22 +12,23 @@ namespace dae
 
 		void SetPosition(float x, float y);
 		const b2Vec3 GetPosition();
-		TransformComponent* GetTransform() const { return m_pTransform; }
+		std::shared_ptr<TransformComponent> GetTransform() const { return m_pTransform; }
 
-		void AddComponent(BaseComponent* pComp);
-		void RemoveComponent(BaseComponent* pComp);
+		void AddComponent(std::shared_ptr<BaseComponent> pComp);
+		void RemoveComponent(std::shared_ptr<BaseComponent> pComp);
 
 		void SetPhysicsWorld(b2World* physicsWorld);
 		b2World* GetPhysicsWorld();
 
 		GameObject();
-		virtual ~GameObject() = default;
+		virtual ~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
-#pragma region
+		//taken from DAE GP2 2018-2019
+#pragma region 
 		template <class T>
 		T* GetComponent()
 		{
@@ -59,8 +60,8 @@ namespace dae
 	protected:
 		b2World* m_pPhysicsWorldRef;
 	private:
-		TransformComponent* m_pTransform;
-		std::vector<BaseComponent*> m_pComponents;
+		std::shared_ptr<TransformComponent> m_pTransform;
+		std::vector<std::shared_ptr<BaseComponent>> m_pComponents;
 	};
 
 }

@@ -5,13 +5,19 @@
 #include "BaseComponent.h"
 
 dae::GameObject::GameObject()
+	:m_pPhysicsWorldRef{nullptr}
 {
-	m_pTransform = new TransformComponent();
+	m_pTransform = std::make_shared<TransformComponent>();
+}
+
+dae::GameObject::~GameObject()
+{
+	m_pComponents.clear();
 }
 
 void dae::GameObject::Update()
 {
-	for (BaseComponent* comp : m_pComponents)
+	for (std::shared_ptr<BaseComponent> comp : m_pComponents)
 	{
 		comp->Update();
 	}
@@ -20,7 +26,7 @@ void dae::GameObject::Update()
 
 void dae::GameObject::Render() const
 {
-	for (BaseComponent* comp : m_pComponents)
+	for (std::shared_ptr<BaseComponent> comp : m_pComponents)
 	{
 		comp->Render();
 	}
@@ -36,13 +42,13 @@ const b2Vec3 dae::GameObject::GetPosition()
 	return m_pTransform->GetPosition();
 }
 
-void dae::GameObject::AddComponent(BaseComponent* pComp)
+void dae::GameObject::AddComponent(std::shared_ptr<BaseComponent> pComp)
 {
 	m_pComponents.push_back(pComp);
-	pComp->m_pGameObject = (this);
+	pComp->m_pGameObject = std::shared_ptr<GameObject>(this);
 }
 
-void dae::GameObject::RemoveComponent(BaseComponent* pComp)
+void dae::GameObject::RemoveComponent(std::shared_ptr<BaseComponent> pComp)
 {
 	auto it = find(m_pComponents.begin(), m_pComponents.end(), pComp);
 	m_pComponents.erase(it);

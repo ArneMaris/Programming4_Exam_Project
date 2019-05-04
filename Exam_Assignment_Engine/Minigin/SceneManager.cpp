@@ -28,25 +28,19 @@ void dae::SceneManager::FixedUpdate()
 		if (scene->GetIsActive())
 			scene->FixedUpdate();
 	}
-
 }
 
 void dae::SceneManager::CleanUp()
 {
-	for (std::vector<Scene*>::iterator it = m_pScenes.begin(); it != m_pScenes.end(); ++it)
-	{
-		(*it)->~Scene();
-		delete (*it);
-	}
 	m_pScenes.clear();
 }
 
 
-void dae::SceneManager::AddScene(Scene* scene)
+void dae::SceneManager::AddScene(std::shared_ptr<Scene> scene)
 {
 	m_pScenes.push_back(scene);
 }
-void dae::SceneManager::RemoveScene(Scene* scene)
+void dae::SceneManager::RemoveScene(std::shared_ptr<Scene> scene)
 {
 	auto it = find(m_pScenes.begin(), m_pScenes.end(), scene);
 	m_pScenes.erase(it);

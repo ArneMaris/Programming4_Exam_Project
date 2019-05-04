@@ -15,17 +15,17 @@ namespace dae
 		BaseComponent(BaseComponent&& other) noexcept = delete;
 		BaseComponent& operator=(const BaseComponent& other) = delete;
 		BaseComponent& operator=(BaseComponent&& other) noexcept = delete;
-		virtual ~BaseComponent() = default;
+		virtual ~BaseComponent() =default;
 		BaseComponent() = default;
 
-		GameObject* GetGameObject() const { return m_pGameObject; }
-		TransformComponent* GetTransform() const;
+		std::shared_ptr<GameObject> GetGameObject() const { return m_pGameObject; }
+		std::shared_ptr<TransformComponent> GetTransform() const;
 
 	protected:
 		virtual void Update() = 0;
 		virtual void Render() const;
 
-		GameObject* m_pGameObject;
+		std::shared_ptr<GameObject> m_pGameObject;
 	};
 };
 

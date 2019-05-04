@@ -16,10 +16,10 @@ namespace dae
 		virtual void Initialize() = 0;
 		bool GetIsActive() const;
 		void SetIsActive(bool value);
-		void AddGameObject(GameObject* object);
+		void AddGameObject(std::shared_ptr<GameObject> object);
 
 		Scene(const std::wstring& name, bool autoActivate = true, const b2Vec2& gravity = { 0, -10 });
-		~Scene();
+		virtual ~Scene();
 		Scene(const Scene& other) = delete;
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
@@ -31,7 +31,7 @@ namespace dae
 		virtual void Render() const = 0; // different Render for every scene, called in BaseRender
 		bool m_IsActive;
 		std::wstring m_SceneName{};
-		std::vector <GameObject*> m_pObjects{};
+		std::vector <std::shared_ptr<GameObject>> m_pObjects{};
 
 		static unsigned int s_idCounter; 
 		b2World *m_pPhysicsWorld;

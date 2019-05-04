@@ -1,27 +1,23 @@
 #include "MiniginPCH.h"
 #include "FpsCounterComponent.h"
 #include <SDL.h>
-#include <SDL_ttf.h>
-#include "Font.h"
 #include "GameObject.h"
 #include "Renderer.h"
-#include "Texture2D.h"
 
 
-dae::FpsCounterComponent::FpsCounterComponent(Font* font, bool leftTopCorner)
-	:m_TextComp{nullptr}
+dae::FpsCounterComponent::FpsCounterComponent(std::shared_ptr<Font> font, bool leftTopCorner)
+	:m_pTextComp{ std::make_unique<TextComponent>(font, "0") }
 	, m_FPS{0}
 	, m_FpsCount{0}
 	, m_FpsTimer{0}
 	, m_LeftTop{ leftTopCorner }
-{;
-	m_TextComp = new TextComponent(font, L"0");
+{
 }
 
 void dae::FpsCounterComponent::Update()
 {
-	if (m_TextComp->m_pGameObject == nullptr)
-		m_TextComp->m_pGameObject = GetGameObject();
+	if (m_pTextComp->m_pGameObject == nullptr)
+		m_pTextComp->m_pGameObject = GetGameObject();
 	//FPS LOGIC
 	m_FpsTimer += GameInfo::deltaTime;
 	++m_FpsCount;
@@ -30,7 +26,7 @@ void dae::FpsCounterComponent::Update()
 		m_FPS = m_FpsCount;
 		m_FpsCount = 0;
 		m_FpsTimer -= 1;
-		m_TextComp->m_Text = std::to_wstring(m_FPS);
+		m_pTextComp->m_Text = std::to_string(m_FPS);
 		SDL_Color color = { 255,0,0 };
 		if (m_FPS >= 60)
 		{
@@ -40,12 +36,12 @@ void dae::FpsCounterComponent::Update()
 		{
 			color = { 255,255,0 };
 		}
-		m_TextComp->m_TextColor = color;
+		m_pTextComp->m_TextColor = color;
 	}
-	m_TextComp->Update();
+	m_pTextComp->Update();
 }
 
 void dae::FpsCounterComponent::Render() const
 {
-	m_TextComp->Render();
+	m_pTextComp->Render();
 }

@@ -1,7 +1,6 @@
 #include "MiniginPCH.h"
 #include "Scene.h"
 #include "GameObject.h"
-#define SAFE_RELEASE(p) { if ( (p) ) { (p)->Release(); (p) = 0; } }
 
 unsigned int dae::Scene::s_idCounter = 0;
 
@@ -11,22 +10,22 @@ dae::Scene::Scene(const std::wstring& name, bool startActive, const b2Vec2& grav
 	, m_IsInitialized{false}
 { 
 	m_pPhysicsWorld = new b2World(gravity);
-
+	UNREFERENCED_PARAMETER(gravity);
 	if (m_pPhysicsWorld != nullptr)
+	{
 		Logger::LogInfo(L"PhysicsWorld created succesfully in scene: " + m_SceneName);
+		m_pPhysicsWorld->CreateBody(new b2BodyDef());
+	}
 }
 
 dae::Scene::~Scene()
 {
-	for (std::vector<GameObject*>::iterator it = m_pObjects.begin(); it != m_pObjects.end(); ++it)
-	{
-		delete (*it);
-	}
 	m_pObjects.clear();
-	//SAFE_RELEASE(m_pPhysicsWorld);
+	
+	delete m_pPhysicsWorld;
 }
 
-void dae::Scene::AddGameObject(GameObject* object)
+void dae::Scene::AddGameObject(std::shared_ptr<GameObject> object)
 {
 	object->SetPhysicsWorld(m_pPhysicsWorld);
 	m_pObjects.push_back(object);
@@ -52,7 +51,11 @@ void dae::Scene::BaseRender() const
 
 void dae::Scene::FixedUpdate()
 {
-	m_pPhysicsWorld->Step(GameInfo::fixedTime, GameInfo::physicsVelocityIterations, GameInfo::physicsPositionIterations);
+	if (m_pPhysicsWorld != nullptr)
+	{
+		m_pPhysicsWorld->Step(GameInfo::fixedTime, GameInfo::physicsVelocityIterations, GameInfo::physicsPositionIterations);
+
+	}
 }
 
 bool dae::Scene::GetIsActive() const

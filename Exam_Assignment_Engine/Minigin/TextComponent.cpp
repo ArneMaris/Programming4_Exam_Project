@@ -1,17 +1,15 @@
 #include "MiniginPCH.h"
-#include <SDL.h>
-#include <SDL_ttf.h>
 
 #include "TextComponent.h"
 #include "Renderer.h"
 #include "Font.h"
 #include "GameObject.h"
-#include "SDL.h"
+#include "Utility.h"
 
 
-dae::TextComponent::TextComponent(Font* font, const std::wstring& text, const SDL_Color& color)
+dae::TextComponent::TextComponent(std::shared_ptr<Font> font, const std::string& text, const SDL_Color& color)
 	: m_NeedsUpdate(true)
-	, m_Text(text)
+	, m_Text(std::move(text))
 	, m_pFont(font)
 	, m_pTexture(nullptr)
 	, m_TextColor{ color }
@@ -28,15 +26,12 @@ void dae::TextComponent::Update()
 		{
 			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());
 		}
-		if (m_pTexture != nullptr)
-			SDL_DestroyTexture(m_pTexture);
 
-		auto texture = SDL_CreateTextureFromSurface(Renderer::GetInstance().GetSDLRenderer(), surf);
+		auto texture = SDL_SharedPointer(SDL_CreateTextureFromSurface(Renderer::GetInstance().GetSDLRenderer(), surf));
 		if (texture == nullptr) 
 		{
 			throw std::runtime_error(std::string("Create text texture from surface failed: ") + SDL_GetError());
 		}
-		SDL_FreeSurface(surf);
 		m_pTexture = texture;
 	}
 }
@@ -50,9 +45,9 @@ void dae::TextComponent::Render() const
 	}
 }
 
-void dae::TextComponent::SetText(const std::wstring& text)
+void dae::TextComponent::SetText(const std::string& text)
 {
-	m_Text = text;
+	m_Text = std::move(text);
 	m_NeedsUpdate = true;
 }
 

@@ -3,8 +3,9 @@
 #include "Singleton.h"
 #include "SDL_scancode.h"
 #include <map>
+#include "SDL_events.h"
 
-#define MAX_CONTROLLERS 4;
+#define MAX_CONTROLLERS 4
 
 namespace dae
 {
@@ -41,21 +42,23 @@ namespace dae
 		InputAction* AddInputAction(const std::wstring& name, SDL_Scancode keyBoardScanecode, ControllerInput controllerInput);
 		InputAction* AddInputAction(const std::wstring& name, SDL_Scancode keyBoardScanecode);
 		InputAction* AddInputAction(const std::wstring& name, ControllerInput controllerInput);
-		bool IsPressed(const std::wstring& inputActionName, unsigned int controllerId);
-		bool IsReleased(const std::wstring& inputActionName, unsigned int controllerId);
-		bool IsHolding(const std::wstring& inputActionName, unsigned int controllerId);
-		bool IsPressed(InputAction* inputActionPointer, unsigned int controllerId);
-		bool IsReleased(InputAction* inputActionPointer, unsigned int controllerId);
-		bool IsHolding(InputAction* inputActionPointer, unsigned int controllerId);
+		bool IsPressed(const std::wstring& inputActionName, unsigned int controllerId = 0);
+		bool IsReleased(const std::wstring& inputActionName, unsigned int controllerId = 0);
+		bool IsHolding(const std::wstring& inputActionName, unsigned int controllerId = 0);
+		bool IsPressed(InputAction* inputActionPointer, unsigned int controllerId = 0);
+		bool IsReleased(InputAction* inputActionPointer, unsigned int controllerId = 0);
+		bool IsHolding(InputAction* inputActionPointer, unsigned int controllerId = 0);
 
-		b2Vec2 GetControllerAxis(const std::wstring& inputActionName, unsigned int controllerId); // used for triggers and joysticks
-		b2Vec2 GetControllerAxis(InputAction* inputActionPointer, unsigned int controllerId);
+		b2Vec2 GetControllerAxis(const std::wstring& inputActionName, unsigned int controllerId = 0); // used for triggers and joysticks
+		b2Vec2 GetControllerAxis(InputAction* inputActionPointer, unsigned int controllerId = 0);
 	private:
-		XINPUT_STATE* m_CurrentGpState[4]{};
-		XINPUT_STATE* m_PreviousGpState[4]{};
-		SDL_Event* m_CurrentEvent{};
-		SDL_Event* m_PreviousEvent{};
-		std::map<const std::wstring, InputAction*> m_InputActions{};
+		XINPUT_STATE m_CurrentGpState[MAX_CONTROLLERS]{};
+		XINPUT_STATE m_PreviousGpState[MAX_CONTROLLERS]{};
+		bool m_CurrentGpConnected[MAX_CONTROLLERS];
+		bool m_PreviousGpConnected[MAX_CONTROLLERS];
+		SDL_Event m_CurrentEvent;
+		SDL_Event m_PreviousEvent;
+		std::map<const std::wstring, InputAction*> m_InputActions;
 	};
 
 

@@ -29,10 +29,10 @@ namespace dae
 		dae::ControllerInput m_ControllerInput = dae::ControllerInput::NONE;
 		bool m_ControllerInputIsAxis = false;
 
-		bool IsPressed(SDL_Event* e, SDL_Event* ePrev, XINPUT_STATE* gamePadState, XINPUT_STATE* prevGamePadState); //if pressed this frame
-		bool IsReleased(SDL_Event* e, SDL_Event* ePrev, XINPUT_STATE* gamePadState, XINPUT_STATE* prevGamePadState); //if released this frame
-		bool IsHolding(SDL_Event* e, SDL_Event* ePrev, XINPUT_STATE* gamePadState, XINPUT_STATE* prevGamePadState); //if holding for multiple frames
-		b2Vec2 GetAxis(XINPUT_STATE* gamePadState);
+		bool IsPressed(SDL_Event& e, SDL_Event& ePrev, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState); //if pressed this frame
+		bool IsReleased(SDL_Event& e, SDL_Event& ePrev, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState); //if released this frame
+		bool IsHolding(SDL_Event& e, SDL_Event& ePrev, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState); //if holding for multiple frames
+		b2Vec2 GetAxis(XINPUT_STATE& gamePadState);
 		void ClampStickInput(b2Vec2& stickInput, int deadZoneValue);
 	};
 }
