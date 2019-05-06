@@ -97,6 +97,7 @@
     <ClInclude Include="nanosvg.h">
       <Filter>Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicsDebugDrawer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -141,9 +142,6 @@
     <ClCompile Include="SpriteComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="BaseComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="TestScene.cpp">
       <Filter>MainAndTests</Filter>
     </ClCompile>
@@ -164,6 +162,9 @@
     </ClCompile>
     <ClCompile Include="InputAction.cpp">
       <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsDebugDrawer.cpp">
+      <Filter>MainAndTests</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

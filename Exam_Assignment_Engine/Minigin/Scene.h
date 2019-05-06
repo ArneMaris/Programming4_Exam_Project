@@ -14,6 +14,8 @@ namespace dae
 		void FixedUpdate();
 
 		virtual void Initialize() = 0;
+		void ActivateGameObjects();
+
 		bool GetIsActive() const;
 		void SetIsActive(bool value);
 		b2World* GetPhysicsWorld() const;
@@ -26,11 +28,16 @@ namespace dae
 		Scene(Scene&& other) = delete;
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
+
+		void EnablePhysicsDebugDrawing() { GameInfo::drawPhysicsDebug = true; };
+		void DisablePhysicsDebugDrawing() { GameInfo::drawPhysicsDebug = false; };
+
 	protected:
 		bool m_IsInitialized;
 	private: 
 		virtual void Update() = 0; // different Update for every scene, called in BaseUpdate
 		virtual void Render() const = 0; // different Render for every scene, called in BaseRender
+		
 
 		virtual void OnCollisionStart() = 0;
 		virtual void OnCollisionEnd() = 0;

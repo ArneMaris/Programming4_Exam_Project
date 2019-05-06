@@ -60,11 +60,16 @@ void dae::AnimatedSpriteComponent::Update()
 	}
 }
 
+void dae::AnimatedSpriteComponent::Initialize()
+{
+}
+
 void dae::AnimatedSpriteComponent::Render() const
 {
 	if (m_pTexture != nullptr)
 	{
-		const auto pos = m_pGameObject->GetPosition();
+		auto pos = m_pGameObject->GetTransform()->GetPosition();
+		auto rot = m_pGameObject->GetTransform()->GetRotation();
 		int frameWidth{ m_TextureWidth / m_Cols };
 		int frameHeight{ m_TextureHeight / m_Rows };
 		SDL_Rect destRect{ int(pos.x + m_Offset.x), int(pos.y + m_Offset.y), int(frameWidth * m_Scale), int(frameHeight * m_Scale) };
@@ -82,7 +87,7 @@ void dae::AnimatedSpriteComponent::Render() const
 			break;
 		}
 
-		Renderer::GetInstance().RenderTexture(m_pTexture, destRect, srcRect, m_Angle, m_RotationCenter, flip);
+		Renderer::GetInstance().RenderTexture(m_pTexture, destRect, srcRect, rot + m_Angle, { int(pos.x) + m_RotationCenter.x, int(pos.y) + m_RotationCenter.y }, flip);
 	}
 }
 

@@ -4,33 +4,34 @@
 
 namespace dae
 {
+	struct ShapeSettings
+	{
+		float density;
+		float friction;
+		float restitution;
+		bool isTrigger;
+
+		ShapeSettings(bool IsTrigger, float Density, float Friction, float Restitution)
+			:isTrigger{ IsTrigger }
+			, density{ Density }
+			, friction{ Friction }
+			, restitution{ Restitution }
+		{}
+
+		ShapeSettings()
+			:isTrigger{ false }
+			, density{ 1 }
+			, friction{ 0.5f }
+			, restitution{ 0.1f }
+		{}
+	};
 	class Scene;
 
 	class ColliderComponent final: public BaseComponent
 	{
 	public:
-		struct ShapeSettings
-		{
-			float density;
-			float friction;
-			float restitution;
-			bool isTrigger;
 
-			ShapeSettings(bool IsTrigger, float Density, float Friction, float Restitution)
-				:isTrigger{IsTrigger}
-				,density{Density}
-				,friction{Friction}
-				,restitution{Restitution}
-			{}
-
-			ShapeSettings()
-				:isTrigger{ false }
-				, density{ 1 }
-				, friction{ 0.5f }
-				, restitution{ 0.1f }
-			{}
-		};
-		explicit ColliderComponent(PhysicsBodyComponent* physicsBodyComp);
+		explicit ColliderComponent(PhysicsBodyComponent* physicsBody);
 		~ColliderComponent() = default;
 		ColliderComponent(const ColliderComponent& other) = delete;
 		ColliderComponent(ColliderComponent&& other) = delete;
@@ -49,11 +50,12 @@ namespace dae
 
 	protected:
 		virtual void Update() override;
+		virtual void Initialize() override;
+		virtual void Render() const override;
 
 	private:
 		b2Body* m_pBodyRef;
 		std::vector<std::shared_ptr<b2Fixture>> m_Fixtures;
-		b2ContactListener* m_pContactListener;
 
 		Scene* m_pSceneRef;
 

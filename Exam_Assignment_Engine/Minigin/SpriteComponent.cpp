@@ -21,12 +21,16 @@ void dae::SpriteComponent::Update()
 
 }
 
+void dae::SpriteComponent::Initialize()
+{
+}
+
 void dae::SpriteComponent::Render() const
 {
 	if (m_pTexture != nullptr)
 	{
-		const auto pos = m_pGameObject->GetPosition();
-		Renderer::GetInstance().RenderTexture(m_pTexture, pos.x + m_Offset.x, pos.y + m_Offset.y);
+		auto pos = m_pGameObject->GetTransform()->GetPosition();
+		Renderer::GetInstance().RenderTexture(m_pTexture, pos.x + m_Offset.x, pos.y - m_Offset.y, m_pGameObject->GetTransform()->GetRotation(), { int(pos.x), int(pos.y) });
 	}
 }
 

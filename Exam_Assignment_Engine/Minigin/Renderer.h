@@ -16,8 +16,10 @@ namespace dae
 
 		void RenderTexture(std::shared_ptr<SDL_Texture> texture, float x, float y) const;
 		void RenderTexture(std::shared_ptr<SDL_Texture> texture, float x, float y, float width, float height) const;
+		void RenderTexture(std::shared_ptr<SDL_Texture> texture, const float x, const float y, float angle, const SDL_Point& rotationCenter) const;
 		void RenderTexture(std::shared_ptr<SDL_Texture> texture, const SDL_Rect& destRect, const SDL_Rect& srcRect) const;
 		void RenderTexture(std::shared_ptr<SDL_Texture> texture, const SDL_Rect& destRect, const SDL_Rect& srcRect, float angle, const SDL_Point& rotationCenter, const SDL_RendererFlip& flip) const;
+
 
 		SDL_Renderer* GetSDLRenderer() const { return m_Renderer; }
 	};

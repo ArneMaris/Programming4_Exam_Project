@@ -40,20 +40,20 @@ const std::wstring & dae::Scene::GetSceneName() const
 
 void dae::Scene::BaseUpdate()
 {
+	Update();
 	for(auto gameObject : m_pObjects)
 	{
 		gameObject->Update();
 	}
-	Update();
 }
 
 void dae::Scene::BaseRender() const
 {
+	Render();
 	for (const auto gameObject : m_pObjects)
 	{
 		gameObject->Render();
 	}
-	Render();
 }
 
 void dae::Scene::FixedUpdate()
@@ -61,7 +61,6 @@ void dae::Scene::FixedUpdate()
 	if (m_pPhysicsWorld != nullptr)
 	{
 		m_pPhysicsWorld->Step(GameInfo::fixedTime, GameInfo::physicsVelocityIterations, GameInfo::physicsPositionIterations);
-
 	}
 }
 
@@ -78,4 +77,12 @@ void dae::Scene::SetIsActive(bool value)
 b2World* dae::Scene::GetPhysicsWorld() const
 {
 	return m_pPhysicsWorld;
+}
+
+void dae::Scene::ActivateGameObjects()
+{
+	for (auto gameObject : m_pObjects)
+	{
+		gameObject->Initialize();
+	}
 }

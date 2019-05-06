@@ -22,7 +22,8 @@ namespace dae
 
 	protected:
 		virtual void Update() = 0;
-		virtual void Render() const;
+		virtual void Initialize() = 0;
+		virtual void Render() const = 0;
 
 		GameObject* m_pGameObject;
 	};

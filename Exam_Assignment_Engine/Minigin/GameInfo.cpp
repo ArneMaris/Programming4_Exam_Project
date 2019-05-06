@@ -11,3 +11,5 @@ int dae::GameInfo::physicsVelocityIterations = 6;
 int dae::GameInfo::physicsPositionIterations = 3;
 
 bool dae::GameInfo::enableVsync = false;
+
+bool dae::GameInfo::drawPhysicsDebug = false;

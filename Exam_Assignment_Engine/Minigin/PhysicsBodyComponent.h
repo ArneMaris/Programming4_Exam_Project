@@ -19,7 +19,14 @@ namespace dae
 		PhysicsBodyComponent& operator=(const PhysicsBodyComponent& other) = delete;
 		PhysicsBodyComponent& operator=(PhysicsBodyComponent&& other) = delete;
 
+		void ApplyForce(const b2Vec2& force, const b2Vec2& point);
+		void ApplyTorque(float torque);
+		void ApplyLinearImpulse(const b2Vec2& impulse, const b2Vec2& point);
+		void ApplyAngularImpulse(float impulse);
+
 		virtual void Update() override;
+		virtual void Initialize() override;
+		virtual void Render() const override;
 
 	private:
 		b2World* m_pPhysicsWorldRef;

@@ -5,7 +5,8 @@
 #include "BaseComponent.h"
 
 dae::GameObject::GameObject()
-	:m_pPhysicsWorldRef{nullptr}
+	:m_pPhysicsWorldRef{ nullptr }
+	, m_Initialized{ false }
 {
 	AddComponent(new TransformComponent());
 }
@@ -36,14 +37,16 @@ void dae::GameObject::Render() const
 	}
 }
 
-void dae::GameObject::SetPosition(float x, float y)
+void dae::GameObject::Initialize()
 {
-	GetComponent<TransformComponent>()->SetPosition(x, y, 0.0f);
-}
-
-const b2Vec3 dae::GameObject::GetPosition()
-{
-	return GetComponent<TransformComponent>()->GetPosition();
+	if (!m_Initialized)
+	{
+		for (BaseComponent* comp : m_pComponents)
+		{
+			comp->Initialize();
+		}
+		m_Initialized = true;
+	}
 }
 
 dae::TransformComponent* dae::GameObject::GetTransform() const

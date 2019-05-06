@@ -9,9 +9,8 @@ namespace dae
 	public:
 		virtual void Update();
 		virtual void Render() const;
+		virtual void Initialize();
 
-		void SetPosition(float x, float y);
-		const b2Vec3 GetPosition();
 		TransformComponent* GetTransform() const;
 
 		BaseComponent* AddComponent(BaseComponent* pComp);
@@ -61,6 +60,8 @@ namespace dae
 		b2World* m_pPhysicsWorldRef;
 	private:
 		std::vector<BaseComponent*> m_pComponents;
+
+		bool m_Initialized;
 	};
 
 }

@@ -4,20 +4,32 @@
 #include "ResourceManager.h"
 #include "SceneManager.h"
 #include "Scene.h"
+#include "GameObject.h"
 
-dae::ColliderComponent::ColliderComponent(PhysicsBodyComponent* physicsBodyComp)
-	:m_pBodyRef{physicsBodyComp->GetPhysicsBody()}
+dae::ColliderComponent::ColliderComponent(PhysicsBodyComponent* physicsBody)
+	:m_pBodyRef{}
 {
 	Logger::LogInfo(L"ColliderComponent created, you can add Collision/trigger(shapes) by doing Add...()");
 	m_pSceneRef = SceneManager::GetInstance().GetActiveScene();
-	m_pSceneRef->GetPhysicsWorld()->SetContactListener(new b2ContactListener());
-	auto s = m_pSceneRef->GetPhysicsWorld()->GetContactManager().m_contactListener;
-	UNREFERENCED_PARAMETER(s);
+	m_pBodyRef = physicsBody->GetPhysicsBody();
+	if (m_pBodyRef == nullptr)
+	{
+		Logger::LogWarning(L"Trying to add a colliderComponent to an invalid physicsBody!");
+	}
 }
 
 void dae::ColliderComponent::Update()
 {
 
+}
+
+void dae::ColliderComponent::Initialize()
+{
+
+}
+
+void dae::ColliderComponent::Render() const
+{
 }
 
 

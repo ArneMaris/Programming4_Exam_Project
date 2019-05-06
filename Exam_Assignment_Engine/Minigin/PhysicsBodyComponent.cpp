@@ -16,6 +16,7 @@ dae::PhysicsBodyComponent::PhysicsBodyComponent(b2BodyType bodyType)
 	b2BodyDef def{};
 	def.type = bodyType;
 	m_Body = m_pPhysicsWorldRef->CreateBody(&def);
+	m_Body->SetUserData(this);
 }
 
 dae::PhysicsBodyComponent::PhysicsBodyComponent(b2BodyType bodyType, const b2Vec2 & pos, const float rotRadians, float linearDamping, float angularDamping, bool startActive, bool isFastTraveling)
@@ -39,19 +40,49 @@ dae::PhysicsBodyComponent::PhysicsBodyComponent(b2BodyType bodyType, const b2Vec
 	m_Body = m_pPhysicsWorldRef->CreateBody(&def);
 }
 
-b2Body * dae::PhysicsBodyComponent::GetPhysicsBody() const
+b2Body* dae::PhysicsBodyComponent::GetPhysicsBody() const
 {
 	if (m_Body == nullptr)
 	{
 		Logger::LogError(L"Trying to get nullptr body!");
+		return nullptr;
 	}
 	return m_Body;
 }
 
 void dae::PhysicsBodyComponent::Update()
 {
+	m_pGameObject->GetTransform()->SetPosition(m_Body->GetPosition());
+	m_pGameObject->GetTransform()->SetRotation(m_Body->GetAngle());
+}
+
+void dae::PhysicsBodyComponent::Initialize()
+{
+	m_Body->SetUserData(GetGameObject());
+	m_Body->SetTransform(m_pGameObject->GetTransform()->GetPosition(), m_pGameObject->GetTransform()->GetRotation());
+}
+
+void dae::PhysicsBodyComponent::Render() const
+{
 
 }
 
+inline void dae::PhysicsBodyComponent::ApplyForce(const b2Vec2 & force, const b2Vec2 & point)
+{
+	m_Body->ApplyForce(force, point, true);
+}
 
+inline void dae::PhysicsBodyComponent::ApplyTorque(float torque)
+{
+	m_Body->ApplyTorque(torque, true);
+}
 
+inline void dae::PhysicsBodyComponent::ApplyLinearImpulse(const b2Vec2 & impulse, const b2Vec2 & point)
+{
+	m_Body->ApplyLinearImpulse(impulse, point, true);
+}
+
+inline void dae::PhysicsBodyComponent::ApplyAngularImpulse(float impulse)
+{
+	m_Body->ApplyAngularImpulse(impulse, true);
+}

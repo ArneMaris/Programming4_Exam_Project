@@ -25,15 +25,23 @@ void TestScene::Initialize()
 
 
 	auto obj = new dae::GameObject();
-	obj->AddComponent(new dae::SpriteComponent(L"background.jpg"));
-	obj->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_kinematicBody));
-	obj->AddComponent(new dae::ColliderComponent(obj->GetComponent<dae::PhysicsBodyComponent>()));
+
+	obj->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_dynamicBody));
+	auto comp = obj->AddComponent(new dae::ColliderComponent(obj->GetComponent<dae::PhysicsBodyComponent>()));
+	static_cast<dae::ColliderComponent*>(comp)->AddBoxShape(10, 10, dae::ShapeSettings(false, 1, 0.5f, 0));
+	obj->AddComponent(new dae::AnimatedSpriteComponent(L"SpriteTest.png", 4,2));
+	obj->GetTransform()->Translate(20, 30);
 	AddGameObject(obj);
 
 	obj = new dae::GameObject();
-	obj->SetPosition(216, 180);
-	obj->AddComponent(new dae::SpriteComponent(L"logo.png"));
+	obj->AddComponent(new dae::SpriteComponent(L"background.jpg"));
+	obj->GetTransform()->SetPosition(0, 0);
+	obj->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_staticBody));
+	comp = obj->AddComponent(new dae::ColliderComponent(obj->GetComponent<dae::PhysicsBodyComponent>()));
+	static_cast<dae::ColliderComponent*>(comp)->AddBoxShape(600, 20, dae::ShapeSettings(false, 1, 0.5f, 0));
 	AddGameObject(obj);
+
+	EnablePhysicsDebugDrawing();
 
 	//auto font = dae::ResourceManager::GetInstance().LoadFont(L"Lingua.otf", 36);
 	//obj = new dae::GameObject();

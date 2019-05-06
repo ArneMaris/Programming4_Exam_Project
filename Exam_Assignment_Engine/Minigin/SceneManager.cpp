@@ -8,6 +8,7 @@ void dae::SceneManager::Initialize()
 	for (auto scene : m_pScenes)
 	{
 		scene->Initialize();
+		scene->ActivateGameObjects();
 	}
 }
 

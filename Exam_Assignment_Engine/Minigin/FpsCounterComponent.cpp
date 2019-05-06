@@ -41,6 +41,10 @@ void dae::FpsCounterComponent::Update()
 	m_pTextComp->Update();
 }
 
+void dae::FpsCounterComponent::Initialize()
+{
+}
+
 void dae::FpsCounterComponent::Render() const
 {
 	m_pTextComp->Render();

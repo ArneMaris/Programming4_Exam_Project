@@ -36,12 +36,16 @@ void dae::TextComponent::Update()
 	}
 }
 
+void dae::TextComponent::Initialize()
+{
+}
+
 void dae::TextComponent::Render() const
 {
 	if (m_pTexture != nullptr)
 	{
-		const auto pos = m_pGameObject->GetPosition();
-		Renderer::GetInstance().RenderTexture(m_pTexture, pos.x, pos.y);
+		auto pos = m_pGameObject->GetTransform()->GetPosition();
+		Renderer::GetInstance().RenderTexture(m_pTexture, pos.x, pos.y, m_pGameObject->GetTransform()->GetRotation(), { int(pos.x), int(pos.y) });
 	}
 }
 

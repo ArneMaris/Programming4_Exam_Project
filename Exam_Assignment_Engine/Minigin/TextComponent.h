@@ -25,6 +25,7 @@ namespace dae
 
 	protected:
 		virtual void Update() override;
+		virtual void Initialize() override;
 		virtual void Render() const override;
 
 	private:

@@ -13,6 +13,7 @@ namespace dae
 		static int physicsVelocityIterations;
 		static int physicsPositionIterations;
 		static bool enableVsync;
+		static bool drawPhysicsDebug;
 	private:
 	};
 };
