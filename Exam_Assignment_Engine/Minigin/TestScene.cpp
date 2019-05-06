@@ -24,22 +24,22 @@ void TestScene::Initialize()
 	//dae::Logger::LogInfo("testInfo");
 
 
-	auto obj = new dae::GameObject();
+	 obj1 = new dae::GameObject();
+	 obj2 = new dae::GameObject();
 
-	obj->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_dynamicBody));
-	auto comp = obj->AddComponent(new dae::ColliderComponent(obj->GetComponent<dae::PhysicsBodyComponent>()));
-	static_cast<dae::ColliderComponent*>(comp)->AddBoxShape(10, 10, dae::ShapeSettings(false, 1, 0.5f, 0));
-	obj->AddComponent(new dae::AnimatedSpriteComponent(L"SpriteTest.png", 4,2));
-	obj->GetTransform()->Translate(20, 30);
-	AddGameObject(obj);
+	obj1->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_dynamicBody));
+	obj1->AddComponent(new dae::ColliderComponent(obj1->GetComponent<dae::PhysicsBodyComponent>()));
+	obj1->GetComponent<dae::ColliderComponent>()->AddBoxShape(10, 10, dae::ShapeSettings(false, 1, 0.5f, 0));
+	obj1->AddComponent(new dae::AnimatedSpriteComponent(L"SpriteTest.png", 4,2));
+	obj1->GetTransform()->Translate(20, 60);
+	AddGameObject(obj1);
 
-	obj = new dae::GameObject();
-	obj->AddComponent(new dae::SpriteComponent(L"background.jpg"));
-	obj->GetTransform()->SetPosition(0, 0);
-	obj->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_staticBody));
-	comp = obj->AddComponent(new dae::ColliderComponent(obj->GetComponent<dae::PhysicsBodyComponent>()));
-	static_cast<dae::ColliderComponent*>(comp)->AddBoxShape(600, 20, dae::ShapeSettings(false, 1, 0.5f, 0));
-	AddGameObject(obj);
+	obj2->AddComponent(new dae::SpriteComponent(L"background.jpg"));
+	obj2->GetTransform()->SetPosition(0,40);
+	obj2->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_staticBody));
+	obj2->AddComponent(new dae::ColliderComponent(obj2->GetComponent<dae::PhysicsBodyComponent>()));
+	obj2->GetComponent<dae::ColliderComponent>()->AddBoxShape(600, 20, dae::ShapeSettings(false, 1, 0.5f, 0));
+	AddGameObject(obj2);
 
 	EnablePhysicsDebugDrawing();
 
@@ -85,6 +85,10 @@ void TestScene::Update()
 	if (dae::InputManager::GetInstance().IsPressed(L"MoveUp",0))
 	{
 		dae::Logger::LogInfo(L"MOVING UP PRESSED");
+	}
+	if (obj1->GetComponent<dae::ColliderComponent>()->IsCollidingWith(obj2))
+	{
+		//dae::Logger::LogInfo(L"COLLISION");
 	}
 	//if (dae::InputManager::GetInstance().IsReleased("MoveUp"))
 	//{

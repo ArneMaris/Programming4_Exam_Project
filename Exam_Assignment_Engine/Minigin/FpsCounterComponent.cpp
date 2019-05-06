@@ -11,7 +11,8 @@ dae::FpsCounterComponent::FpsCounterComponent(std::shared_ptr<Font> font, bool l
 	, m_FpsTimer{0}
 	, m_LeftTop{ leftTopCorner }
 {
-	m_pTextComp = static_cast<TextComponent*>(GetGameObject()->AddComponent(new TextComponent(font, "0")));
+	m_pGameObject->AddComponent(new TextComponent(font, "0"));
+	m_pTextComp = m_pGameObject->GetComponent<TextComponent>();
 }
 
 void dae::FpsCounterComponent::Update()

@@ -16,7 +16,6 @@ dae::PhysicsBodyComponent::PhysicsBodyComponent(b2BodyType bodyType)
 	b2BodyDef def{};
 	def.type = bodyType;
 	m_Body = m_pPhysicsWorldRef->CreateBody(&def);
-	m_Body->SetUserData(this);
 }
 
 dae::PhysicsBodyComponent::PhysicsBodyComponent(b2BodyType bodyType, const b2Vec2 & pos, const float rotRadians, float linearDamping, float angularDamping, bool startActive, bool isFastTraveling)
@@ -62,10 +61,6 @@ void dae::PhysicsBodyComponent::Initialize()
 	m_Body->SetTransform(m_pGameObject->GetTransform()->GetPosition(), m_pGameObject->GetTransform()->GetRotation());
 }
 
-void dae::PhysicsBodyComponent::Render() const
-{
-
-}
 
 inline void dae::PhysicsBodyComponent::ApplyForce(const b2Vec2 & force, const b2Vec2 & point)
 {
@@ -85,4 +80,9 @@ inline void dae::PhysicsBodyComponent::ApplyLinearImpulse(const b2Vec2 & impulse
 inline void dae::PhysicsBodyComponent::ApplyAngularImpulse(float impulse)
 {
 	m_Body->ApplyAngularImpulse(impulse, true);
+}
+
+void dae::PhysicsBodyComponent::Render() const
+{
+
 }

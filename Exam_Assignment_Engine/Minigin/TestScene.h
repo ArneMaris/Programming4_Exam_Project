@@ -12,5 +12,9 @@ public:
 	virtual void OnCollisionEnd() override;
 
 	~TestScene() = default;
+
+private:
+	dae::GameObject* obj1;
+	dae::GameObject* obj2;
 };
 

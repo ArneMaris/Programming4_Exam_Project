@@ -5,8 +5,8 @@ namespace dae
 {
 	class TransformComponent final : public BaseComponent
 	{
+		friend class GameObject;
 	public:
-		TransformComponent();
 		const b2Vec2& GetPosition() const { return m_Position; }
 		float GetRotation() const { return m_Rotation; }
 		void SetPosition(float x, float y);
@@ -22,6 +22,7 @@ namespace dae
 		virtual void Initialize() override;
 		virtual void Render() const override;
 	private:
+		TransformComponent();
 		b2Vec2 m_Position{};
 		float m_Rotation;
 	};

@@ -14,6 +14,8 @@ namespace dae
 		static int physicsPositionIterations;
 		static bool enableVsync;
 		static bool drawPhysicsDebug;
+
+		static int amountOfGameObjects;
 	private:
 	};
 };

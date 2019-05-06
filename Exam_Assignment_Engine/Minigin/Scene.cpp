@@ -1,6 +1,7 @@
 #include "MiniginPCH.h"
 #include "Scene.h"
 #include "GameObject.h"
+#include "MMCallbacks.h"
 
 unsigned int dae::Scene::s_idCounter = 0;
 
@@ -10,6 +11,8 @@ dae::Scene::Scene(const std::wstring& name, const b2Vec2& gravity)
 	, m_IsActive { true }
 { 
 	m_pPhysicsWorld = new b2World(gravity);
+	m_MMCallbacks = new MMCallbacks();
+	m_pPhysicsWorld->SetContactListener(m_MMCallbacks);
 	if (m_pPhysicsWorld != nullptr)
 	{
 		Logger::LogInfo(L"PhysicsWorld created succesfully in scene: " + m_SceneName);

@@ -7,15 +7,19 @@
 #include "GameObject.h"
 
 dae::ColliderComponent::ColliderComponent(PhysicsBodyComponent* physicsBody)
-	:m_pBodyRef{}
+	:m_pBodyRef{ physicsBody->GetPhysicsBody() }
 {
 	Logger::LogInfo(L"ColliderComponent created, you can add Collision/trigger(shapes) by doing Add...()");
 	m_pSceneRef = SceneManager::GetInstance().GetActiveScene();
-	m_pBodyRef = physicsBody->GetPhysicsBody();
 	if (m_pBodyRef == nullptr)
 	{
 		Logger::LogWarning(L"Trying to add a colliderComponent to an invalid physicsBody!");
 	}
+}
+
+dae::ColliderComponent::~ColliderComponent()
+{
+
 }
 
 void dae::ColliderComponent::Update()
@@ -135,7 +139,7 @@ void dae::ColliderComponent::AddSVGCollision(const std::wstring & svgFilePath, b
 	AddChainShape(ResourceManager::GetInstance().GetVerticesFromSVG(svgFilePath), closedLoop, shapeSettings);
 }
 
-std::vector<std::shared_ptr<b2Fixture>> dae::ColliderComponent::GetFixturesVector() const
+std::vector<b2Fixture*> dae::ColliderComponent::GetFixturesVector() const
 {
 	if (m_Fixtures.size() <= 0)
 	{
@@ -146,7 +150,7 @@ std::vector<std::shared_ptr<b2Fixture>> dae::ColliderComponent::GetFixturesVecto
 
 void dae::ColliderComponent::RemoveShape(int creationOrder)
 {
-	m_pBodyRef->DestroyFixture(m_Fixtures[creationOrder - 1].get());
+	m_pBodyRef->DestroyFixture(m_Fixtures[creationOrder - 1]);
 	auto it = std::find(m_Fixtures.begin(), m_Fixtures.end(), m_Fixtures[creationOrder-1]);
 	if (it != m_Fixtures.end())
 	{
@@ -158,6 +162,44 @@ void dae::ColliderComponent::RemoveShape(int creationOrder)
 	}
 }
 
+std::deque<dae::GameObject*> dae::ColliderComponent::GetAllCollisionObjects()
+{
+	return m_CollisionObjects;
+}
+
+bool dae::ColliderComponent::IsCollidingWith(GameObject * withObject)
+{
+	if (std::find(m_CollisionObjects.begin(), m_CollisionObjects.end(), withObject) != m_CollisionObjects.end()) //if object found return true
+		return true;
+	else 
+		return false;
+}
+
+bool dae::ColliderComponent::IsColliding()
+{
+	if (m_CollisionObjects.size() > 0)
+		return true;
+	else
+		return false;
+}
+
+void dae::ColliderComponent::AddCollisionObject(GameObject * collisionObj)
+{
+	if (std::find(m_CollisionObjects.begin(), m_CollisionObjects.end(), collisionObj) == m_CollisionObjects.end()) //only add when not already in
+	{
+		m_CollisionObjects.push_back(collisionObj);
+	}
+}
+
+void dae::ColliderComponent::RemoveCollisionObject(GameObject * collisionObj)
+{
+	auto it = std::find(m_CollisionObjects.begin(), m_CollisionObjects.end(), collisionObj);
+	if (it == m_CollisionObjects.end()) //only erase when in
+	{
+		m_CollisionObjects.erase(it);
+	}
+}
+
 void dae::ColliderComponent::CreateFixture(const b2Shape& shape, const ShapeSettings& shapeSettings)
 {
 	b2FixtureDef fixDef{};
@@ -166,5 +208,6 @@ void dae::ColliderComponent::CreateFixture(const b2Shape& shape, const ShapeSett
 	fixDef.friction = shapeSettings.friction;
 	fixDef.restitution = shapeSettings.restitution;
 	fixDef.isSensor = shapeSettings.isTrigger;
-	m_Fixtures.push_back(std::shared_ptr<b2Fixture>(m_pBodyRef->CreateFixture(&fixDef)));
+	m_Fixtures.push_back(m_pBodyRef->CreateFixture(&fixDef));
+	m_Fixtures.back()->SetUserData(this); //set the user data to the ColliderComponent so that in the callbacks you can acces it
 }

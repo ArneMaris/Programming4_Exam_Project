@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
 #include "PhysicsBodyComponent.h"
+#include <deque>
 
 namespace dae
 {
@@ -29,10 +30,10 @@ namespace dae
 
 	class ColliderComponent final: public BaseComponent
 	{
+		friend class MMCallbacks;
 	public:
-
 		explicit ColliderComponent(PhysicsBodyComponent* physicsBody);
-		~ColliderComponent() = default;
+		~ColliderComponent();
 		ColliderComponent(const ColliderComponent& other) = delete;
 		ColliderComponent(ColliderComponent&& other) = delete;
 		ColliderComponent& operator=(const ColliderComponent& other) = delete;
@@ -45,21 +46,28 @@ namespace dae
 		void AddChainShape(const std::vector<b2Vec2>& vertices, bool closedLoop, const ShapeSettings& shapeSettings);
 		void AddSVGCollision(const std::wstring& svgFilePath, bool closedLoop, const ShapeSettings& shapeSettings);
 
-		std::vector<std::shared_ptr<b2Fixture>> GetFixturesVector() const;
+		std::vector<b2Fixture*> GetFixturesVector() const;
 		void RemoveShape(int creationOrder = 1);
+
+		std::deque<GameObject*> GetAllCollisionObjects();
+		bool IsCollidingWith(GameObject* withObject);
+		bool IsColliding();
 
 	protected:
 		virtual void Update() override;
 		virtual void Initialize() override;
 		virtual void Render() const override;
+		void AddCollisionObject(GameObject* collisionObj);
+		void RemoveCollisionObject(GameObject* collisionObj);
 
 	private:
+
 		b2Body* m_pBodyRef;
-		std::vector<std::shared_ptr<b2Fixture>> m_Fixtures;
-
+		std::vector<b2Fixture*> m_Fixtures;
 		Scene* m_pSceneRef;
-
 		void CreateFixture(const b2Shape & shape, const ShapeSettings& shapeSettings);
+		std::deque<GameObject*> m_CollisionObjects;
+
 	};
 
 }

@@ -3,12 +3,24 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 #include "BaseComponent.h"
+#include "ColliderComponent.h"
 
 dae::GameObject::GameObject()
 	:m_pPhysicsWorldRef{ nullptr }
 	, m_Initialized{ false }
+	, m_Name{L"GameObject" + std::to_wstring(GameInfo::amountOfGameObjects+1) }
 {
 	AddComponent(new TransformComponent());
+	GameInfo::amountOfGameObjects++;
+}
+
+dae::GameObject::GameObject(const std::wstring & name)
+	:m_pPhysicsWorldRef{ nullptr }
+	, m_Initialized{ false }
+	, m_Name{std::move(name)}
+{
+	AddComponent(new TransformComponent());
+	GameInfo::amountOfGameObjects++;
 }
 
 dae::GameObject::~GameObject()
@@ -18,7 +30,10 @@ dae::GameObject::~GameObject()
 		delete (*it);
 	}
 	m_pComponents.clear();
+	GameInfo::amountOfGameObjects--;
 }
+
+
 
 void dae::GameObject::Update()
 {
@@ -54,11 +69,27 @@ dae::TransformComponent* dae::GameObject::GetTransform() const
 	return static_cast<TransformComponent*>(m_pComponents.front()); //return first component (always transform cause got added in constructor of gameobject
 }
 
-dae::BaseComponent* dae::GameObject::AddComponent(BaseComponent* pComp)
+void dae::GameObject::AddComponent(BaseComponent* pComp)
 {
-	m_pComponents.push_back(pComp);
-	pComp->m_pGameObject = this;
-	return pComp;
+	if (!CheckIfAlreadyHasComponent(pComp))
+	{
+		m_pComponents.push_back(pComp);
+		pComp->m_pGameObject = this;
+	}
+	else
+	{
+		Logger::LogError(L"Cant add a second component of this Type!\n Probably you are trying to add another physicsBody or ColliderComponent to the same gameObject!");
+	}
+}
+
+bool dae::GameObject::CheckIfAlreadyHasComponent(BaseComponent * compToAdd)
+{
+	if (dynamic_cast<PhysicsBodyComponent*>(compToAdd) && GetComponent<PhysicsBodyComponent>() != nullptr)
+		return true;
+	else if (dynamic_cast<ColliderComponent*>(compToAdd) && GetComponent<ColliderComponent>() != nullptr)
+		return true;
+
+	return false;
 }
 
 void dae::GameObject::RemoveComponent(BaseComponent* pComp)
@@ -66,6 +97,16 @@ void dae::GameObject::RemoveComponent(BaseComponent* pComp)
 	auto it = find(m_pComponents.begin(), m_pComponents.end(), pComp);
 	m_pComponents.erase(it);
 	pComp->m_pGameObject = nullptr;
+}
+
+bool dae::GameObject::IsCollidingWith(GameObject * withObject)
+{
+	return GetComponent<ColliderComponent>()->IsCollidingWith(withObject);
+}
+
+bool dae::GameObject::IsColliding()
+{
+	return GetComponent<ColliderComponent>()->IsColliding();
 }
 
 void dae::GameObject::SetPhysicsWorld(b2World * physicsWorld)

@@ -48,6 +48,7 @@ namespace dae
 
 		static unsigned int s_idCounter; 
 		b2World *m_pPhysicsWorld;
+		b2ContactListener* m_MMCallbacks;
 	};
 
 }

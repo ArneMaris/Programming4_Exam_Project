@@ -13,18 +13,23 @@ namespace dae
 
 		TransformComponent* GetTransform() const;
 
-		BaseComponent* AddComponent(BaseComponent* pComp);
+		void AddComponent(BaseComponent* pComp);
 		void RemoveComponent(BaseComponent* pComp);
+
+		bool IsCollidingWith(GameObject* withObject);
+		bool IsColliding();
 
 		void SetPhysicsWorld(b2World* physicsWorld);
 		b2World* GetPhysicsWorld();
 
 		GameObject();
-		virtual ~GameObject();
+		GameObject(const std::wstring& name);
+		~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
+
 
 		//taken from DAE GP2 2018-2019
 #pragma region 
@@ -61,7 +66,10 @@ namespace dae
 	private:
 		std::vector<BaseComponent*> m_pComponents;
 
+		bool CheckIfAlreadyHasComponent(BaseComponent* compToAdd); //add all components that where you can't have 2 of on 1 gameObject
+
 		bool m_Initialized;
+		std::wstring m_Name;
 	};
 
 }

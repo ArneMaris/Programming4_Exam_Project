@@ -97,7 +97,12 @@
     <ClInclude Include="nanosvg.h">
       <Filter>Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsDebugDrawer.h" />
+    <ClInclude Include="MMCallbacks.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsDebugDrawer.h">
+      <Filter>MainAndTests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -165,6 +170,9 @@
     </ClCompile>
     <ClCompile Include="PhysicsDebugDrawer.cpp">
       <Filter>MainAndTests</Filter>
+    </ClCompile>
+    <ClCompile Include="MMCallbacks.cpp">
+      <Filter>Helpers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

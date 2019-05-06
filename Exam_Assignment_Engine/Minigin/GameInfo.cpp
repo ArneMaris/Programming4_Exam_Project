@@ -13,3 +13,5 @@ int dae::GameInfo::physicsPositionIterations = 3;
 bool dae::GameInfo::enableVsync = false;
 
 bool dae::GameInfo::drawPhysicsDebug = false;
+
+int dae::GameInfo::amountOfGameObjects = 0;
