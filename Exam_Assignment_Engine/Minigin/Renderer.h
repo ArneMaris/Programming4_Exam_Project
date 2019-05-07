@@ -11,7 +11,6 @@ namespace dae
 	public:
 		void Init(SDL_Window* window);
 		void Render();
-		void RenderImGui();
 		void Destroy();
 
 		void RenderTexture(std::shared_ptr<SDL_Texture> texture, float x, float y) const;

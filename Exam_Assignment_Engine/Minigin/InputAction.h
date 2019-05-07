@@ -1,5 +1,5 @@
 #pragma once
-#include "SDL_Scancode.h"
+#include "SDL_keyCode.h"
 #include "InputManager.h"
 
 namespace dae
@@ -17,19 +17,20 @@ namespace dae
 			TriggerRight
 		};
 	
-		InputAction(Command* command, SDL_Scancode scanCode = SDL_SCANCODE_UNKNOWN, dae::ControllerInput button = dae::ControllerInput::NONE);
+		InputAction(Command* command, SDL_Keycode keyCode = SDLK_UNKNOWN, dae::ControllerInput button = dae::ControllerInput::NONE);
 		~InputAction() = default;
 
-		//InputAction(const InputAction& InputAction) = delete;
-		//InputAction(InputAction&& InputAction) = delete;
-		//InputAction& operator=(const InputAction& other) = delete;
-		//InputAction& operator=(InputAction&& other) = delete;
+		InputAction(const InputAction& InputAction) = delete;
+		InputAction(InputAction&& InputAction) = delete;
+		InputAction& operator=(const InputAction& other) = delete;
+		InputAction& operator=(InputAction&& other) = delete;
 
-		SDL_Scancode m_ScanCode = SDL_SCANCODE_UNKNOWN;
+		SDL_Keycode m_KeyCode = SDLK_UNKNOWN;
 		dae::ControllerInput m_ControllerInput = dae::ControllerInput::NONE;
 		bool m_ControllerInputIsAxis = false;
+		bool m_KeyHeld = false;
 
-		void HandleInput(SDL_Event& e, SDL_Event& ePrev, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState, bool gamePadConnected); //if pressed this frame
+		void HandleInput(SDL_Event& e, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState, bool gamePadConnected); //if pressed this frame
 		b2Vec2 GetAxis(XINPUT_STATE& gamePadState);
 		void ClampStickInput(b2Vec2& stickInput, int deadZoneValue);
 

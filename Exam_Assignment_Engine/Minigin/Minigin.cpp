@@ -9,6 +9,7 @@
 #include "GameObject.h"
 #include "Components.h"
 #include "imgui_sdl.h"
+#include "SDL_keyboard.h"
 
 //Scene includes
 #include "TestScene.h"
@@ -81,6 +82,7 @@ void dae::Minigin::Run()
 		lastTime = currentTime;
 		lag += GameInfo::deltaTime;
 		doContinue = input.ProcessInput(); //process the input for this frame and set the Current Event State to later check for input
+
 		ImGui_ImplSDL2_NewFrame(window);
 		ImGui::NewFrame();
 
@@ -103,9 +105,9 @@ void dae::Minigin::Run()
 		
 		ImGui::EndFrame();
 
+		renderer.Render(); //also ImGui
+
 		input.SwapInputBuffer(); //swap input buffers after everything is updated;
-		renderer.Render();
-		renderer.RenderImGui();
 	}
 
 	Cleanup();

@@ -100,14 +100,14 @@
     <ClInclude Include="MMCallbacks.h">
       <Filter>Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsDebugDrawer.h">
-      <Filter>MainAndTests</Filter>
-    </ClInclude>
     <ClInclude Include="Command.h">
       <Filter>Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="MoveUp.h">
+    <ClInclude Include="CommandExample.h">
       <Filter>MainAndTests</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsDebugDrawer.h">
+      <Filter>Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -174,14 +174,14 @@
     <ClCompile Include="InputAction.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsDebugDrawer.cpp">
-      <Filter>MainAndTests</Filter>
-    </ClCompile>
     <ClCompile Include="MMCallbacks.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="MoveUp.cpp">
+    <ClCompile Include="CommandExample.cpp">
       <Filter>MainAndTests</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsDebugDrawer.cpp">
+      <Filter>Helpers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

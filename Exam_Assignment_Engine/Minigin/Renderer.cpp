@@ -24,15 +24,11 @@ void dae::Renderer::Render()
 
 	SceneManager::GetInstance().Render();
 
-	SDL_RenderPresent(m_Renderer);
-
-}
-
-void dae::Renderer::RenderImGui()
-{
 	//render ImGui
 	ImGui::Render();
 	ImGuiSDL::Render(ImGui::GetDrawData());
+
+	SDL_RenderPresent(m_Renderer);
 
 }
 

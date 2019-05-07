@@ -3,11 +3,11 @@
 #include "SDL_events.h"
 
 
-dae::InputAction::InputAction(Command* command, SDL_Scancode scanCode, ControllerInput controllerInput)
+dae::InputAction::InputAction(Command* command, SDL_Keycode keyCode, ControllerInput controllerInput)
 	:m_ControllerInputIsAxis{false}
 	,m_Command { command }
 {
-	m_ScanCode = scanCode;
+	m_KeyCode = keyCode;
 	m_ControllerInput = controllerInput;
 	switch (m_ControllerInput)
 	{
@@ -20,32 +20,40 @@ dae::InputAction::InputAction(Command* command, SDL_Scancode scanCode, Controlle
 	}
 }
 
-void dae::InputAction::HandleInput(SDL_Event& e, SDL_Event& ePrev, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState, bool gamePadConnected)
+void dae::InputAction::HandleInput(SDL_Event& e, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState, bool gamePadConnected)
 {
 	//KEYBOARD INPUT
-	if (m_ScanCode != SDL_SCANCODE_UNKNOWN)
+	if (m_KeyCode != SDLK_UNKNOWN)
 	{
-		if (e.key.keysym.scancode == m_ScanCode && ePrev.key.keysym.scancode != m_ScanCode) // if now is true and prev is false key is just pressed
-			m_Command->ExecuteOnPress();
-		else if (e.key.keysym.scancode != m_ScanCode && ePrev.key.keysym.scancode == m_ScanCode)
+		if (e.key.keysym.sym == m_KeyCode && e.type == SDL_KEYDOWN) // if now is true and prev is false key is just pressed
+		{
+			m_Command->ExecuteOnPress(); 
+			m_KeyHeld = true;
+		}
+		else if (e.key.keysym.sym == m_KeyCode && e.type == SDL_KEYUP)
+		{
 			m_Command->ExecuteOnRelease();
-		else if (e.key.keysym.scancode == m_ScanCode)
-			m_Command->ExecuteOnHold();
+			m_KeyHeld = false;
+		}
+		else if (m_KeyHeld)
+		{
+			m_Command->ExecuteOnHold({ 0,0 });
+		}
 	}
 
 	//CONTROLLER INPUT
-	if (!m_ControllerInputIsAxis && gamePadConnected)
+	if (!m_ControllerInputIsAxis && gamePadConnected && m_ControllerInput != ControllerInput::NONE)
 	{
 		if (gamePadState.Gamepad.wButtons == DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons != DWORD(m_ControllerInput))
 			m_Command->ExecuteOnPress();
 		else if (gamePadState.Gamepad.wButtons != DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons == DWORD(m_ControllerInput))
-			m_Command->ExecuteOnHold();
+			m_Command->ExecuteOnRelease();
 		else if (gamePadState.Gamepad.wButtons == DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons == DWORD(m_ControllerInput))
-			m_Command->ExecuteOnHold();
+			m_Command->ExecuteOnHold({ 0,0 });
 	}
-	else
+	else if (gamePadConnected)
 	{
-
+		m_Command->ExecuteOnHold(GetAxis(gamePadState));
 	}
 }
 
@@ -66,9 +74,6 @@ b2Vec2 dae::InputAction::GetAxis(XINPUT_STATE& gamePadState)
 		break;
 	case ControllerInput::TriggerRight:
 		stickInput = { (int(gamePadState.Gamepad.bRightTrigger) / 255.0f), 0 };
-		break;
-	default:
-		Logger::LogWarning(L"Trying to do GetAxis() on a button, this only works on JoySticks and Triggers, will now return {0,0}");
 		break;
 	}
 	return stickInput;

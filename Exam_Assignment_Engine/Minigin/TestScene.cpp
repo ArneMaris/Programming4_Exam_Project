@@ -5,6 +5,7 @@
 #include "ResourceManager.h"
 #include "InputManager.h"
 #include "InputAction.h"
+#include "CommandExample.h"
 
 TestScene::TestScene()
 	:dae::Scene(L"TestScene")
@@ -31,14 +32,15 @@ void TestScene::Initialize()
 	obj1->AddComponent(new dae::ColliderComponent(obj1->GetComponent<dae::PhysicsBodyComponent>()));
 	obj1->GetComponent<dae::ColliderComponent>()->AddBoxShape(10, 10, dae::ShapeSettings(false, 1, 0.5f, 0));
 	obj1->AddComponent(new dae::AnimatedSpriteComponent(L"SpriteTest.png", 4,2));
-	obj1->GetTransform()->Translate(20, 60);
+	obj1->GetTransform()->Translate(250, 500);
 	AddGameObject(obj1);
 
 	obj2->AddComponent(new dae::SpriteComponent(L"background.jpg"));
 	obj2->GetTransform()->SetPosition(0,40);
 	obj2->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_staticBody));
-	obj2->AddComponent(new dae::ColliderComponent(obj2->GetComponent<dae::PhysicsBodyComponent>()));
+	//obj2->AddComponent(new dae::ColliderComponent(obj2->GetComponent<dae::PhysicsBodyComponent>()));  //looks like it works
 	obj2->GetComponent<dae::ColliderComponent>()->AddBoxShape(600, 20, dae::ShapeSettings(false, 1, 0.5f, 0));
+	obj2->GetComponent<dae::ColliderComponent>()->AddSVGCollision(L"Test.svg", true, dae::ShapeSettings(false, 1, 0.5f, 0));
 	AddGameObject(obj2);
 
 	EnablePhysicsDebugDrawing();
@@ -71,7 +73,8 @@ void TestScene::Initialize()
 	//obj->GetComponent<dae::AnimatedSpriteComponent>()->SetColumnLimit(3, 4);
 	//AddGameObject(obj);
 
-	dae::InputManager::GetInstance().AddInputAction(L"MoveUp", SDL_SCANCODE_W, dae::ControllerInput::DpadUp);
+	dae::InputManager::GetInstance().AddInputAction(new CommandExample() , SDLK_w, dae::ControllerInput::DpadUp, 0);
+
 	//dae::InputManager::GetInstance().AddInputAction(L"MoveRight", dae::ControllerInput::JoyStickLeft);
 	////dae::InputManager::GetInstance().AddInputAction(L"MoveRight", dae::ControllerInput::DpadLeft);
 
