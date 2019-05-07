@@ -71,7 +71,7 @@ void TestScene::Initialize()
 	//obj->GetComponent<dae::AnimatedSpriteComponent>()->SetColumnLimit(3, 4);
 	//AddGameObject(obj);
 
-	//dae::InputManager::GetInstance().AddInputAction(L"MoveUp", SDL_SCANCODE_W, dae::ControllerInput::DpadUp);
+	dae::InputManager::GetInstance().AddInputAction(L"MoveUp", SDL_SCANCODE_W, dae::ControllerInput::DpadUp);
 	//dae::InputManager::GetInstance().AddInputAction(L"MoveRight", dae::ControllerInput::JoyStickLeft);
 	////dae::InputManager::GetInstance().AddInputAction(L"MoveRight", dae::ControllerInput::DpadLeft);
 
@@ -82,10 +82,6 @@ void TestScene::Initialize()
 
 void TestScene::Update()
 {
-	if (dae::InputManager::GetInstance().IsPressed(L"MoveUp",0))
-	{
-		dae::Logger::LogInfo(L"MOVING UP PRESSED");
-	}
 	if (obj1->GetComponent<dae::ColliderComponent>()->IsCollidingWith(obj2))
 	{
 		//dae::Logger::LogInfo(L"COLLISION");

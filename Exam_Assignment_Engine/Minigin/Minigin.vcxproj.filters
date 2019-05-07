@@ -103,6 +103,12 @@
     <ClInclude Include="PhysicsDebugDrawer.h">
       <Filter>MainAndTests</Filter>
     </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveUp.h">
+      <Filter>MainAndTests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -173,6 +179,9 @@
     </ClCompile>
     <ClCompile Include="MMCallbacks.cpp">
       <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveUp.cpp">
+      <Filter>MainAndTests</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -3,8 +3,9 @@
 #include "SDL_events.h"
 
 
-dae::InputAction::InputAction(SDL_Scancode scanCode, ControllerInput controllerInput)
+dae::InputAction::InputAction(Command* command, SDL_Scancode scanCode, ControllerInput controllerInput)
 	:m_ControllerInputIsAxis{false}
+	,m_Command { command }
 {
 	m_ScanCode = scanCode;
 	m_ControllerInput = controllerInput;
@@ -19,74 +20,33 @@ dae::InputAction::InputAction(SDL_Scancode scanCode, ControllerInput controllerI
 	}
 }
 
-bool dae::InputAction::IsPressed(SDL_Event& e, SDL_Event& ePrev, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState)
+void dae::InputAction::HandleInput(SDL_Event& e, SDL_Event& ePrev, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState, bool gamePadConnected)
 {
 	//KEYBOARD INPUT
 	if (m_ScanCode != SDL_SCANCODE_UNKNOWN)
 	{
 		if (e.key.keysym.scancode == m_ScanCode && ePrev.key.keysym.scancode != m_ScanCode) // if now is true and prev is false key is just pressed
-			return true;
+			m_Command->ExecuteOnPress();
+		else if (e.key.keysym.scancode != m_ScanCode && ePrev.key.keysym.scancode == m_ScanCode)
+			m_Command->ExecuteOnRelease();
+		else if (e.key.keysym.scancode == m_ScanCode)
+			m_Command->ExecuteOnHold();
 	}
 
 	//CONTROLLER INPUT
-	if (!m_ControllerInputIsAxis)
+	if (!m_ControllerInputIsAxis && gamePadConnected)
 	{
 		if (gamePadState.Gamepad.wButtons == DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons != DWORD(m_ControllerInput))
-			return true;
+			m_Command->ExecuteOnPress();
+		else if (gamePadState.Gamepad.wButtons != DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons == DWORD(m_ControllerInput))
+			m_Command->ExecuteOnHold();
+		else if (gamePadState.Gamepad.wButtons == DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons == DWORD(m_ControllerInput))
+			m_Command->ExecuteOnHold();
 	}
 	else
 	{
-		Logger::LogWarning(L"Trying to get Axis value from IsPressed(), this works only for buttons and will now returns false, use GetControllerAxis() instead!");
-		return false;
-	}
-	return false;
-}
 
-bool dae::InputAction::IsReleased(SDL_Event& e, SDL_Event& ePrev, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState)
-{
-	//KEYBOARD INPUT
-	if (m_ScanCode != SDL_SCANCODE_UNKNOWN)
-	{
-		if (e.key.keysym.scancode != m_ScanCode && ePrev.key.keysym.scancode == m_ScanCode) // if now is false and prev is true key is just released
-			return true;
 	}
-
-	//CONTROLLER INPUT
-	if (!m_ControllerInputIsAxis)
-	{
-		if (gamePadState.Gamepad.wButtons != DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons == DWORD(m_ControllerInput))
-			return true;
-	}
-	else
-	{
-		Logger::LogWarning(L"Trying to get Axis value from IsReleased(), this works only for buttons and will now returns false, use GetControllerAxis() instead!");
-		return false;
-	}
-	return false;
-}
-
-bool dae::InputAction::IsHolding(SDL_Event& e, SDL_Event& ePrev, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState)
-{
-	//KEYBOARD INPUT
-	if (m_ScanCode != SDL_SCANCODE_UNKNOWN)
-	{
-		if (e.key.keysym.scancode == m_ScanCode && ePrev.key.keysym.scancode == m_ScanCode) //if both prev and now is true means button is being held
-			return true;
-	}
-
-	//CONTROLLER INPUT
-	if (!m_ControllerInputIsAxis)
-	{
-		if (gamePadState.Gamepad.wButtons == DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons == DWORD(m_ControllerInput))
-			return true;
-	}
-	else
-	{
-		Logger::LogWarning(L"Trying to get Axis value from IsHolding(), this works only for buttons and will now returns false, use GetControllerAxis() instead!");
-		return false;
-	}
-
-	return false;
 }
 
 b2Vec2 dae::InputAction::GetAxis(XINPUT_STATE& gamePadState)

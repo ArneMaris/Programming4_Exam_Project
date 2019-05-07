@@ -16,7 +16,7 @@ dae::InputManager::InputManager()
 
 void dae::InputManager::CleanUp()
 {
-	std::map<std::wstring, InputAction*>::iterator itr = m_InputActions.begin();
+	std::map<int, InputAction*>::iterator itr = m_InputActions.begin();
 	if (itr != m_InputActions.end())
 	{
 		delete itr->second;
@@ -32,11 +32,11 @@ bool dae::InputManager::ProcessInput()
 		if (result != ERROR_SUCCESS) // if not succes means controller not connected zero out memory to make sure you have no trash there
 		{
 			ZeroMemory(&m_CurrentGpState[i], sizeof(XINPUT_STATE));
-			m_CurrentGpConnected[i] = false;
+			m_GamepadConnected[i] = false;
 		}
 		else
 		{
-			m_CurrentGpConnected[i] = true;
+			m_GamepadConnected[i] = true;
 		}
 	}
 	SDL_Event ev;
@@ -52,6 +52,14 @@ bool dae::InputManager::ProcessInput()
 	}
 	if (ev.type != SDL_QUIT && ev.type != SDL_WINDOWEVENT_CLOSE)
 		m_CurrentEvent = ev;
+
+	std::map<int, InputAction*>::iterator it;
+
+	for (it = m_InputActions.begin(); it != m_InputActions.end(); it++)
+	{
+		it->second->HandleInput(m_CurrentEvent, m_PreviousEvent, m_CurrentGpState[it->first], m_PreviousGpState[it->first], m_GamepadConnected[it->first]);
+	}
+
 	return true;
 }
 
@@ -60,98 +68,83 @@ void dae::InputManager::SwapInputBuffer()
 	for (int i = 0; i < MAX_CONTROLLERS; ++i)
 	{
 		m_PreviousGpState[i] = m_CurrentGpState[i];
-		m_PreviousGpConnected[i] = m_CurrentGpConnected[i];
 	}
 	m_PreviousEvent = m_CurrentEvent;
 }
 
-InputAction* dae::InputManager::AddInputAction(const std::wstring& name, SDL_Scancode keyBoardScanecode, ControllerInput controllerInput)
+void dae::InputManager::AddInputAction(Command* command, SDL_Scancode keyBoardScanecode, ControllerInput controllerInput, int controllerId)
 {
-	InputAction* action = new InputAction(keyBoardScanecode, controllerInput);
-	if (action == nullptr)
-		return nullptr;
+	InputAction* action = new InputAction(command, keyBoardScanecode, controllerInput);
 
-	std::pair<std::map<const std::wstring, InputAction*>::iterator, bool> returnValue;
-	returnValue = m_InputActions.insert(std::pair<const std::wstring, InputAction*>(name, action));
+	std::pair<std::map<int, InputAction*>::iterator, bool> returnValue;
+	returnValue = m_InputActions.insert(std::pair<int, InputAction*>(controllerId, action));
 
 	if (!returnValue.second) //was already in here log a warning
 	{
-		Logger::LogWarning(L"Input action: " + name + L" already defined!");
+		Logger::LogWarning(L"Input action: " + std::to_wstring(controllerId) + L" already defined!");
 	}
 
-	return returnValue.first->second;
 }
 
-InputAction* dae::InputManager::AddInputAction(const std::wstring & name)
+void dae::InputManager::AddInputAction(Command* command, SDL_Scancode keyBoardScanecode)
 {
-	return AddInputAction(name, SDL_SCANCODE_UNKNOWN, ControllerInput::NONE);
+	AddInputAction(command, keyBoardScanecode, ControllerInput::NONE, -1);;
 }
 
-InputAction* dae::InputManager::AddInputAction(const std::wstring & name, SDL_Scancode keyBoardScanecode)
+void dae::InputManager::AddInputAction(Command* command, ControllerInput controllerInput, int controllerId)
 {
-	return AddInputAction(name, keyBoardScanecode, ControllerInput::NONE);;
+	AddInputAction(command, SDL_SCANCODE_UNKNOWN, controllerInput, controllerId);;
 }
 
-InputAction* dae::InputManager::AddInputAction(const std::wstring & name, ControllerInput controllerInput)
-{
-	return AddInputAction(name, SDL_SCANCODE_UNKNOWN, controllerInput);;
-}
-
-bool dae::InputManager::IsPressed(const std::wstring & inputActionName, unsigned int controllerId)
-{
-	if (m_InputActions.find(inputActionName) != m_InputActions.end())
-		return IsPressed(m_InputActions.find(inputActionName)->second, controllerId);
-	else
-		return false;
-}
-
-bool dae::InputManager::IsReleased(const std::wstring & inputActionName, unsigned int controllerId)
-{
-	if (m_InputActions.find(inputActionName) != m_InputActions.end())
-		return IsReleased(m_InputActions.find(inputActionName)->second, controllerId);
-	else
-		return false;
-}
-
-bool dae::InputManager::IsHolding(const std::wstring & inputActionName, unsigned int controllerId)
-{
-	if (m_InputActions.find(inputActionName) != m_InputActions.end())
-		return IsHolding(m_InputActions.find(inputActionName)->second, controllerId);
-	else
-		return false;
-}
-
-bool dae::InputManager::IsPressed(InputAction * inputActionPointer, unsigned int controllerId)
-{
-	if (m_CurrentGpConnected[controllerId] && m_PreviousGpConnected[controllerId])
-		return inputActionPointer->IsPressed(m_CurrentEvent, m_PreviousEvent, m_CurrentGpState[controllerId], m_PreviousGpState[controllerId]);
-	return false;
-}
-
-bool dae::InputManager::IsReleased(InputAction * inputActionPointer, unsigned int controllerId)
-{
-	if (m_CurrentGpConnected[controllerId] && m_PreviousGpConnected[controllerId])
-		return inputActionPointer->IsReleased(m_CurrentEvent, m_PreviousEvent, m_CurrentGpState[controllerId], m_PreviousGpState[controllerId]);
-	return false;
-}
-
-bool dae::InputManager::IsHolding(InputAction * inputActionPointer, unsigned int controllerId)
-{
-	if (m_CurrentGpConnected[controllerId] && m_PreviousGpConnected[controllerId])
-		return inputActionPointer->IsHolding(m_CurrentEvent, m_PreviousEvent, m_CurrentGpState[controllerId], m_PreviousGpState[controllerId]);
-	return false;
-}
-
-b2Vec2 dae::InputManager::GetControllerAxis(const std::wstring & inputActionName, unsigned int controllerId)
-{
-	return GetControllerAxis(m_InputActions.at(inputActionName), controllerId);
-}
-
-b2Vec2 dae::InputManager::GetControllerAxis(InputAction * inputActionPointer, unsigned int controllerId)
-{
-	if (m_CurrentGpConnected[controllerId])
-		return inputActionPointer->GetAxis(m_CurrentGpState[controllerId]);
-	return { 0,0 };
-}
+//bool dae::InputManager::IsPressed(const std::wstring & inputActionName, unsigned int controllerId)
+//{
+//	if (m_InputActions.find(inputActionName) != m_InputActions.end())
+//		return IsPressed(m_InputActions.find(inputActionName)->second, controllerId);
+//	else
+//		return false;
+//}
+//
+//bool dae::InputManager::IsReleased(const std::wstring & inputActionName, unsigned int controllerId)
+//{
+//	if (m_InputActions.find(inputActionName) != m_InputActions.end())
+//		return IsReleased(m_InputActions.find(inputActionName)->second, controllerId);
+//	else
+//		return false;
+//}
+//
+//bool dae::InputManager::IsHolding(const std::wstring & inputActionName, unsigned int controllerId)
+//{
+//	if (m_InputActions.find(inputActionName) != m_InputActions.end())
+//		return IsHolding(m_InputActions.find(inputActionName)->second, controllerId);
+//	else
+//		return false;
+//}
+//
+//bool dae::InputManager::IsPressed(InputAction * inputActionPointer, unsigned int controllerId)
+//{
+//	return inputActionPointer->IsPressed(m_CurrentEvent, m_PreviousEvent, m_CurrentGpState[controllerId], m_PreviousGpState[controllerId]);
+//}
+//
+//bool dae::InputManager::IsReleased(InputAction * inputActionPointer, unsigned int controllerId)
+//{
+//	return inputActionPointer->IsReleased(m_CurrentEvent, m_PreviousEvent, m_CurrentGpState[controllerId], m_PreviousGpState[controllerId]);
+//}
+//
+//bool dae::InputManager::IsHolding(InputAction * inputActionPointer, unsigned int controllerId)
+//{
+//	return inputActionPointer->IsHolding(m_CurrentEvent, m_PreviousEvent, m_CurrentGpState[controllerId], m_PreviousGpState[controllerId]);
+//}
+//
+//b2Vec2 dae::InputManager::GetControllerAxis(const std::wstring & inputActionName, unsigned int controllerId)
+//{
+//	return GetControllerAxis(m_InputActions.at(inputActionName), controllerId);
+//}
+//
+//b2Vec2 dae::InputManager::GetControllerAxis(InputAction * inputActionPointer, unsigned int controllerId)
+//{
+//	if (m_CurrentGpConnected[controllerId])
+//		return inputActionPointer->GetAxis(m_CurrentGpState[controllerId]);
+//	return { 0,0 };
+//}
 
 

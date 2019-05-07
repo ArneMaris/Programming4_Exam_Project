@@ -17,7 +17,7 @@ namespace dae
 			TriggerRight
 		};
 	
-		InputAction(SDL_Scancode scanCode = SDL_SCANCODE_UNKNOWN, dae::ControllerInput button = dae::ControllerInput::NONE);
+		InputAction(Command* command, SDL_Scancode scanCode = SDL_SCANCODE_UNKNOWN, dae::ControllerInput button = dae::ControllerInput::NONE);
 		~InputAction() = default;
 
 		//InputAction(const InputAction& InputAction) = delete;
@@ -29,11 +29,11 @@ namespace dae
 		dae::ControllerInput m_ControllerInput = dae::ControllerInput::NONE;
 		bool m_ControllerInputIsAxis = false;
 
-		bool IsPressed(SDL_Event& e, SDL_Event& ePrev, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState); //if pressed this frame
-		bool IsReleased(SDL_Event& e, SDL_Event& ePrev, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState); //if released this frame
-		bool IsHolding(SDL_Event& e, SDL_Event& ePrev, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState); //if holding for multiple frames
+		void HandleInput(SDL_Event& e, SDL_Event& ePrev, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState, bool gamePadConnected); //if pressed this frame
 		b2Vec2 GetAxis(XINPUT_STATE& gamePadState);
 		void ClampStickInput(b2Vec2& stickInput, int deadZoneValue);
+
+		Command* m_Command;
 	};
 }
 
