@@ -15,7 +15,7 @@ dae::Scene::Scene(const std::wstring& name, const b2Vec2& gravity)
 	m_pPhysicsWorld->SetContactListener(m_MMCallbacks);
 	if (m_pPhysicsWorld != nullptr)
 	{
-		Logger::LogInfo(L"PhysicsWorld created succesfully in scene: " + m_SceneName);
+		Logger::GetInstance().LogInfo(L"PhysicsWorld created succesfully in scene: " + m_SceneName);
 	}
 }
 

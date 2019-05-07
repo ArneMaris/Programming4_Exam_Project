@@ -76,7 +76,7 @@ dae::Scene* dae::SceneManager::GetActiveScene()
 			return m_pScenes[i];
 		}
 	}
-	Logger::LogWarning(L"No active scenes found!");
+	Logger::GetInstance().LogWarning(L"No active scenes found!");
 	return nullptr;
 }
 
@@ -90,5 +90,5 @@ void dae::SceneManager::SetActiveScene(const std::wstring & sceneName)
 			return;
 		}
 	}
-	Logger::LogWarning(L"Scene with name: " + sceneName + L" not found, have you added it to the sceneManager?");
+	Logger::GetInstance().LogWarning(L"Scene with name: " + sceneName + L" not found, have you added it to the sceneManager?");
 }

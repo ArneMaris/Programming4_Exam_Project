@@ -39,21 +39,24 @@ bool dae::InputManager::ProcessInput()
 			m_GamepadConnected[i] = true;
 		}
 	}
-	SDL_PollEvent(&m_CurrentEvent);
-	ImGui_ImplSDL2_ProcessEvent(&m_CurrentEvent); //make sure ImGui also gets in the event
-	switch (m_CurrentEvent.type)
+	while (SDL_PollEvent(&m_CurrentEvent))
 	{
-	case SDL_QUIT:
-	case SDL_WINDOWEVENT_CLOSE:
-		return false;
-		break;
+		ImGui_ImplSDL2_ProcessEvent(&m_CurrentEvent); //make sure ImGui also gets in the event
+		switch (m_CurrentEvent.type)
+		{
+		case SDL_QUIT:
+		case SDL_WINDOWEVENT_CLOSE:
+			return false;
+			break;
+		}
+		for (auto action : m_InputActions)
+		{
+			action.second->HandleKeyBoardInput(m_CurrentEvent);
+		}
 	}
-
-	std::map<int, InputAction*>::iterator it;
-
-	for (it = m_InputActions.begin(); it != m_InputActions.end(); it++)
+	for (auto action : m_InputActions)
 	{
-		it->second->HandleInput(m_CurrentEvent, m_CurrentGpState[it->first], m_PreviousGpState[it->first], m_GamepadConnected[it->first]);
+		action.second->HandleControllerInput(m_CurrentGpState[action.first], m_PreviousGpState[action.first], m_GamepadConnected[action.first]);
 	}
 	return true;
 }

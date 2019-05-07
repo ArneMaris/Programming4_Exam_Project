@@ -78,7 +78,7 @@ void dae::GameObject::AddComponent(BaseComponent* pComp)
 	}
 	else
 	{
-		Logger::LogError(L"Cant add a second component of this Type!\n Probably you are trying to add another physicsBody or ColliderComponent to the same gameObject!");
+		Logger::GetInstance().LogError(L"Cant add a second component of this Type!\n Probably you are trying to add another physicsBody or ColliderComponent to the same gameObject!");
 	}
 }
 

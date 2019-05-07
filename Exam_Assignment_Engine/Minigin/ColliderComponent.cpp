@@ -9,11 +9,11 @@
 dae::ColliderComponent::ColliderComponent(PhysicsBodyComponent* physicsBody)
 	:m_pBodyRef{ physicsBody->GetPhysicsBody() }
 {
-	Logger::LogInfo(L"ColliderComponent created, you can add Collision/trigger(shapes) by doing Add...()");
+	Logger::GetInstance().LogInfo(L"ColliderComponent created, you can add Collision/trigger(shapes) by doing Add...()");
 	m_pSceneRef = SceneManager::GetInstance().GetActiveScene();
 	if (m_pBodyRef == nullptr)
 	{
-		Logger::LogWarning(L"Trying to add a colliderComponent to an invalid physicsBody!");
+		Logger::GetInstance().LogWarning(L"Trying to add a colliderComponent to an invalid physicsBody!");
 	}
 }
 
@@ -46,7 +46,7 @@ void dae::ColliderComponent::AddBoxShape(float height, float width, const b2Vec2
 {
 	if (m_pBodyRef == nullptr)
 	{
-		Logger::LogWarning(L"Trying to add a shape to an invalid PhysicsBody!");
+		Logger::GetInstance().LogWarning(L"Trying to add a shape to an invalid PhysicsBody!");
 		return;
 	}
 	b2PolygonShape shape;
@@ -59,7 +59,7 @@ void dae::ColliderComponent::AddCircleShape(const b2Vec2& relativePos, float rad
 {
 	if (m_pBodyRef == nullptr)
 	{
-		Logger::LogWarning(L"Trying to add a shape to an invalid PhysicsBody!");
+		Logger::GetInstance().LogWarning(L"Trying to add a shape to an invalid PhysicsBody!");
 		return;
 	}
 	b2CircleShape shape;
@@ -74,7 +74,7 @@ void dae::ColliderComponent::AddEdgeShape(const b2Vec2& beginPos, const b2Vec2& 
 {
 	if (m_pBodyRef == nullptr)
 	{
-		Logger::LogWarning(L"Trying to add a shape to an invalid PhysicsBody!");
+		Logger::GetInstance().LogWarning(L"Trying to add a shape to an invalid PhysicsBody!");
 		return;
 	}
 	b2EdgeShape shape;
@@ -87,16 +87,16 @@ void dae::ColliderComponent::AddPolygonShape(const std::vector<b2Vec2>& vertices
 {
 	if (m_pBodyRef == nullptr)
 	{
-		Logger::LogWarning(L"Trying to add a shape to an invalid PhysicsBody!");
+		Logger::GetInstance().LogWarning(L"Trying to add a shape to an invalid PhysicsBody!");
 		return;
 	}
 	if (vertices.size() > 8)
 	{
-		Logger::LogWarning(L"More than 8 vertices so they will be ignored, PolygonShapes only support up to 8 vertices!");
+		Logger::GetInstance().LogWarning(L"More than 8 vertices so they will be ignored, PolygonShapes only support up to 8 vertices!");
 	}
 	else if (vertices.size() < 3)
 	{
-		Logger::LogWarning(L"Less than 3 vertices, shape NOT added!");
+		Logger::GetInstance().LogWarning(L"Less than 3 vertices, shape NOT added!");
 		return;
 	}
 
@@ -111,16 +111,16 @@ void dae::ColliderComponent::AddChainShape(const std::vector<b2Vec2>& vertices, 
 {
 	if (m_pBodyRef == nullptr)
 	{
-		Logger::LogWarning(L"Trying to add a shape to an invalid PhysicsBody!");
+		Logger::GetInstance().LogWarning(L"Trying to add a shape to an invalid PhysicsBody!");
 		return;
 	}
 	if (vertices.size() > 8)
 	{
-		Logger::LogWarning(L"More than 8 vertices so they will be ignored, PolygonShapes only support up to 8 vertices!");
+		Logger::GetInstance().LogWarning(L"More than 8 vertices so they will be ignored, PolygonShapes only support up to 8 vertices!");
 	}
 	else if (vertices.size() < 3)
 	{
-		Logger::LogWarning(L"Not enough vertices! Add atleast 3 vertices to your vector, if you need only 2 use: AddEdgeShape()!");
+		Logger::GetInstance().LogWarning(L"Not enough vertices! Add atleast 3 vertices to your vector, if you need only 2 use: AddEdgeShape()!");
 		return;
 	}
 
@@ -143,7 +143,7 @@ std::vector<b2Fixture*> dae::ColliderComponent::GetFixturesVector() const
 {
 	if (m_Fixtures.size() <= 0)
 	{
-		Logger::LogError(L"Trying to get an empty fixtureVector");
+		Logger::GetInstance().LogError(L"Trying to get an empty fixtureVector");
 	}
 	return m_Fixtures;
 }
@@ -158,7 +158,7 @@ void dae::ColliderComponent::RemoveShape(int creationOrder)
 	}
 	else
 	{
-		Logger::LogWarning(L"Trying to remove a non existing shape!");
+		Logger::GetInstance().LogWarning(L"Trying to remove a non existing shape!");
 	}
 }
 

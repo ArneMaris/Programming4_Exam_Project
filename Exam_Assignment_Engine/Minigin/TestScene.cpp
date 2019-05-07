@@ -19,10 +19,10 @@ void TestScene::Initialize()
 		return;
 
 	//dae::Logger::EnableInterupOnError();
-	//dae::Logger::LogError("testError");
-	//dae::Logger::LogWarning("testWarning");
-	dae::Logger::EnableInfoLogging();
-	//dae::Logger::LogInfo("testInfo");
+	//dae::Logger::GetInstance().LogError("testError");
+	//dae::Logger::GetInstance().LogWarning("testWarning");
+	dae::Logger::GetInstance().EnableInfoLogging();
+	//dae::Logger::GetInstance().LogInfo("testInfo");
 
 
 	 obj1 = new dae::GameObject();
@@ -38,9 +38,9 @@ void TestScene::Initialize()
 	obj2->AddComponent(new dae::SpriteComponent(L"background.jpg"));
 	obj2->GetTransform()->SetPosition(0,40);
 	obj2->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_staticBody));
-	//obj2->AddComponent(new dae::ColliderComponent(obj2->GetComponent<dae::PhysicsBodyComponent>()));  //looks like it works
+	obj2->AddComponent(new dae::ColliderComponent(obj2->GetComponent<dae::PhysicsBodyComponent>()));  //looks like it works
 	obj2->GetComponent<dae::ColliderComponent>()->AddBoxShape(600, 20, dae::ShapeSettings(false, 1, 0.5f, 0));
-	obj2->GetComponent<dae::ColliderComponent>()->AddSVGCollision(L"Test.svg", true, dae::ShapeSettings(false, 1, 0.5f, 0));
+	//obj2->GetComponent<dae::ColliderComponent>()->AddSVGCollision(L"Test.svg", true, dae::ShapeSettings(false, 1, 0.5f, 0));
 	AddGameObject(obj2);
 
 	EnablePhysicsDebugDrawing();
@@ -87,19 +87,19 @@ void TestScene::Update()
 {
 	if (obj1->GetComponent<dae::ColliderComponent>()->IsCollidingWith(obj2))
 	{
-		//dae::Logger::LogInfo(L"COLLISION");
+		//dae::Logger::GetInstance().LogInfo(L"COLLISION");
 	}
 	//if (dae::InputManager::GetInstance().IsReleased("MoveUp"))
 	//{
-	//	dae::Logger::LogInfo("MOVING UP RELEASED");
+	//	dae::Logger::GetInstance().LogInfo("MOVING UP RELEASED");
 	//}
 	//if (dae::InputManager::GetInstance().IsHolding("MoveUp"))
 	//{
-	//	dae::Logger::LogInfo("MOVING UP HOLDING");
+	//	dae::Logger::GetInstance().LogInfo("MOVING UP HOLDING");
 	//}
 	//if (dae::InputManager::GetInstance().GetControllerAxis("MoveRight").x > 0.5f)
 	//{
-	//	dae::Logger::LogInfo("MOVING Right with more than 0.5f X");
+	//	dae::Logger::GetInstance().LogInfo("MOVING Right with more than 0.5f X");
 	//}
 	//dae::InputManager::GetInstance().GetControllerAxis("MoveLeft");
 	//dae::InputManager::GetInstance().IsPressed("MoveRight");

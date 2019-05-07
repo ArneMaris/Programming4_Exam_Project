@@ -14,7 +14,7 @@ void dae::Renderer::Init(SDL_Window * window)
 	}
 	else
 	{
-		Logger::LogInfo(L"Renderer initialize succesfull!");
+		Logger::GetInstance().LogInfo(L"Renderer initialize succesfull!");
 	}
 }
 

@@ -10,7 +10,7 @@ dae::PhysicsBodyComponent::PhysicsBodyComponent(b2BodyType bodyType)
 	m_pPhysicsWorldRef = SceneManager::GetInstance().GetPhysicsWorld();
 	if (m_pPhysicsWorldRef == nullptr)
 	{
-		Logger::LogError(L"No physics world to make physicsBodies!");
+		Logger::GetInstance().LogError(L"No physics world to make physicsBodies!");
 		return;
 	}
 	b2BodyDef def{};
@@ -25,7 +25,7 @@ dae::PhysicsBodyComponent::PhysicsBodyComponent(b2BodyType bodyType, const b2Vec
 	m_pPhysicsWorldRef = SceneManager::GetInstance().GetPhysicsWorld();
 	if (m_pPhysicsWorldRef == nullptr)
 	{
-		Logger::LogError(L"No physics world to make physicsBodies!");
+		Logger::GetInstance().LogError(L"No physics world to make physicsBodies!");
 		return;
 	}
 	b2BodyDef def{};
@@ -43,7 +43,7 @@ b2Body* dae::PhysicsBodyComponent::GetPhysicsBody() const
 {
 	if (m_Body == nullptr)
 	{
-		Logger::LogError(L"Trying to get nullptr body!");
+		Logger::GetInstance().LogError(L"Trying to get nullptr body!");
 		return nullptr;
 	}
 	return m_Body;

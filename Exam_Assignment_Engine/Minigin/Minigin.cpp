@@ -16,7 +16,12 @@
 
 void dae::Minigin::Initialize()
 {
+	// Create ImGui AS ABSOLUTE FIRST (logger works with imGui and initialization message may get printed there
+	ImGui::CreateContext();
+
+
 	GameInfo::GetInstance();
+	Logger::GetInstance();
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
@@ -29,10 +34,8 @@ void dae::Minigin::Initialize()
 	{
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
-	Renderer::GetInstance().Init(window);
 
-	// init ImGui
-	ImGui::CreateContext();
+	Renderer::GetInstance().Init(window);
 	ImGuiSDL::Initialize(Renderer::GetInstance().GetSDLRenderer(), GameInfo::windowWidth, GameInfo::windowHeight);
 	ImGui_ImplSDL2_InitForVulkan(window);
 }
@@ -48,7 +51,7 @@ void dae::Minigin::LoadGame() const
 
 void dae::Minigin::Cleanup()
 {
-	Logger::LogInfo(L"Cleaning up!");
+	Logger::GetInstance().LogInfo(L"Cleaning up!");
 	Renderer::GetInstance().Destroy(); // also destroys ImGuiSDL renderer
 	SceneManager::GetInstance().CleanUp();
 	InputManager::GetInstance().CleanUp();
@@ -93,15 +96,7 @@ void dae::Minigin::Run()
 			lag -= GameInfo::fixedTime;
 		}
 
-		bool show_another_window = true;
-		if (show_another_window)
-		{
-			ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-			if (ImGui::Checkbox("Hello from another window!", &show_another_window))
-			if (ImGui::Button("Close Me"))
-				show_another_window = false;
-			ImGui::End();
-		}
+		Logger::GetInstance().Draw();
 		
 		ImGui::EndFrame();
 

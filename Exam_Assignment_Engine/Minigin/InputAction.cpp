@@ -20,14 +20,15 @@ dae::InputAction::InputAction(Command* command, SDL_Keycode keyCode, ControllerI
 	}
 }
 
-void dae::InputAction::HandleInput(SDL_Event& e, XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState, bool gamePadConnected)
+void dae::InputAction::HandleKeyBoardInput(SDL_Event&e)
 {
 	//KEYBOARD INPUT
 	if (m_KeyCode != SDLK_UNKNOWN)
 	{
+
 		if (e.key.keysym.sym == m_KeyCode && e.type == SDL_KEYDOWN) // if now is true and prev is false key is just pressed
 		{
-			m_Command->ExecuteOnPress(); 
+			m_Command->ExecuteOnPress();
 			m_KeyHeld = true;
 		}
 		else if (e.key.keysym.sym == m_KeyCode && e.type == SDL_KEYUP)
@@ -35,13 +36,16 @@ void dae::InputAction::HandleInput(SDL_Event& e, XINPUT_STATE& gamePadState, XIN
 			m_Command->ExecuteOnRelease();
 			m_KeyHeld = false;
 		}
-		else if (m_KeyHeld)
+		if (m_KeyHeld)
 		{
 			m_Command->ExecuteOnHold({ 0,0 });
 		}
 	}
+}
 
-	//CONTROLLER INPUT
+
+void dae::InputAction::HandleControllerInput(XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState, bool gamePadConnected)
+{
 	if (!m_ControllerInputIsAxis && gamePadConnected && m_ControllerInput != ControllerInput::NONE)
 	{
 		if (gamePadState.Gamepad.wButtons == DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons != DWORD(m_ControllerInput))

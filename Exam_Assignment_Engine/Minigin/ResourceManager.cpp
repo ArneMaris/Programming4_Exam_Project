@@ -40,7 +40,7 @@ void dae::ResourceManager::Init(std::wstring&& dataPath)
 		throw std::runtime_error(std::string("Failed to load support for fonts: ") + SDL_GetError());
 	}
 
-	Logger::LogInfo(L"ResourcesManager initialize succesfull!");
+	Logger::GetInstance().LogInfo(L"ResourcesManager initialize succesfull!");
 }
 
 std::shared_ptr<SDL_Texture> dae::ResourceManager::LoadTexture(const std::wstring& file)
