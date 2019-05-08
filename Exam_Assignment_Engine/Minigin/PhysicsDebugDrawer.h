@@ -1,5 +1,6 @@
 #pragma once
 #include "Singleton.h"
+#include "GameObject.h"
 
 namespace dae
 {
@@ -11,15 +12,15 @@ namespace dae
 		~PhysicsDebugDrawer() = default;
 
 		/// Draw a closed polygon provided in CCW order.
-		 void DrawPolygon(b2Vec2* vertices, int vertexCount  = 8);
+		 void DrawPolygon(GameObject* objectRef, b2Vec2* vertices, int vertexCount  = 8);
 
 		/// Draw a circle.
-		 void DrawCircle(const b2Vec2& center, float radius);
+		 void DrawCircle(GameObject* objectRef, const b2Vec2& center, float radius);
 
 		/// Draw a line segment.
-		 void DrawSegment(const b2Vec2& p1, const b2Vec2& p2);
+		 void DrawSegment(GameObject* objectRef, const b2Vec2& p1, const b2Vec2& p2);
 
-		 void DrawPoint(const b2Vec2& p1, float size);
+		 void DrawPoint(const b2Vec2& p1);
 	};
 
 }
