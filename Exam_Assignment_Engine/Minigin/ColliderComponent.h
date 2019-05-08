@@ -57,6 +57,7 @@ namespace dae
 		virtual void Update() override;
 		virtual void Initialize() override;
 		virtual void Render() const override;
+		virtual void PostRender() const override;
 		void AddCollisionObject(GameObject* collisionObj);
 		void RemoveCollisionObject(GameObject* collisionObj);
 

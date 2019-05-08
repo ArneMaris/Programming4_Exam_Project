@@ -50,6 +50,10 @@ void dae::GameObject::Render() const
 	{
 		comp->Render();
 	}
+	for (BaseComponent* comp : m_pComponents)
+	{
+		comp->PostRender();
+	}
 }
 
 void dae::GameObject::Initialize()

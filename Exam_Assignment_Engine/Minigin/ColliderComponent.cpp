@@ -35,6 +35,11 @@ void dae::ColliderComponent::Initialize()
 
 void dae::ColliderComponent::Render() const
 {
+
+}
+
+void dae::ColliderComponent::PostRender() const
+{
 	if (GameInfo::drawPhysicsDebug)
 	{
 		PhysicsDebugDrawer::GetInstance().DrawPoint(m_pGameObject->GetTransform()->GetPosition());
