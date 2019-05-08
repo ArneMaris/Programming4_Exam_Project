@@ -5,14 +5,14 @@
 #include "Renderer.h"
 
 dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::wstring& assetName, int nrCols, int nrRows,
-	float scale, float secPerFrame, int startRow, int startColumn, const b2Vec2& offset, const FlipDirection& flipDir, float angle, const b2Vec2& rotationCenter)
+	float scale, float secPerFrame, const b2Vec2& offset, const FlipDirection& flipDir, float angle, const b2Vec2& rotationCenter)
 	:SpriteComponent(assetName, scale, offset)
 	, m_Cols{ nrCols }
 	, m_Rows{ nrRows }
 	, m_SecPerFrame{ secPerFrame }
 	, m_AccuSec{ 0 }
-	, m_CurrRow{ startRow }
-	, m_CurrColumn{ startColumn }
+	, m_CurrRow{ 0 }
+	, m_CurrColumn{ 0 }
 	, m_FlipDirection {flipDir}
 	, m_MinColumn{1}
 	, m_MinRow {1}
@@ -126,6 +126,25 @@ void dae::AnimatedSpriteComponent::SetActiveColumn(int newColumn, bool reset)
 
 	if (reset)
 		m_AccuSec = 0;
+}
+
+void dae::AnimatedSpriteComponent::AddAnimation(const Animation& animation, bool autoPlay)
+{
+	m_Animations.insert(std::pair<const std::wstring, const Animation>(animation.animationName, animation));
+
+	if (autoPlay)
+		PlayAnimation(animation.animationName);
+}
+
+void dae::AnimatedSpriteComponent::PlayAnimation(const std::wstring & name)
+{
+	auto it = m_Animations.find(name);
+	if (it != m_Animations.end())
+	{
+		SetRowLimit(it->second.minRow, it->second.maxRow);
+		SetColumnLimit(it->second.minColumn, it->second.maxColumn);
+		m_SecPerFrame = it->second.secPerFrame;
+	}
 }
 
 void dae::AnimatedSpriteComponent::SetRowLimit(int min, int max)

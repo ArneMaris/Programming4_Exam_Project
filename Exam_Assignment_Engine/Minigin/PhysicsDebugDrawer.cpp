@@ -1,32 +1,51 @@
 #include "MiniginPCH.h"
 #include "PhysicsDebugDrawer.h"
 #include "Renderer.h"
+#define PI 3.14159265358979323846
 
+void dae::PhysicsDebugDrawer::DrawPolygon(b2Vec2* vertices, int vertexCount)
+{
+	SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), 255, 155, 255, 1);
+	std::vector<SDL_Point> points;
 
-//void dae::PhysicsDebugDrawer::DrawPolygon(const b2Vec2 * vertices, int32 vertexCount, const b2Color & color)
-//{
-//	SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), color.r, color.g, color.b, color.a);
-//	//SDL_RenderDrawLines(Renderer::GetInstance().GetSDLRenderer(), )
-//}
-//
-//void dae::PhysicsDebugDrawer::DrawSolidPolygon(const b2Vec2 * vertices, int32 vertexCount, const b2Color & color)
-//{
-//
-//	SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), color.r, color.g, color.b, color.a);
-//}
-//
-//void dae::PhysicsDebugDrawer::DrawCircle(const b2Vec2 & center, float32 radius, const b2Color & color)
-//{
-//	SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), color.r, color.g, color.b, color.a);
-//}
-//
-//void dae::PhysicsDebugDrawer::DrawSolidCircle(const b2Vec2 & center, float32 radius, const b2Vec2 & axis, const b2Color & color)
-//{
-//	SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), color.r, color.g, color.b, color.a);
-//}
-//
-//void dae::PhysicsDebugDrawer::DrawSegment(const b2Vec2 & p1, const b2Vec2 & p2, const b2Color & color)
-//{
-//	SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), color.r, color.g, color.b, color.a);
-//	SDL_RenderDrawLine(Renderer::GetInstance().GetSDLRenderer(), p1.x, p1.y, p2.x, p2.y);
-//}
+	for (int i = 0; i < vertexCount; i++)
+	{
+		points.push_back({ int(vertices[i].x),int(vertices[i].y) });
+	}
+	SDL_RenderDrawLines(Renderer::GetInstance().GetSDLRenderer(), points.data(), vertexCount);
+}
+
+void dae::PhysicsDebugDrawer::DrawCircle(const b2Vec2 & center, float radius)
+{
+	SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), 255, 155, 255, 1);
+	int sides = int(10 * radius);
+	float d_a = float(PI) / sides;
+	float angle = d_a;
+
+	b2Vec2 start, end;
+	end.x = radius;
+	end.y = 0.0f;
+	end = end + center;
+	for (int i = 0; i != sides; i++)
+	{
+		start = end;
+		end.x = cos(angle) * radius;
+		end.y = sin(angle) * radius;
+		end = end + center;
+		angle += d_a;
+		SDL_RenderDrawLine(Renderer::GetInstance().GetSDLRenderer(),int(start.x),int(start.y), int(end.x),int(end.y));
+	}
+}
+
+void dae::PhysicsDebugDrawer::DrawSegment(const b2Vec2 & p1, const b2Vec2 & p2)
+{
+	SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), 255, 155, 255, 1);
+	SDL_RenderDrawLine(Renderer::GetInstance().GetSDLRenderer(), int(p1.x), int(p1.y), int(p2.x), int(p2.y));
+}
+
+void dae::PhysicsDebugDrawer::DrawPoint(const b2Vec2 & p, float size)
+{
+	UNREFERENCED_PARAMETER(size);
+	SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), 255, 155, 255, 1);
+	SDL_RenderDrawPoint(Renderer::GetInstance().GetSDLRenderer(), int(p.x), int(p.y));
+}

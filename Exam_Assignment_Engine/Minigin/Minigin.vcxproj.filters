@@ -88,9 +88,6 @@
     <ClInclude Include="PhysicsBodyComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="InputAction.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="Utility.h">
       <Filter>Helpers</Filter>
     </ClInclude>
@@ -108,6 +105,9 @@
     </ClInclude>
     <ClInclude Include="PhysicsDebugDrawer.h">
       <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="InputAction.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -171,9 +171,6 @@
     <ClCompile Include="ColliderComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="InputAction.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="MMCallbacks.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
@@ -182,6 +179,9 @@
     </ClCompile>
     <ClCompile Include="PhysicsDebugDrawer.cpp">
       <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="InputAction.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@
 #include "SceneManager.h"
 #include "Scene.h"
 #include "GameObject.h"
+#include "PhysicsDebugDrawer.h"
 
 dae::ColliderComponent::ColliderComponent(PhysicsBodyComponent* physicsBody)
 	:m_pBodyRef{ physicsBody->GetPhysicsBody() }
@@ -34,6 +35,28 @@ void dae::ColliderComponent::Initialize()
 
 void dae::ColliderComponent::Render() const
 {
+
+	if (GameInfo::drawPhysicsDebug)
+	{
+		for (size_t i = 0; i < m_Fixtures.size(); i++)
+		{
+			switch (m_Fixtures[i]->GetShape()->GetType())
+			{
+			case b2Shape::Type::e_polygon:
+				PhysicsDebugDrawer::GetInstance().DrawPolygon(static_cast<b2PolygonShape*>(m_Fixtures[i]->GetShape())->m_vertices, static_cast<b2PolygonShape*>(m_Fixtures[i]->GetShape())->m_count);
+				break;
+			case b2Shape::Type::e_circle:
+				PhysicsDebugDrawer::GetInstance().DrawCircle(static_cast<b2CircleShape*>(m_Fixtures[i]->GetShape())->m_p, static_cast<b2CircleShape*>(m_Fixtures[i]->GetShape())->m_radius);
+				break;
+			case b2Shape::Type::e_chain:
+				PhysicsDebugDrawer::GetInstance().DrawPolygon(static_cast<b2ChainShape*>(m_Fixtures[i]->GetShape())->m_vertices, static_cast<b2ChainShape*>(m_Fixtures[i]->GetShape())->m_count);
+				break;
+			case b2Shape::Type::e_edge:
+				PhysicsDebugDrawer::GetInstance().DrawSegment(static_cast<b2EdgeShape*>(m_Fixtures[i]->GetShape())->m_vertex1, static_cast<b2EdgeShape*>(m_Fixtures[i]->GetShape())->m_vertex2);
+				break;
+			}
+		}
+	}
 }
 
 

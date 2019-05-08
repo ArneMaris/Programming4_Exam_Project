@@ -43,6 +43,8 @@ void TestScene::Initialize()
 	//obj2->GetComponent<dae::ColliderComponent>()->AddSVGCollision(L"Test.svg", true, dae::ShapeSettings(false, 1, 0.5f, 0));
 	AddGameObject(obj2);
 
+	obj1->GetComponent<dae::AnimatedSpriteComponent>()->AddAnimation({ L"RunLeft",0.1f, 0,1,0,2 });
+
 	EnablePhysicsDebugDrawing();
 
 	//auto font = dae::ResourceManager::GetInstance().LoadFont(L"Lingua.otf", 36);
