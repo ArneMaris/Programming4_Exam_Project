@@ -6,6 +6,7 @@ class b2World;
 namespace dae
 {
 	class GameObject;
+	class Prefab;
 	class Scene // temporary, this will be baseObject you make your scenes from (this class has pure viruals when finished)
 	{
 	public:
@@ -20,6 +21,7 @@ namespace dae
 		void SetIsActive(bool value);
 		b2World* GetPhysicsWorld() const;
 		void AddGameObject(GameObject* object);
+		void AddGameObject(Prefab* object);
 		const std::wstring& GetSceneName() const;
 
 		Scene(const std::wstring& name, const b2Vec2& gravity = { 0, -10 });

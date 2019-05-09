@@ -118,6 +118,15 @@
     <ClInclude Include="InputComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionResponseExample.h">
+      <Filter>MainAndTests</Filter>
+    </ClInclude>
+    <ClInclude Include="Prefab.h">
+      <Filter>UserClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="ExamplePrefab.h">
+      <Filter>MainAndTests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -194,6 +203,12 @@
     </ClCompile>
     <ClCompile Include="InputComponent.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionResponseExample.cpp">
+      <Filter>MainAndTests</Filter>
+    </ClCompile>
+    <ClCompile Include="ExamplePrefab.cpp">
+      <Filter>MainAndTests</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

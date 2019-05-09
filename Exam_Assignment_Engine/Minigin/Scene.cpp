@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "MMCallbacks.h"
+#include "Prefab.h"
 
 dae::Scene::Scene(const std::wstring& name, const b2Vec2& gravity) 
 	:m_SceneName(name)
@@ -32,6 +33,13 @@ void dae::Scene::AddGameObject(GameObject* object)
 {
 	object->SetPhysicsWorld(m_pPhysicsWorld);
 	m_pObjects.push_back(object);
+}
+
+void dae::Scene::AddGameObject(Prefab* object)
+{
+	GameObject* obj = object->Setup();
+	obj->SetPhysicsWorld(m_pPhysicsWorld);
+	m_pObjects.push_back(obj);
 }
 
 const std::wstring & dae::Scene::GetSceneName() const

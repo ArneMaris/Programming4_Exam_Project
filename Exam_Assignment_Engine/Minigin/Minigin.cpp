@@ -43,24 +43,10 @@ void dae::Minigin::Initialize()
 void dae::Minigin::LoadGame() const
 {
 	SceneManager::GetInstance().AddScene(new TestScene());
+	SceneManager::GetInstance().SetActiveScene(L"TestScene");
 
 	SceneManager::GetInstance().Initialize();
 
-	SceneManager::GetInstance().SetActiveScene(L"TestScene");
-}
-
-void dae::Minigin::Cleanup()
-{
-	Logger::GetInstance().LogInfo(L"Cleaning up!");
-	Renderer::GetInstance().Destroy(); // also destroys ImGuiSDL renderer
-	SceneManager::GetInstance().CleanUp();
-	InputManager::GetInstance().CleanUp();
-	ResourceManager::GetInstance().CleanUp();
-
-	ImGui_ImplSDL2_Shutdown();
-	SDL_DestroyWindow(window);
-	window = nullptr;
-	SDL_Quit();
 }
 
 void dae::Minigin::Run()
@@ -75,7 +61,6 @@ void dae::Minigin::Run()
 	float lag = 0.0;
 
 	LoadGame();
-
 
 	bool doContinue = true;
 	while (doContinue)
@@ -97,7 +82,6 @@ void dae::Minigin::Run()
 		}
 
 		Logger::GetInstance().Draw();
-		
 		ImGui::EndFrame();
 
 		renderer.Render(); //also ImGui
@@ -106,4 +90,18 @@ void dae::Minigin::Run()
 	}
 
 	Cleanup();
+}
+
+void dae::Minigin::Cleanup()
+{
+	Logger::GetInstance().LogInfo(L"Cleaning up!");
+	Renderer::GetInstance().Destroy(); // also destroys ImGuiSDL renderer
+	SceneManager::GetInstance().CleanUp();
+	InputManager::GetInstance().CleanUp();
+	ResourceManager::GetInstance().CleanUp();
+
+	ImGui_ImplSDL2_Shutdown();
+	SDL_DestroyWindow(window);
+	window = nullptr;
+	SDL_Quit();
 }

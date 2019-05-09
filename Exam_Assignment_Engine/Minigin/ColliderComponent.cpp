@@ -147,11 +147,7 @@ void dae::ColliderComponent::AddChainShape(const std::vector<b2Vec2>& vertices, 
 		Logger::GetInstance().LogWarning(L"Trying to add a shape to an invalid PhysicsBody!");
 		return;
 	}
-	if (vertices.size() > 8)
-	{
-		Logger::GetInstance().LogWarning(L"More than 8 vertices so they will be ignored, PolygonShapes only support up to 8 vertices!");
-	}
-	else if (vertices.size() < 3)
+	if (vertices.size() < 3)
 	{
 		Logger::GetInstance().LogWarning(L"Not enough vertices! Add atleast 3 vertices to your vector, if you need only 2 use: AddEdgeShape()!");
 		return;

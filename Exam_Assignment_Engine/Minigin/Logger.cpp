@@ -107,7 +107,6 @@ void dae::Logger::Draw(bool * p_open)
 	}
 	else
 	{
-		ImGui::PushStyleColor(0, m_CurrColor);
 		ImGuiListClipper clipper;
 		clipper.Begin(LineOffsets.Size);
 		while (clipper.Step())
@@ -119,7 +118,6 @@ void dae::Logger::Draw(bool * p_open)
 				ImGui::TextUnformatted(line_start, line_end);
 			}
 		}
-		ImGui::PopStyleColor(1);
 		clipper.End();
 	}
 	ImGui::PopStyleVar();
