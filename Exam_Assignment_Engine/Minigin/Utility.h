@@ -1,6 +1,8 @@
 #pragma once
 #include <memory> // shared_ptr
 #include <SDL.h>
+#include "SceneManager.h"
+#include "Scene.h"
 
 namespace dae
 {
@@ -12,4 +14,13 @@ namespace dae
 	std::shared_ptr<T> SDL_SharedPointer(T *t) {
 		return std::shared_ptr<T>(t, [](T *t) { SDL_DelRes(t); });
 	}
+
+	//----------------------------------------------------------------
+	//Global functions for easier acces to some stuff	!SLOW, don't use in UPDATE()!
+
+	//Global function to easily acces GameObjects by their name
+	static GameObject* GetGameObjectByName(const std::wstring& name)
+	{
+		SceneManager::GetInstance().GetActiveScene()->GetGameObject(name);
+	};
 }

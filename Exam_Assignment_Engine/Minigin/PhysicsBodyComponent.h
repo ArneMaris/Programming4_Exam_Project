@@ -24,6 +24,7 @@ namespace dae
 		void ApplyLinearImpulse(const b2Vec2& impulse, const b2Vec2& point);
 		void ApplyAngularImpulse(float impulse);
 
+	protected:
 		virtual void Update() override;
 		virtual void Initialize() override;
 		virtual void Render() const override;

@@ -4,9 +4,10 @@
 
 namespace dae
 {
+	class InputResponse;
 	class InputAction final //a single inputAction that you can put into the InputManager that will return if this inputAction is true or false
 	{
-		friend class InputManager;
+		friend class InputComponent;
 	private:
 		enum class ControllerAxis
 		{
@@ -17,8 +18,8 @@ namespace dae
 			TriggerRight
 		};
 	
-		InputAction(Command* command, SDL_Keycode keyCode = SDLK_UNKNOWN, dae::ControllerInput button = dae::ControllerInput::NONE);
-		~InputAction() = default;
+		InputAction(InputResponse* response, SDL_Keycode keyCode = SDLK_UNKNOWN, dae::ControllerInput button = dae::ControllerInput::NONE);
+		~InputAction();
 
 		InputAction(const InputAction& InputAction) = delete;
 		InputAction(InputAction&& InputAction) = delete;
@@ -35,7 +36,7 @@ namespace dae
 		b2Vec2 GetAxis(XINPUT_STATE& gamePadState);
 		void ClampStickInput(b2Vec2& stickInput, int deadZoneValue);
 
-		Command* m_Command;
+		InputResponse* m_pResponse;
 	};
 }
 

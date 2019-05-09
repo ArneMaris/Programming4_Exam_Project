@@ -32,21 +32,18 @@ namespace dae
 		void EnablePhysicsDebugDrawing() { GameInfo::drawPhysicsDebug = true; };
 		void DisablePhysicsDebugDrawing() { GameInfo::drawPhysicsDebug = false; };
 
+		GameObject* GetGameObject(const std::wstring& name);
+
 	protected:
 		bool m_IsInitialized;
 	private: 
 		virtual void Update() = 0; // different Update for every scene, called in BaseUpdate
 		virtual void Render() const = 0; // different Render for every scene, called in BaseRender
-		
-
-		virtual void OnCollisionStart() = 0;
-		virtual void OnCollisionEnd() = 0;
 
 		bool m_IsActive;
 		std::wstring m_SceneName{};
 		std::vector<GameObject*> m_pObjects{};
 
-		static unsigned int s_idCounter; 
 		b2World *m_pPhysicsWorld;
 		b2ContactListener* m_MMCallbacks;
 	};

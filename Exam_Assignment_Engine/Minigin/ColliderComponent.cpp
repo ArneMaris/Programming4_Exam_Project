@@ -6,6 +6,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "PhysicsDebugDrawer.h"
+#include "CollisionResponse.h"
 
 dae::ColliderComponent::ColliderComponent(PhysicsBodyComponent* physicsBody)
 	:m_pBodyRef{ physicsBody->GetPhysicsBody() }
@@ -20,7 +21,11 @@ dae::ColliderComponent::ColliderComponent(PhysicsBodyComponent* physicsBody)
 
 dae::ColliderComponent::~ColliderComponent()
 {
-
+	for (auto& resp : m_CollisionResponses)
+	{
+		delete resp;
+	}
+	m_CollisionResponses.clear();
 }
 
 void dae::ColliderComponent::Update()
@@ -190,41 +195,51 @@ void dae::ColliderComponent::RemoveShape(int creationOrder)
 	}
 }
 
-std::deque<dae::GameObject*> dae::ColliderComponent::GetAllCollisionObjects()
+void dae::ColliderComponent::AddCollisionResponse(CollisionResponse* collResponse)
 {
-	return m_CollisionObjects;
-}
-
-bool dae::ColliderComponent::IsCollidingWith(GameObject * withObject)
-{
-	if (std::find(m_CollisionObjects.begin(), m_CollisionObjects.end(), withObject) != m_CollisionObjects.end()) //if object found return true
-		return true;
-	else 
-		return false;
-}
-
-bool dae::ColliderComponent::IsColliding()
-{
-	if (m_CollisionObjects.size() > 0)
-		return true;
-	else
-		return false;
-}
-
-void dae::ColliderComponent::AddCollisionObject(GameObject * collisionObj)
-{
-	if (std::find(m_CollisionObjects.begin(), m_CollisionObjects.end(), collisionObj) == m_CollisionObjects.end()) //only add when not already in
+	if (std::find_if(m_CollisionResponses.begin(), m_CollisionResponses.end(),
+		[collResponse](CollisionResponse* collR) {return collResponse == collR; }) == m_CollisionResponses.end())
 	{
-		m_CollisionObjects.push_back(collisionObj);
+		m_CollisionResponses.push_back(collResponse);
+		collResponse->SetOwnerObject(m_pGameObject);
+	}
+	else
+	{
+		Logger::GetInstance().LogWarning(L"Already added this collision response to the ColliderComponent");
 	}
 }
 
-void dae::ColliderComponent::RemoveCollisionObject(GameObject * collisionObj)
+void dae::ColliderComponent::RemoveCollisionResponse(CollisionResponse* collResponse)
 {
-	auto it = std::find(m_CollisionObjects.begin(), m_CollisionObjects.end(), collisionObj);
-	if (it == m_CollisionObjects.end()) //only erase when in
+	for (auto& collR : m_CollisionResponses)
 	{
-		m_CollisionObjects.erase(it);
+		if (collR == collResponse)
+		{
+			delete collR;
+			collR = nullptr;
+		}
+	}
+	m_CollisionResponses.erase(std::remove(m_CollisionResponses.begin(), m_CollisionResponses.end(), nullptr), m_CollisionResponses.end());
+}
+
+std::vector<dae::CollisionResponse*> dae::ColliderComponent::GetAllCollisionResponses() const
+{
+	return m_CollisionResponses;
+}
+
+void dae::ColliderComponent::StartCollisionWith(GameObject * collisionObj)
+{
+	for (auto colR : m_CollisionResponses)
+	{
+		colR->OnCollisionStart(collisionObj);
+	}
+}
+
+void dae::ColliderComponent::EndCollisionWith(GameObject * collisionObj)
+{
+	for (auto colR : m_CollisionResponses)
+	{
+		colR->OnCollisionEnd(collisionObj);
 	}
 }
 

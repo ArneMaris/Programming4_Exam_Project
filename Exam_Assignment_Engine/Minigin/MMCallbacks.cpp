@@ -37,13 +37,13 @@ void dae::MMCallbacks::HandleContact(b2Contact * contact, bool begin)
 		{
 			if (begin)
 			{
-				obj2->GetComponent<ColliderComponent>()->AddCollisionObject(obj1);
-				obj1->GetComponent<ColliderComponent>()->AddCollisionObject(obj2);
+				obj2->GetComponent<ColliderComponent>()->StartCollisionWith(obj1);
+				obj1->GetComponent<ColliderComponent>()->StartCollisionWith(obj2);
 			}
 			else
 			{
-				obj2->GetComponent<ColliderComponent>()->RemoveCollisionObject(obj1);
-				obj1->GetComponent<ColliderComponent>()->RemoveCollisionObject(obj2);
+				obj2->GetComponent<ColliderComponent>()->EndCollisionWith(obj1);
+				obj1->GetComponent<ColliderComponent>()->EndCollisionWith(obj2);
 			}
 		}
 }

@@ -7,8 +7,6 @@
 #include "SpriteComponent.h"
 #include "Font.h"
 
-#include "Utility.h"
-
 #define NANOSVG_IMPLEMENTATION
 #include "nanosvg.h"
 
@@ -89,9 +87,7 @@ std::vector<b2Vec2> dae::ResourceManager::GetVerticesFromSVG(const std::wstring 
 			for (int i = 0; i < path->npts - 1; i += 3) 
 			{
 				float* p = &path->pts[i * 2];
-				UNREFERENCED_PARAMETER(p);
 				vertices.push_back({ p[0], p[1] });
-
 			}
 		}
 	}

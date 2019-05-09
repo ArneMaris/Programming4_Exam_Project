@@ -4,8 +4,7 @@
 #include "Components.h"
 #include "ResourceManager.h"
 #include "InputManager.h"
-#include "InputAction.h"
-#include "CommandExample.h"
+#include "InputResponseExample.h"
 
 TestScene::TestScene()
 	:dae::Scene(L"TestScene")
@@ -75,7 +74,7 @@ void TestScene::Initialize()
 	//obj->GetComponent<dae::AnimatedSpriteComponent>()->SetColumnLimit(3, 4);
 	//AddGameObject(obj);
 
-	dae::InputManager::GetInstance().AddInputAction(new CommandExample() , SDLK_w, dae::ControllerInput::DpadUp, 0);
+	//dae::InputManager::GetInstance().AddInputAction(new InputResponseExample() , SDLK_w, dae::ControllerInput::DpadUp, 0);
 
 	//dae::InputManager::GetInstance().AddInputAction(L"MoveRight", dae::ControllerInput::JoyStickLeft);
 	////dae::InputManager::GetInstance().AddInputAction(L"MoveRight", dae::ControllerInput::DpadLeft);
@@ -87,38 +86,12 @@ void TestScene::Initialize()
 
 void TestScene::Update()
 {
-	if (obj1->GetComponent<dae::ColliderComponent>()->IsCollidingWith(obj2))
-	{
-		//dae::Logger::GetInstance().LogInfo(L"COLLISION");
-	}
-	//if (dae::InputManager::GetInstance().IsReleased("MoveUp"))
-	//{
-	//	dae::Logger::GetInstance().LogInfo("MOVING UP RELEASED");
-	//}
-	//if (dae::InputManager::GetInstance().IsHolding("MoveUp"))
-	//{
-	//	dae::Logger::GetInstance().LogInfo("MOVING UP HOLDING");
-	//}
-	//if (dae::InputManager::GetInstance().GetControllerAxis("MoveRight").x > 0.5f)
-	//{
-	//	dae::Logger::GetInstance().LogInfo("MOVING Right with more than 0.5f X");
-	//}
-	//dae::InputManager::GetInstance().GetControllerAxis("MoveLeft");
-	//dae::InputManager::GetInstance().IsPressed("MoveRight");
+
 
 }
 
 void TestScene::Render() const
 {
 
-}
-
-void TestScene::OnCollisionStart()
-{
-
-}
-
-void TestScene::OnCollisionEnd()
-{
 
 }

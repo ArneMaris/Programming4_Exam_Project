@@ -3,8 +3,6 @@
 #include "GameObject.h"
 #include "MMCallbacks.h"
 
-unsigned int dae::Scene::s_idCounter = 0;
-
 dae::Scene::Scene(const std::wstring& name, const b2Vec2& gravity) 
 	:m_SceneName(name)
 	, m_IsInitialized{false}
@@ -88,4 +86,15 @@ void dae::Scene::ActivateGameObjects()
 	{
 		gameObject->Initialize();
 	}
+}
+
+dae::GameObject* dae::Scene::GetGameObject(const std::wstring& name)
+{
+	auto it = std::find_if(m_pObjects.begin(), m_pObjects.end(), [name](GameObject* obj) {return obj->GetName() == name; });
+	if (it == m_pObjects.end())
+	{
+		Logger::GetInstance().LogWarning(L"GameObject with name: " + name + L" not found! Returned nullptr!");
+		return nullptr;
+	}
+	else return *(it);
 }

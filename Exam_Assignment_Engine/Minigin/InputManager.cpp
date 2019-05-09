@@ -2,6 +2,7 @@
 #include "InputManager.h"
 #include "SDL_events.h"
 #include "InputAction.h"
+#include "InputComponent.h"
 
 using namespace dae;
 
@@ -16,12 +17,7 @@ dae::InputManager::InputManager()
 
 void dae::InputManager::CleanUp()
 {
-	std::map<int, InputAction*>::iterator itr = m_InputActions.begin();
-	if (itr != m_InputActions.end())
-	{
-		delete itr->second;
-		m_InputActions.erase(itr);
-	}
+
 }
 
 bool dae::InputManager::ProcessInput()
@@ -49,14 +45,16 @@ bool dae::InputManager::ProcessInput()
 			return false;
 			break;
 		}
-		for (auto action : m_InputActions)
+		for (auto& inputComp : m_pInputComponents)
 		{
-			action.second->HandleKeyBoardInput(m_CurrentEvent);
+			inputComp->HandleKeyboardInput(m_CurrentEvent);
 		}
 	}
-	for (auto action : m_InputActions)
+	for (auto& inputComp : m_pInputComponents)
 	{
-		action.second->HandleControllerInput(m_CurrentGpState[action.first], m_PreviousGpState[action.first], m_GamepadConnected[action.first]);
+		int id = inputComp->m_ControllerId;
+		if (m_GamepadConnected[id])
+			inputComp->HandleControllerInput(m_CurrentGpState[id], m_PreviousGpState[id]);
 	}
 	return true;
 }
@@ -69,19 +67,9 @@ void dae::InputManager::SwapInputBuffer()
 	}
 }
 
-void dae::InputManager::AddInputAction(Command* command, SDL_Keycode keyBoardScanecode, ControllerInput controllerInput, int controllerId)
+void dae::InputManager::RegisterInputComponent(InputComponent * inputComp)
 {
-	m_InputActions.insert(std::pair<int, InputAction*>(controllerId, new InputAction(command, keyBoardScanecode, controllerInput)));
-}
-
-void dae::InputManager::AddInputAction(Command* command, SDL_Keycode keyBoardScanecode)
-{
-	AddInputAction(command, keyBoardScanecode, ControllerInput::NONE, -1);;
-}
-
-void dae::InputManager::AddInputAction(Command* command, ControllerInput controllerInput, int controllerId)
-{
-	AddInputAction(command, SDLK_UNKNOWN, controllerInput, controllerId);;
+	m_pInputComponents.push_back(inputComp);
 }
 
 

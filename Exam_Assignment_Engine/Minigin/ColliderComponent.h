@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseComponent.h"
 #include "PhysicsBodyComponent.h"
-#include <deque>
+#include "CollisionResponse.h"
 
 namespace dae
 {
@@ -49,17 +49,17 @@ namespace dae
 		std::vector<b2Fixture*> GetFixturesVector() const;
 		void RemoveShape(int creationOrder = 1);
 
-		std::deque<GameObject*> GetAllCollisionObjects();
-		bool IsCollidingWith(GameObject* withObject);
-		bool IsColliding();
+		void AddCollisionResponse(CollisionResponse* collResponse);
+		void RemoveCollisionResponse(CollisionResponse* collResponse);
+		std::vector<CollisionResponse*> GetAllCollisionResponses() const;
 
 	protected:
 		virtual void Update() override;
 		virtual void Initialize() override;
 		virtual void Render() const override;
 		virtual void PostRender() const override;
-		void AddCollisionObject(GameObject* collisionObj);
-		void RemoveCollisionObject(GameObject* collisionObj);
+		void StartCollisionWith(GameObject* collisionObj);
+		void EndCollisionWith(GameObject* collisionObj);
 
 	private:
 
@@ -67,8 +67,8 @@ namespace dae
 		std::vector<b2Fixture*> m_Fixtures;
 		Scene* m_pSceneRef;
 		void CreateFixture(const b2Shape & shape, const ShapeSettings& shapeSettings);
-		std::deque<GameObject*> m_CollisionObjects;
 
+		std::vector<CollisionResponse*> m_CollisionResponses;
 	};
 
 }

@@ -17,6 +17,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="UserClasses">
+      <UniqueIdentifier>{c2f34da8-7b87-4eb7-86fa-b82a4fb3a9a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameInfo.h">
@@ -97,17 +100,23 @@
     <ClInclude Include="MMCallbacks.h">
       <Filter>Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="Command.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="CommandExample.h">
-      <Filter>MainAndTests</Filter>
-    </ClInclude>
     <ClInclude Include="PhysicsDebugDrawer.h">
       <Filter>Helpers</Filter>
     </ClInclude>
     <ClInclude Include="InputAction.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="InputResponse.h">
+      <Filter>UserClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="InputResponseExample.h">
+      <Filter>MainAndTests</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionResponse.h">
+      <Filter>UserClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="InputComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -174,14 +183,17 @@
     <ClCompile Include="MMCallbacks.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="CommandExample.cpp">
-      <Filter>MainAndTests</Filter>
-    </ClCompile>
     <ClCompile Include="PhysicsDebugDrawer.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
     <ClCompile Include="InputAction.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="InputResponseExample.cpp">
+      <Filter>MainAndTests</Filter>
+    </ClCompile>
+    <ClCompile Include="InputComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

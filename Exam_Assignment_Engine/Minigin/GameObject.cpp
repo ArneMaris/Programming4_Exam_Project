@@ -2,8 +2,7 @@
 #include "GameObject.h"
 #include "ResourceManager.h"
 #include "Renderer.h"
-#include "BaseComponent.h"
-#include "ColliderComponent.h"
+#include "Components.h"
 
 dae::GameObject::GameObject()
 	:m_pPhysicsWorldRef{ nullptr }
@@ -82,7 +81,7 @@ void dae::GameObject::AddComponent(BaseComponent* pComp)
 	}
 	else
 	{
-		Logger::GetInstance().LogError(L"Cant add a second component of this Type!\n Probably you are trying to add another physicsBody or ColliderComponent to the same gameObject!");
+		Logger::GetInstance().LogError(L"Cant add a second component of this Type!\n (PhysicsBody, Collider or Input");
 	}
 }
 
@@ -91,6 +90,8 @@ bool dae::GameObject::CheckIfAlreadyHasComponent(BaseComponent * compToAdd)
 	if (dynamic_cast<PhysicsBodyComponent*>(compToAdd) && GetComponent<PhysicsBodyComponent>() != nullptr)
 		return true;
 	else if (dynamic_cast<ColliderComponent*>(compToAdd) && GetComponent<ColliderComponent>() != nullptr)
+		return true;
+	else if (dynamic_cast<ColliderComponent*>(compToAdd) && GetComponent<InputComponent>() != nullptr)
 		return true;
 
 	return false;
@@ -101,16 +102,6 @@ void dae::GameObject::RemoveComponent(BaseComponent* pComp)
 	auto it = find(m_pComponents.begin(), m_pComponents.end(), pComp);
 	m_pComponents.erase(it);
 	pComp->m_pGameObject = nullptr;
-}
-
-bool dae::GameObject::IsCollidingWith(GameObject * withObject)
-{
-	return GetComponent<ColliderComponent>()->IsCollidingWith(withObject);
-}
-
-bool dae::GameObject::IsColliding()
-{
-	return GetComponent<ColliderComponent>()->IsColliding();
 }
 
 void dae::GameObject::SetPhysicsWorld(b2World * physicsWorld)

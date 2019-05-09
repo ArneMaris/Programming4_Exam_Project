@@ -16,9 +16,6 @@ namespace dae
 		void AddComponent(BaseComponent* pComp);
 		void RemoveComponent(BaseComponent* pComp);
 
-		bool IsCollidingWith(GameObject* withObject);
-		bool IsColliding();
-
 		void SetPhysicsWorld(b2World* physicsWorld);
 		b2World* GetPhysicsWorld();
 
@@ -30,6 +27,7 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
+		const std::wstring& GetName() const { return m_Name; };
 
 		//taken from DAE GP2 2018-2019
 #pragma region 
@@ -69,7 +67,7 @@ namespace dae
 		bool CheckIfAlreadyHasComponent(BaseComponent* compToAdd); //add all components that where you can't have 2 of on 1 gameObject
 
 		bool m_Initialized;
-		std::wstring m_Name;
+		const std::wstring m_Name;
 	};
 
 }

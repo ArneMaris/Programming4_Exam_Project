@@ -1,11 +1,11 @@
 #include "MiniginPCH.h"
 #include "InputAction.h"
 #include "SDL_events.h"
+#include "InputResponse.h"
 
-
-dae::InputAction::InputAction(Command* command, SDL_Keycode keyCode, ControllerInput controllerInput)
+dae::InputAction::InputAction(InputResponse* response, SDL_Keycode keyCode, ControllerInput controllerInput)
 	:m_ControllerInputIsAxis{false}
-	,m_Command { command }
+	, m_pResponse{ response }
 {
 	m_KeyCode = keyCode;
 	m_ControllerInput = controllerInput;
@@ -20,6 +20,11 @@ dae::InputAction::InputAction(Command* command, SDL_Keycode keyCode, ControllerI
 	}
 }
 
+dae::InputAction::~InputAction()
+{
+	delete m_pResponse;
+}
+
 void dae::InputAction::HandleKeyBoardInput(SDL_Event&e)
 {
 	//KEYBOARD INPUT
@@ -28,17 +33,17 @@ void dae::InputAction::HandleKeyBoardInput(SDL_Event&e)
 
 		if (e.key.keysym.sym == m_KeyCode && e.type == SDL_KEYDOWN) // if now is true and prev is false key is just pressed
 		{
-			m_Command->ExecuteOnPress();
+			m_pResponse->ExecuteOnPress();
 			m_KeyHeld = true;
 		}
 		else if (e.key.keysym.sym == m_KeyCode && e.type == SDL_KEYUP)
 		{
-			m_Command->ExecuteOnRelease();
+			m_pResponse->ExecuteOnRelease();
 			m_KeyHeld = false;
 		}
 		if (m_KeyHeld)
 		{
-			m_Command->ExecuteOnHold({ 0,0 });
+			m_pResponse->ExecuteOnHold({ 0,0 });
 		}
 	}
 }
@@ -49,15 +54,17 @@ void dae::InputAction::HandleControllerInput(XINPUT_STATE& gamePadState, XINPUT_
 	if (!m_ControllerInputIsAxis && gamePadConnected && m_ControllerInput != ControllerInput::NONE)
 	{
 		if (gamePadState.Gamepad.wButtons == DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons != DWORD(m_ControllerInput))
-			m_Command->ExecuteOnPress();
+			m_pResponse->ExecuteOnPress();
 		else if (gamePadState.Gamepad.wButtons != DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons == DWORD(m_ControllerInput))
-			m_Command->ExecuteOnRelease();
+			m_pResponse->ExecuteOnRelease();
 		else if (gamePadState.Gamepad.wButtons == DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons == DWORD(m_ControllerInput))
-			m_Command->ExecuteOnHold({ 0,0 });
+			m_pResponse->ExecuteOnHold({ 0,0 });
 	}
 	else if (gamePadConnected)
 	{
-		m_Command->ExecuteOnHold(GetAxis(gamePadState));
+		b2Vec2 axis = GetAxis(gamePadState);
+		if (axis.Length() > float32(0.1f))
+			m_pResponse->ExecuteOnHold(axis);
 	}
 }
 
