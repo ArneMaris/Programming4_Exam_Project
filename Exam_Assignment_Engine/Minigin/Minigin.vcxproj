@@ -202,6 +202,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClInclude Include="CollisionResponse.h" />
     <ClInclude Include="CollisionResponseExample.h" />
     <ClInclude Include="ExamplePrefab.h" />
+    <ClInclude Include="GridLevel.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="InputResponse.h" />
     <ClInclude Include="Components.h" />
@@ -211,6 +212,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InputAction.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="json11.hpp" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MiniginPCH.h" />
@@ -241,9 +243,11 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClCompile Include="FpsCounterComponent.cpp" />
     <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GridLevel.cpp" />
     <ClCompile Include="InputAction.cpp" />
     <ClCompile Include="InputComponent.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="json11.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />

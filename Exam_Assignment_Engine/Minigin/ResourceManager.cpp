@@ -17,6 +17,8 @@ void dae::ResourceManager::CleanUp()
 	m_FontMap.clear();
 }
 
+
+
 void dae::ResourceManager::Init(std::wstring&& dataPath)
 {
 	m_ResourcesPath = std::move(dataPath);

@@ -127,6 +127,12 @@
     <ClInclude Include="ExamplePrefab.h">
       <Filter>MainAndTests</Filter>
     </ClInclude>
+    <ClInclude Include="GridLevel.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="json11.hpp">
+      <Filter>Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -209,6 +215,12 @@
     </ClCompile>
     <ClCompile Include="ExamplePrefab.cpp">
       <Filter>MainAndTests</Filter>
+    </ClCompile>
+    <ClCompile Include="GridLevel.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="json11.cpp">
+      <Filter>Helpers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

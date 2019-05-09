@@ -15,6 +15,8 @@ namespace dae
 
 		void CleanUp();
 
+		const std::wstring& GetResourcesPath() { return m_ResourcesPath; };
+
 		void Init(std::wstring&& resourcesPath);
 
 		std::shared_ptr<Font> LoadFont(const std::wstring& fileName, unsigned int size);
