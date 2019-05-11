@@ -135,7 +135,7 @@ void dae::ColliderComponent::AddPolygonShape(const std::vector<b2Vec2>& vertices
 
 	b2PolygonShape shape;
 	shape.m_type = shape.e_polygon;
-	shape.Set(vertices.data(), vertices.size());
+	shape.Set(vertices.data(), int32(vertices.size()));
 
 	CreateFixture(shape, shapeSettings);
 }
@@ -156,9 +156,9 @@ void dae::ColliderComponent::AddChainShape(const std::vector<b2Vec2>& vertices, 
 	b2ChainShape shape;
 	shape.m_type = shape.e_chain;
 	if (closedLoop)
-		shape.CreateLoop(vertices.data(), vertices.size());
+		shape.CreateLoop(vertices.data(), int32(vertices.size()));
 	else
-		shape.CreateChain(vertices.data(), vertices.size());
+		shape.CreateChain(vertices.data(), int32(vertices.size()));
 
 	CreateFixture(shape, shapeSettings);
 }

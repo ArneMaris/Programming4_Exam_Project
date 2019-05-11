@@ -64,3 +64,8 @@ void dae::InputComponent::AddInputAction(InputResponse* response, ControllerInpu
 {
 	AddInputAction(response, SDLK_UNKNOWN, controllerInput);;
 }
+
+void dae::InputComponent::GetInputAction(const std::wstring & responseName)
+{
+	UNREFERENCED_PARAMETER(responseName);
+}

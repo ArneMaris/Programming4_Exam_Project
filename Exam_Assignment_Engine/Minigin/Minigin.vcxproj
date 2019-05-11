@@ -34,20 +34,20 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -102,6 +102,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\ImGui\include;$(SolutionDir)3rdParty\Box2D\include;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>MiniginPCH.h</PrecompiledHeaderFile>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -126,6 +127,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x86\*.dll" "$(OutputPath)" /R /Y</Com
       <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\ImGui\include;$(SolutionDir)3rdParty\Box2D\include;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>MiniginPCH.h</PrecompiledHeaderFile>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -152,6 +154,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
       <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\ImGui\include;$(SolutionDir)3rdParty\Box2D\include;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>MiniginPCH.h</PrecompiledHeaderFile>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -180,6 +183,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x86\*.dll" "$(OutputPath)" /R /Y</Com
       <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\ImGui\include;$(SolutionDir)3rdParty\Box2D\include;$(SolutionDir)3rdParty\SDL2_ttf\include;$(SolutionDir)3rdParty\SDL2_image\include;$(SolutionDir)3rdParty\SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>MiniginPCH.h</PrecompiledHeaderFile>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -203,6 +207,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClInclude Include="CollisionResponseExample.h" />
     <ClInclude Include="ExamplePrefab.h" />
     <ClInclude Include="GridLevel.h" />
+    <ClInclude Include="GridTile.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="InputResponse.h" />
     <ClInclude Include="Components.h" />
@@ -212,12 +217,12 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InputAction.h" />
     <ClInclude Include="InputManager.h" />
-    <ClInclude Include="json11.hpp" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MiniginPCH.h" />
     <ClInclude Include="MMCallbacks.h" />
-    <ClInclude Include="InputResponseExample.h" />
+    <ClInclude Include="MoveUp.h" />
     <ClInclude Include="nanosvg.h" />
     <ClInclude Include="PhysicsBodyComponent.h" />
     <ClInclude Include="PhysicsDebugDrawer.h" />
@@ -227,11 +232,13 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="StateMachineComponent.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="TransformComponent.h" />
+    <ClInclude Include="UserDefinedStates.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
@@ -244,10 +251,10 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GridLevel.cpp" />
+    <ClCompile Include="GridTile.cpp" />
     <ClCompile Include="InputAction.cpp" />
     <ClCompile Include="InputComponent.cpp" />
     <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="json11.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
@@ -259,13 +266,14 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MiniginPCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="MMCallbacks.cpp" />
-    <ClCompile Include="InputResponseExample.cpp" />
+    <ClCompile Include="MoveUp.cpp" />
     <ClCompile Include="PhysicsBodyComponent.cpp" />
     <ClCompile Include="PhysicsDebugDrawer.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="StateMachineComponent.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />

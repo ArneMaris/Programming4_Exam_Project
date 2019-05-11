@@ -2,6 +2,7 @@
 #include "ExamplePrefab.h"
 #include "Components.h"
 #include "CollisionResponseExample.h"
+#include "UserDefinedStates.h"
 
 //this examples makes a box at the bottom of the screen and holds the backgroundSprite
 dae::GameObject* ExamplePrefab::Setup()
@@ -14,5 +15,6 @@ dae::GameObject* ExamplePrefab::Setup()
 	//m_GameObject->GetComponent<dae::ColliderComponent>()->AddSVGCollision(L"Test.svg", true, dae::ShapeSettings(false, 1, 0.5f, 0));
 	m_GameObject->GetComponent<dae::ColliderComponent>()->AddCollisionResponse(new CollisionResponseExample());
 
+	//m_GameObject->AddComponent(new dae::StateMachineComponent<State1, State2, State3...>());
 	return m_GameObject;
 }

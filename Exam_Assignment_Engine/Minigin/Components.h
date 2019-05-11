@@ -8,3 +8,4 @@
 #include "ColliderComponent.h"
 #include "PhysicsBodyComponent.h"
 #include "InputComponent.h"
+#include "StateMachineComponent.h"

@@ -44,7 +44,6 @@ void dae::Minigin::LoadGame() const
 {
 	SceneManager::GetInstance().AddScene(new TestScene());
 	SceneManager::GetInstance().SetActiveScene(L"TestScene");
-
 	SceneManager::GetInstance().Initialize();
 
 }

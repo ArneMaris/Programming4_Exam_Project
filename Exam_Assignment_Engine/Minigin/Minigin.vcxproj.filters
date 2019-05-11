@@ -109,9 +109,6 @@
     <ClInclude Include="InputResponse.h">
       <Filter>UserClasses</Filter>
     </ClInclude>
-    <ClInclude Include="InputResponseExample.h">
-      <Filter>MainAndTests</Filter>
-    </ClInclude>
     <ClInclude Include="CollisionResponse.h">
       <Filter>UserClasses</Filter>
     </ClInclude>
@@ -130,14 +127,23 @@
     <ClInclude Include="GridLevel.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="json11.hpp">
+    <ClInclude Include="MoveUp.h">
+      <Filter>MainAndTests</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachineComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="UserDefinedStates.h">
+      <Filter>UserClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="json.hpp">
       <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="GridTile.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>MainAndTests</Filter>
-    </ClCompile>
     <ClCompile Include="GameInfo.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
@@ -204,9 +210,6 @@
     <ClCompile Include="InputAction.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="InputResponseExample.cpp">
-      <Filter>MainAndTests</Filter>
-    </ClCompile>
     <ClCompile Include="InputComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -219,8 +222,17 @@
     <ClCompile Include="GridLevel.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="json11.cpp">
-      <Filter>Helpers</Filter>
+    <ClCompile Include="MoveUp.cpp">
+      <Filter>MainAndTests</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachineComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GridTile.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>MainAndTests</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

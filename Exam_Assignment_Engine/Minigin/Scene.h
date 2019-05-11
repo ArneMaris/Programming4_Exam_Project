@@ -5,6 +5,7 @@ class b2World;
 
 namespace dae
 {
+	class GridLevel;
 	class GameObject;
 	class Prefab;
 	class Scene // temporary, this will be baseObject you make your scenes from (this class has pure viruals when finished)
@@ -48,6 +49,9 @@ namespace dae
 
 		b2World *m_pPhysicsWorld;
 		b2ContactListener* m_MMCallbacks;
+
+		GridLevel* m_pActiveLevel;
+
 	};
 
 }

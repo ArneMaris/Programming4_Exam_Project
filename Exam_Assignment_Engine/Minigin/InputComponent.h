@@ -22,6 +22,7 @@ namespace dae
 		void AddInputAction(InputResponse* response, SDL_Keycode keyBoardScanecode, ControllerInput controllerInput);
 		void AddInputAction(InputResponse* response, SDL_Keycode keyBoardScanecode);
 		void AddInputAction(InputResponse* response, ControllerInput controllerInput);
+		void GetInputAction(const std::wstring& responseName);
 
 	protected:
 		virtual void Update() override;
