@@ -1,9 +1,10 @@
 #pragma once
 #include "GameObject.h"
+#include "Response.h"
 
 namespace dae
 {
-	class CollisionResponse
+	class CollisionResponse : public Response
 		{
 		public:
 			CollisionResponse() = default;

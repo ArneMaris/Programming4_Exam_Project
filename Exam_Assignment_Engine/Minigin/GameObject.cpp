@@ -8,6 +8,7 @@ dae::GameObject::GameObject()
 	:m_pPhysicsWorldRef{ nullptr }
 	, m_Initialized{ false }
 	, m_Name{L"GameObject" + std::to_wstring(GameInfo::amountOfGameObjects+1) }
+	, m_RenderOrder{0}
 {
 	AddComponent(new TransformComponent());
 	GameInfo::amountOfGameObjects++;
@@ -99,9 +100,17 @@ bool dae::GameObject::CheckIfAlreadyHasComponent(BaseComponent * compToAdd)
 
 void dae::GameObject::RemoveComponent(BaseComponent* pComp)
 {
-	auto it = find(m_pComponents.begin(), m_pComponents.end(), pComp);
-	m_pComponents.erase(it);
 	pComp->m_pGameObject = nullptr;
+	for (auto& pointer : m_pComponents)
+	{
+		if (pointer == pComp)
+		{
+			delete pointer;
+			pointer = nullptr;
+			break;
+		}
+	}
+	m_pComponents.erase(std::remove(m_pComponents.begin(), m_pComponents.end(), nullptr), m_pComponents.end());
 }
 
 void dae::GameObject::SetPhysicsWorld(b2World * physicsWorld)

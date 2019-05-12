@@ -22,6 +22,8 @@ namespace dae
 
 		void CleanUp();
 
+
+
 	private:
 		std::vector<Scene*> m_pScenes;
 	};

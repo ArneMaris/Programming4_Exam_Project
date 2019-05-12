@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "PhysicsDebugDrawer.h"
 #include "CollisionResponse.h"
+#include "StateMachineComponent.h"
 
 dae::ColliderComponent::ColliderComponent(PhysicsBodyComponent* physicsBody)
 	:m_pBodyRef{ physicsBody->GetPhysicsBody() }
@@ -21,11 +22,11 @@ dae::ColliderComponent::ColliderComponent(PhysicsBodyComponent* physicsBody)
 
 dae::ColliderComponent::~ColliderComponent()
 {
-	for (auto& resp : m_CollisionResponses)
+	for (auto& resp : m_pCollisionResponses)
 	{
 		delete resp;
 	}
-	m_CollisionResponses.clear();
+	m_pCollisionResponses.clear();
 }
 
 void dae::ColliderComponent::Update()
@@ -35,7 +36,16 @@ void dae::ColliderComponent::Update()
 
 void dae::ColliderComponent::Initialize()
 {
-
+	if (m_pGameObject->GetComponent<StateMachineComponent>() != nullptr)
+	{
+		for (auto& trans : m_pGameObject->GetComponent<StateMachineComponent>()->GetStateTransitions())
+		{
+			for (auto& collResponse : m_pCollisionResponses)
+			{
+				collResponse->AddObserver(reinterpret_cast<Observer*>(trans));
+			}
+		}
+	}
 }
 
 void dae::ColliderComponent::Render() const
@@ -179,11 +189,11 @@ std::vector<b2Fixture*> dae::ColliderComponent::GetFixturesVector() const
 
 void dae::ColliderComponent::RemoveShape(int creationOrder)
 {
-	m_pBodyRef->DestroyFixture(m_Fixtures[creationOrder - 1]);
 	auto it = std::find(m_Fixtures.begin(), m_Fixtures.end(), m_Fixtures[creationOrder-1]);
 	if (it != m_Fixtures.end())
 	{
 		it = m_Fixtures.erase(it);
+		m_pBodyRef->DestroyFixture(m_Fixtures[creationOrder - 1]);
 	}
 	else
 	{
@@ -193,21 +203,21 @@ void dae::ColliderComponent::RemoveShape(int creationOrder)
 
 void dae::ColliderComponent::AddCollisionResponse(CollisionResponse* collResponse)
 {
-	if (std::find_if(m_CollisionResponses.begin(), m_CollisionResponses.end(),
-		[collResponse](CollisionResponse* collR) {return collResponse == collR; }) == m_CollisionResponses.end())
+	if (std::find_if(m_pCollisionResponses.begin(), m_pCollisionResponses.end(),
+		[collResponse](CollisionResponse* collR) {return typeid(*collResponse) == typeid(*collR); }) == m_pCollisionResponses.end())
 	{
-		m_CollisionResponses.push_back(collResponse);
+		m_pCollisionResponses.push_back(collResponse);
 		collResponse->SetOwnerObject(m_pGameObject);
 	}
 	else
 	{
-		Logger::GetInstance().LogWarning(L"Already added this collision response to the ColliderComponent");
+		Logger::GetInstance().LogWarning(L"Trying to add the same CollisionResponse twice on colliderComponent, call ignored!");
 	}
 }
 
 void dae::ColliderComponent::RemoveCollisionResponse(CollisionResponse* collResponse)
 {
-	for (auto& collR : m_CollisionResponses)
+	for (auto& collR : m_pCollisionResponses)
 	{
 		if (collR == collResponse)
 		{
@@ -215,17 +225,17 @@ void dae::ColliderComponent::RemoveCollisionResponse(CollisionResponse* collResp
 			collR = nullptr;
 		}
 	}
-	m_CollisionResponses.erase(std::remove(m_CollisionResponses.begin(), m_CollisionResponses.end(), nullptr), m_CollisionResponses.end());
+	m_pCollisionResponses.erase(std::remove(m_pCollisionResponses.begin(), m_pCollisionResponses.end(), nullptr), m_pCollisionResponses.end());
 }
 
 std::vector<dae::CollisionResponse*> dae::ColliderComponent::GetAllCollisionResponses() const
 {
-	return m_CollisionResponses;
+	return m_pCollisionResponses;
 }
 
 void dae::ColliderComponent::StartCollisionWith(GameObject * collisionObj)
 {
-	for (auto colR : m_CollisionResponses)
+	for (auto& colR : m_pCollisionResponses)
 	{
 		colR->OnCollisionStart(collisionObj);
 	}
@@ -233,7 +243,7 @@ void dae::ColliderComponent::StartCollisionWith(GameObject * collisionObj)
 
 void dae::ColliderComponent::EndCollisionWith(GameObject * collisionObj)
 {
-	for (auto colR : m_CollisionResponses)
+	for (auto& colR : m_pCollisionResponses)
 	{
 		colR->OnCollisionEnd(collisionObj);
 	}

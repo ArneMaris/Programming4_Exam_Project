@@ -10,3 +10,13 @@ public:
 	virtual void OnCollisionEnd(dae::GameObject* otherObj) override;
 };
 
+class CollisionResponseExample2 :public dae::CollisionResponse
+{
+public:
+	CollisionResponseExample2() = default;
+	~CollisionResponseExample2() = default;
+
+	virtual void OnCollisionStart(dae::GameObject* otherObj) override;
+	virtual void OnCollisionEnd(dae::GameObject* otherObj) override;
+};
+

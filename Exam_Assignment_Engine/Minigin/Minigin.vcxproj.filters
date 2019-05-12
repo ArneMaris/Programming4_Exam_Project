@@ -20,6 +20,9 @@
     <Filter Include="UserClasses">
       <UniqueIdentifier>{c2f34da8-7b87-4eb7-86fa-b82a4fb3a9a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ComponentHelperClasses">
+      <UniqueIdentifier>{3eb43dbe-07d7-47d7-a60f-4350728023c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameInfo.h">
@@ -97,14 +100,8 @@
     <ClInclude Include="nanosvg.h">
       <Filter>Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="MMCallbacks.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="PhysicsDebugDrawer.h">
       <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="InputAction.h">
-      <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="InputResponse.h">
       <Filter>UserClasses</Filter>
@@ -133,13 +130,40 @@
     <ClInclude Include="StateMachineComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="UserDefinedStates.h">
-      <Filter>UserClasses</Filter>
-    </ClInclude>
     <ClInclude Include="json.hpp">
       <Filter>Helpers</Filter>
     </ClInclude>
     <ClInclude Include="GridTile.h">
+      <Filter>ComponentHelperClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="InputAction.h">
+      <Filter>ComponentHelperClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="MMCallbacks.h">
+      <Filter>ComponentHelperClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>ComponentHelperClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="StateTransition.h">
+      <Filter>ComponentHelperClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Script.h">
+      <Filter>ComponentHelperClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="DigDugCharacter.h">
+      <Filter>UserClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationResponse.h">
+      <Filter>ComponentHelperClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Response.h">
       <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
@@ -201,14 +225,8 @@
     <ClCompile Include="ColliderComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="MMCallbacks.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="PhysicsDebugDrawer.cpp">
       <Filter>Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="InputAction.cpp">
-      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="InputComponent.cpp">
       <Filter>Components</Filter>
@@ -228,11 +246,32 @@
     <ClCompile Include="StateMachineComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="GridTile.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>MainAndTests</Filter>
+    </ClCompile>
+    <ClCompile Include="GridTile.cpp">
+      <Filter>ComponentHelperClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="InputAction.cpp">
+      <Filter>ComponentHelperClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="MMCallbacks.cpp">
+      <Filter>ComponentHelperClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="StateTransition.cpp">
+      <Filter>ComponentHelperClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Script.cpp">
+      <Filter>ComponentHelperClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="DigDugCharacter.cpp">
+      <Filter>UserClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Response.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

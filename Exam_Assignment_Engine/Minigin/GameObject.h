@@ -29,6 +29,10 @@ namespace dae
 
 		const std::wstring& GetName() const { return m_Name; };
 
+		//Lower order = more in the background, meaning 1 will draw over 0
+		void SetRenderOrder(int order) { m_RenderOrder = order; };
+		int GetRenderOrder() const { return m_RenderOrder; };
+
 		//taken from DAE GP2 2018-2019
 #pragma region 
 		template <class T>
@@ -68,6 +72,7 @@ namespace dae
 
 		bool m_Initialized;
 		const std::wstring m_Name;
+		int m_RenderOrder ;
 	};
 
 }

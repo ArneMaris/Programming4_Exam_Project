@@ -37,6 +37,8 @@ namespace dae
 
 		GameObject* GetGameObject(const std::wstring& name);
 
+		void SortRenderingOrder();
+
 	protected:
 		bool m_IsInitialized;
 	private: 

@@ -6,15 +6,17 @@
 
 namespace dae
 {
+	class AnimationResponse;
 		struct Animation
 		{
-			Animation(const std::wstring& name , float secPerFrame = 0.1f, int minrow = 0, int maxrow = 10, int mincolumn = 0, int maxcolumn = 10)
+			Animation(const std::wstring& name, float secPerFrame = 0.1f, int minrow = 0, int maxrow = 10, int mincolumn = 0, int maxcolumn = 10, AnimationResponse* animresponse = nullptr)
 				: minRow{ minrow }
 				, maxColumn{ maxcolumn }
 				, minColumn{ mincolumn }
 				, maxRow{ maxrow }
 				, secPerFrame{ secPerFrame }
 				, animationName{std::move(name)}
+				, animResponse{ animresponse }
 			{}
 			const int minRow;
 			const int maxRow;
@@ -22,6 +24,7 @@ namespace dae
 			const int maxColumn;
 			const float secPerFrame;
 			std::wstring animationName;
+			AnimationResponse* animResponse;
 		};
 	class AnimatedSpriteComponent final : public SpriteComponent
 	{
@@ -38,7 +41,7 @@ namespace dae
 
 		AnimatedSpriteComponent(const std::wstring& assetName, int nrCols, int nrRows, float secPerFrame);
 
-		~AnimatedSpriteComponent() = default;
+		~AnimatedSpriteComponent();
 		AnimatedSpriteComponent(const AnimatedSpriteComponent& other) = delete;
 		AnimatedSpriteComponent(AnimatedSpriteComponent&& other) = delete;
 		AnimatedSpriteComponent& operator=(const AnimatedSpriteComponent& other) = delete;
@@ -54,6 +57,7 @@ namespace dae
 
 		void AddAnimation(const Animation& animation, bool autoPlay = true);
 		void PlayAnimation(const std::wstring& name);
+		void ResetAnimationEventTriggers();
 
 	protected:
 		virtual void Update() override;
@@ -82,8 +86,7 @@ namespace dae
 		FlipDirection m_FlipDirection;
 		std::map<const std::wstring, const Animation> m_Animations;
 
-
-
+		AnimationResponse* m_pCurrAnimationResponse;
 	};
 }
 

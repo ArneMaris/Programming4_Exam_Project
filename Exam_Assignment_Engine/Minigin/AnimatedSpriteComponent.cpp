@@ -3,6 +3,9 @@
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "Renderer.h"
+#include "AnimationResponse.h"
+#include "StateMachineComponent.h"
+#include "Observer.h"
 
 dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::wstring& assetName, int nrCols, int nrRows,
 	float scale, float secPerFrame, const b2Vec2& offset, const FlipDirection& flipDir, float angle, const b2Vec2& rotationCenter)
@@ -20,6 +23,7 @@ dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::wstring& assetN
 	, m_MaxRow{nrRows}
 	, m_Angle{ angle }
 	, m_RotationCenter{ int(rotationCenter.x), int(rotationCenter.y) }
+	, m_pCurrAnimationResponse{ nullptr }
 {
 }
 
@@ -38,7 +42,18 @@ dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::wstring & asset
 	, m_MaxRow{ nrRows }
 	, m_Angle{ 0 }
 	, m_RotationCenter{ 0,0 }
+	, m_pCurrAnimationResponse{ nullptr }
 {
+}
+
+dae::AnimatedSpriteComponent::~AnimatedSpriteComponent()
+{
+	for (auto& anim : m_Animations)
+	{
+		if (anim.second.animResponse != nullptr)
+			delete anim.second.animResponse;
+	}
+	m_pCurrAnimationResponse = nullptr;
 }
 
 void dae::AnimatedSpriteComponent::Update()
@@ -57,11 +72,26 @@ void dae::AnimatedSpriteComponent::Update()
 			}
 		}
 		m_AccuSec -= m_SecPerFrame;
+		if (m_pCurrAnimationResponse != nullptr)
+			m_pCurrAnimationResponse->Update(m_CurrRow, m_CurrColumn);
 	}
 }
 
 void dae::AnimatedSpriteComponent::Initialize()
 {
+	if (m_pGameObject->GetComponent<StateMachineComponent>() != nullptr)
+	{
+		for (auto anim : m_Animations)
+		{
+			if (anim.second.animResponse != nullptr)
+			{
+				for (auto& trans : m_pGameObject->GetComponent<StateMachineComponent>()->GetStateTransitions())
+				{
+					anim.second.animResponse->AddObserver(reinterpret_cast<Observer*>(trans));
+				}
+			}
+		}
+	}
 }
 
 void dae::AnimatedSpriteComponent::Render() const
@@ -146,6 +176,18 @@ void dae::AnimatedSpriteComponent::PlayAnimation(const std::wstring & name)
 		SetRowLimit(it->second.minRow, it->second.maxRow);
 		SetColumnLimit(it->second.minColumn, it->second.maxColumn);
 		m_SecPerFrame = it->second.secPerFrame;
+		m_pCurrAnimationResponse = it->second.animResponse;
+	}
+}
+
+void dae::AnimatedSpriteComponent::ResetAnimationEventTriggers()
+{
+	for (auto anim : m_Animations)
+	{
+		if (anim.second.animResponse != nullptr)
+		{
+			anim.second.animResponse->ResetTrigger();
+		}
 	}
 }
 

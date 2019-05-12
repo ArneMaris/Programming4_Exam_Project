@@ -34,11 +34,13 @@ void dae::InputAction::HandleKeyBoardInput(SDL_Event&e)
 		if (e.key.keysym.sym == m_KeyCode && e.type == SDL_KEYDOWN) // if now is true and prev is false key is just pressed
 		{
 			m_pResponse->ExecuteOnPress();
+			m_pResponse->Notify(NotifyEvent::InputPressed);
 			m_KeyHeld = true;
 		}
 		else if (e.key.keysym.sym == m_KeyCode && e.type == SDL_KEYUP)
 		{
 			m_pResponse->ExecuteOnRelease();
+			m_pResponse->Notify(NotifyEvent::InputReleased);
 			m_KeyHeld = false;
 		}
 		if (m_KeyHeld)

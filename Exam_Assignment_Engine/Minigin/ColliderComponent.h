@@ -68,7 +68,7 @@ namespace dae
 		Scene* m_pSceneRef;
 		void CreateFixture(const b2Shape & shape, const ShapeSettings& shapeSettings);
 
-		std::vector<CollisionResponse*> m_CollisionResponses;
+		std::vector<CollisionResponse*> m_pCollisionResponses;
 	};
 
 }

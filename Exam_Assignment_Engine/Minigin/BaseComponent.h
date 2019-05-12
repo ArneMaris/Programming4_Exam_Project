@@ -20,6 +20,8 @@ namespace dae
 
 		GameObject* GetGameObject() const { return m_pGameObject; }
 
+
+
 	protected:
 		virtual void Update() = 0;
 		virtual void Initialize() = 0;

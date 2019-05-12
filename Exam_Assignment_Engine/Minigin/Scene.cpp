@@ -38,6 +38,7 @@ void dae::Scene::AddGameObject(GameObject* object)
 void dae::Scene::AddGameObject(Prefab* object)
 {
 	GameObject* obj = object->Setup();
+	delete object; //delete prefab after
 	obj->SetPhysicsWorld(m_pPhysicsWorld);
 	m_pObjects.push_back(obj);
 }
@@ -94,6 +95,12 @@ void dae::Scene::ActivateGameObjects()
 	{
 		gameObject->Initialize();
 	}
+	SortRenderingOrder();
+}
+
+void dae::Scene::SortRenderingOrder()
+{
+	std::sort(m_pObjects.begin(), m_pObjects.end(), [](GameObject* obj1, GameObject* obj2) { return obj1->GetRenderOrder() > obj2->GetRenderOrder(); });
 }
 
 dae::GameObject* dae::Scene::GetGameObject(const std::wstring& name)

@@ -23,7 +23,6 @@ void TestScene::Initialize()
 	dae::Logger::GetInstance().EnableInfoLogging();
 
 	obj1 = new dae::GameObject();
-	obj2 = new dae::GameObject();
 
 	obj1->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_dynamicBody));
 	obj1->AddComponent(new dae::ColliderComponent(obj1->GetComponent<dae::PhysicsBodyComponent>()));
@@ -31,14 +30,18 @@ void TestScene::Initialize()
 	obj1->AddComponent(new dae::AnimatedSpriteComponent(L"SpriteTest.png", 4,2));
 	obj1->GetTransform()->Translate(250, 500);
 	obj1->AddComponent(new dae::InputComponent(-1, true));
+
 	obj1->GetComponent<dae::InputComponent>()->AddInputAction(new MoveUp(), SDLK_w);
+
 	obj1->GetComponent<dae::AnimatedSpriteComponent>()->AddAnimation({ L"RunLeft",0.1f, 0,1,0,2 });
 	AddGameObject(obj1);
 
-	new dae::GridLevel(L"Level1.txt", 0);
+	AddGameObject(new ExamplePrefab());
+
+	//new dae::GridLevel(L"Level1.txt", 0);
 
 	//add the prefab's gameObject to the scene, destroy prefab after
-	AddGameObject(new ExamplePrefab());
+
 
 	EnablePhysicsDebugDrawing();
 

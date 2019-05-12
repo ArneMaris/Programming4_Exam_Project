@@ -36,6 +36,8 @@ namespace dae
 		b2Vec2 GetAxis(XINPUT_STATE& gamePadState);
 		void ClampStickInput(b2Vec2& stickInput, int deadZoneValue);
 
+		InputResponse* GetResponse() const {return m_pResponse;};
+
 		InputResponse* m_pResponse;
 	};
 }

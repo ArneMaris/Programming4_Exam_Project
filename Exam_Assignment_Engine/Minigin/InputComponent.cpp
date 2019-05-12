@@ -2,6 +2,7 @@
 #include "InputComponent.h"
 #include "InputManager.h"
 #include "InputResponse.h"
+#include "StateMachineComponent.h"
 
 dae::InputComponent::InputComponent(int controllerId, bool useKeyboardInput)
 	:m_ControllerId{ controllerId }
@@ -26,7 +27,16 @@ void dae::InputComponent::Update()
 
 void dae::InputComponent::Initialize()
 {
-
+	if (m_pGameObject->GetComponent<StateMachineComponent>() != nullptr)
+	{
+		for (auto& trans : m_pGameObject->GetComponent<StateMachineComponent>()->GetStateTransitions())
+		{
+			for (auto& inputAct : m_pInputActions)
+			{
+				inputAct->GetResponse()->AddObserver(reinterpret_cast<Observer*>(trans));
+			}
+		}
+	}
 }
 
 void dae::InputComponent::Render() const
