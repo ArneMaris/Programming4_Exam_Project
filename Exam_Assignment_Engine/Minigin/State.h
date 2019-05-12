@@ -15,7 +15,7 @@ namespace dae
 		virtual void OnStateExit() = 0;
 
 		//Called every frame the statemachine is in this state
-		virtual void WhenInState() = 0;
+		virtual void InState() = 0;
 	};
 
 }

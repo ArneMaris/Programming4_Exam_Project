@@ -166,6 +166,9 @@
     <ClInclude Include="Response.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="StatesExample.h">
+      <Filter>MainAndTests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameInfo.cpp">
@@ -272,6 +275,9 @@
     </ClCompile>
     <ClCompile Include="Response.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="StatesExample.cpp">
+      <Filter>MainAndTests</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

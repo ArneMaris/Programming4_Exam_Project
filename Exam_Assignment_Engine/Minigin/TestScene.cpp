@@ -9,6 +9,8 @@
 #include "GameInfo.h"
 #include "ExamplePrefab.h"
 #include "GridLevel.h"
+#include "StatesExample.h"
+#include "StateTransition.h"
 
 TestScene::TestScene()
 	:dae::Scene(L"TestScene")
@@ -31,9 +33,23 @@ void TestScene::Initialize()
 	obj1->GetTransform()->Translate(250, 500);
 	obj1->AddComponent(new dae::InputComponent(-1, true));
 
-	obj1->GetComponent<dae::InputComponent>()->AddInputAction(new MoveUp(), SDLK_w);
+	auto moveUpCommand = new MoveUp();
+	obj1->GetComponent<dae::InputComponent>()->AddInputAction(moveUpCommand, SDLK_w);
 
 	obj1->GetComponent<dae::AnimatedSpriteComponent>()->AddAnimation({ L"RunLeft",0.1f, 0,1,0,2 });
+
+	auto collResp = new CollisionResponseExample2;
+	obj1->GetComponent<dae::ColliderComponent>()->AddCollisionResponse(collResp);
+	obj1->AddComponent(new dae::StateMachineComponent());
+
+
+	auto sm = obj1->GetComponent<dae::StateMachineComponent>();
+	sm->AddState(L"Idle", new StateIdle(), true);
+	sm->AddState(L"Running", new StateRunning(), false);
+	sm->AddState(L"Dead", new StateDead(), false);
+	sm->AddStateToStateTransition(L"Idle", L"Running", moveUpCommand, true); //add trans from idle to run when MoveUpCommand is pressed
+	sm->AddStateToStateTransition(L"Running", L"Idle", moveUpCommand, false); //add trans from run to idle when MoveUpCommand is released
+	sm->AddToStateTransition(L"Dead", collResp, true);
 	AddGameObject(obj1);
 
 	AddGameObject(new ExamplePrefab());

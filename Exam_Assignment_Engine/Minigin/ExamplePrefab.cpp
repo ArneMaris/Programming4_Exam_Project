@@ -13,8 +13,6 @@ dae::GameObject* ExamplePrefab::Setup()
 	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(600, 20, dae::ShapeSettings(false, 1, 0.5f, 0));
 	//m_GameObject->GetComponent<dae::ColliderComponent>()->AddSVGCollision(L"Test.svg", true, dae::ShapeSettings(false, 1, 0.5f, 0));
 	m_GameObject->GetComponent<dae::ColliderComponent>()->AddCollisionResponse(new CollisionResponseExample());
-	m_GameObject->GetComponent<dae::ColliderComponent>()->AddCollisionResponse(new CollisionResponseExample());
-	m_GameObject->GetComponent<dae::ColliderComponent>()->AddCollisionResponse(new CollisionResponseExample2());
 	m_GameObject->SetRenderOrder(4);
 	return m_GameObject;
 }

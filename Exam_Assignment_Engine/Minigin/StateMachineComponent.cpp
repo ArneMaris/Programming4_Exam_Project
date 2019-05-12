@@ -3,12 +3,11 @@
 #include "State.h"
 #include "StateTransition.h"
 
-
 dae::StateMachineComponent::~StateMachineComponent()
 {
 	for (auto it = m_pStates.begin(); it != m_pStates.end(); ++it)
 	{
-		delete (*it);
+		delete it->second;
 	}
 	m_pStates.clear();
 	for (auto it = m_pStateTransitions.begin(); it != m_pStateTransitions.end(); ++it)
@@ -19,51 +18,34 @@ dae::StateMachineComponent::~StateMachineComponent()
 	m_pCurrentState = nullptr;
 }
 
-void dae::StateMachineComponent::AddState(State * state)
+void dae::StateMachineComponent::AddState(const std::wstring& name, State* state, bool defaultState)
 {
-	if (std::find_if(m_pStates.begin(), m_pStates.end(),
-		[state](State* st) {return typeid(*state) == typeid(*st); }) == m_pStates.end())
+	m_pStates.insert(std::make_pair(std::move(name),state));
+	if (defaultState)
+		m_DefaultStateName = name;
+}
+
+void dae::StateMachineComponent::AddStateToStateTransition(const std::wstring& fromName, const std::wstring& toName, Response* response, bool onEnterPressed)
+{
+	if (m_pStates.find(fromName) != m_pStates.end() && m_pStates.find(toName) != m_pStates.end())
 	{
-		m_pStates.push_back(state);
+		m_pStateTransitions.push_back(new StateTransition(m_pStates.at(fromName), m_pStates.at(toName), response, onEnterPressed));
+		m_pStateTransitions.back()->m_pStateMachine = this;
 	}
-	else
+	else if (m_pStates.find(toName) != m_pStates.end())
 	{
-		Logger::GetInstance().LogWarning(L"Trying to add the same state twice, call ignored!");
+		m_pStateTransitions.push_back(new StateTransition(nullptr, m_pStates.at(toName), response, onEnterPressed));
+		m_pStateTransitions.back()->m_pStateMachine = this;
 	}
 }
 
-void dae::StateMachineComponent::AddStateTransition(StateTransition * transition)
+void dae::StateMachineComponent::AddToStateTransition(const std::wstring & toName, Response * response, bool onEnterPressed)
 {
-	m_pStateTransitions.push_back(transition);
-	transition->m_pStateMachine = this;
-}
-
-void dae::StateMachineComponent::RemoveState(State * state)
-{
-	for (auto& pointer : m_pStates)
+	if (m_pStates.find(toName) != m_pStates.end())
 	{
-		if (pointer == state)
-		{
-			delete pointer;
-			pointer = nullptr;
-			break;
-		}
+		m_pStateTransitions.push_back(new StateTransition(nullptr, m_pStates.at(toName), response, onEnterPressed));
+		m_pStateTransitions.back()->m_pStateMachine = this;
 	}
-	m_pStates.erase(std::remove(m_pStates.begin(), m_pStates.end(), nullptr), m_pStates.end());
-}
-
-void dae::StateMachineComponent::RemoveStateTransition(StateTransition * transition)
-{
-	for (auto& pointer : m_pStateTransitions)
-	{
-		if (pointer == transition)
-		{
-			delete pointer;
-			pointer = nullptr;
-			break;
-		}
-	}
-	m_pStateTransitions.erase(std::remove(m_pStateTransitions.begin(), m_pStateTransitions.end(), nullptr), m_pStateTransitions.end());
 }
 
 void dae::StateMachineComponent::SetToState(State* state)
@@ -85,11 +67,29 @@ void dae::StateMachineComponent::TryTransitionToState(State * fromState, State *
 
 void dae::StateMachineComponent::Update()
 {
-	m_pCurrentState->WhenInState();
+	if (m_pCurrentState != nullptr)
+		m_pCurrentState->InState();
 }
 
 void dae::StateMachineComponent::Initialize()
 {
+	if (m_pStates.size() <= 0)
+	{
+		Logger::GetInstance().LogWarning(L"Useless StateMachineComponent, No states!");
+	}
+	else
+	{
+		auto it = m_pStates.find(m_DefaultStateName);
+		if (it != m_pStates.end())
+		{
+			m_pCurrentState = it->second;
+		}
+		else
+		{
+			Logger::GetInstance().LogWarning(L"No default state in StateMachineComponent, using alphabetically first one!");
+			m_pCurrentState = m_pStates.begin()->second;
+		}
+	}
 }
 
 void dae::StateMachineComponent::Render() const

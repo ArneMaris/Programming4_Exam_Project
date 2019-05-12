@@ -4,14 +4,14 @@
 #include "StateMachineComponent.h"
 
 
-dae::StateTransition::StateTransition(State * to, Response* response, bool onEnter, bool onExit)
-	:dae::StateTransition(nullptr, to, response, onEnter, onExit)
+dae::StateTransition::StateTransition(State * to, Response* response,bool onEnterPressed)
+	:dae::StateTransition(nullptr, to, response, onEnterPressed)
 {}
 
-dae::StateTransition::StateTransition(State * onlyFrom, State * to, Response* response, bool onEnter, bool onExit)
+dae::StateTransition::StateTransition(State * onlyFrom, State * to, Response* response, bool onEnterPressed)
 	:m_pResponse{response}
-	,m_OnEnter{onEnter}
-	,m_OnExit{onExit}
+	,m_OnEnter{onEnterPressed }
+	,m_OnExit{!onEnterPressed }
 	,m_pFromState{onlyFrom}
 	,m_pToState{to}
 {

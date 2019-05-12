@@ -12,15 +12,7 @@ dae::Response::~Response()
 
 void dae::Response::AddObserver(Observer* observer)
 {
-	if (std::find_if(m_pObservers.begin(), m_pObservers.end(),
-		[observer](Observer* obs) {return typeid(observer) == typeid(obs); }) == m_pObservers.end())
-	{
-		m_pObservers.push_back(observer);
-	}
-	else
-	{
-		Logger::GetInstance().LogWarning(L"Already added this observer, call ignored!");
-	}
+	m_pObservers.push_back(observer);
 }
 
 void dae::Response::RemoveObserver(Observer * observer)
