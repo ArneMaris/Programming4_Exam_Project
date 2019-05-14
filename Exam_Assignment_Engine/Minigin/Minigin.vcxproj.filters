@@ -13,10 +13,6 @@
     <Filter Include="Managers">
       <UniqueIdentifier>{9d6bc59b-efda-4c64-96c0-8293ee0c4bd5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainAndTests">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="UserClasses">
       <UniqueIdentifier>{c2f34da8-7b87-4eb7-86fa-b82a4fb3a9a9}</UniqueIdentifier>
     </Filter>
@@ -76,9 +72,6 @@
     <ClInclude Include="Components.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="TestScene.h">
-      <Filter>MainAndTests</Filter>
-    </ClInclude>
     <ClInclude Include="FpsCounterComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -112,20 +105,11 @@
     <ClInclude Include="InputComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionResponseExample.h">
-      <Filter>MainAndTests</Filter>
-    </ClInclude>
     <ClInclude Include="Prefab.h">
       <Filter>UserClasses</Filter>
     </ClInclude>
-    <ClInclude Include="ExamplePrefab.h">
-      <Filter>MainAndTests</Filter>
-    </ClInclude>
     <ClInclude Include="GridLevel.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveUp.h">
-      <Filter>MainAndTests</Filter>
     </ClInclude>
     <ClInclude Include="StateMachineComponent.h">
       <Filter>Components</Filter>
@@ -154,9 +138,6 @@
     <ClInclude Include="Script.h">
       <Filter>ComponentHelperClasses</Filter>
     </ClInclude>
-    <ClInclude Include="DigDugCharacter.h">
-      <Filter>UserClasses</Filter>
-    </ClInclude>
     <ClInclude Include="Observer.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -166,8 +147,8 @@
     <ClInclude Include="Response.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="StatesExample.h">
-      <Filter>MainAndTests</Filter>
+    <ClInclude Include="TileConnection.h">
+      <Filter>ComponentHelperClasses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -210,9 +191,6 @@
     <ClCompile Include="SpriteComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="TestScene.cpp">
-      <Filter>MainAndTests</Filter>
-    </ClCompile>
     <ClCompile Include="FpsCounterComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -234,23 +212,11 @@
     <ClCompile Include="InputComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionResponseExample.cpp">
-      <Filter>MainAndTests</Filter>
-    </ClCompile>
-    <ClCompile Include="ExamplePrefab.cpp">
-      <Filter>MainAndTests</Filter>
-    </ClCompile>
     <ClCompile Include="GridLevel.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="MoveUp.cpp">
-      <Filter>MainAndTests</Filter>
-    </ClCompile>
     <ClCompile Include="StateMachineComponent.cpp">
       <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>MainAndTests</Filter>
     </ClCompile>
     <ClCompile Include="GridTile.cpp">
       <Filter>ComponentHelperClasses</Filter>
@@ -270,14 +236,14 @@
     <ClCompile Include="Script.cpp">
       <Filter>ComponentHelperClasses</Filter>
     </ClCompile>
-    <ClCompile Include="DigDugCharacter.cpp">
-      <Filter>UserClasses</Filter>
-    </ClCompile>
     <ClCompile Include="Response.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="StatesExample.cpp">
-      <Filter>MainAndTests</Filter>
+    <ClCompile Include="Main.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="TileConnection.cpp">
+      <Filter>ComponentHelperClasses</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

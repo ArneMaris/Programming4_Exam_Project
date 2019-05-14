@@ -11,17 +11,13 @@
 #include "imgui_sdl.h"
 #include "SDL_keyboard.h"
 
-//Scene includes
-#include "TestScene.h"
 
 void dae::Minigin::Initialize()
 {
 	// Create ImGui AS ABSOLUTE FIRST (logger works with imGui and initialization message may get printed there
 	ImGui::CreateContext();
-
-
-	GameInfo::GetInstance();
 	Logger::GetInstance();
+	GameInfo::GetInstance();
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
@@ -40,26 +36,23 @@ void dae::Minigin::Initialize()
 	ImGui_ImplSDL2_InitForVulkan(window);
 }
 
-void dae::Minigin::LoadGame() const
-{
-	SceneManager::GetInstance().AddScene(new TestScene());
-	SceneManager::GetInstance().SetActiveScene(L"TestScene");
-	SceneManager::GetInstance().Initialize();
-
-}
 
 void dae::Minigin::Run()
 {
-	Initialize();
 	// tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init(L"../Resources/");
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
+
+
+	//initializes all scenes!
+	sceneManager.Initialize();
+
+	//start the gameEngine from here!
 	auto lastTime = std::chrono::high_resolution_clock::now();
 	float lag = 0.0;
 
-	LoadGame();
 
 	bool doContinue = true;
 	while (doContinue)
@@ -68,8 +61,11 @@ void dae::Minigin::Run()
 		GameInfo::deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 		lastTime = currentTime;
 		lag += GameInfo::deltaTime;
-		doContinue = input.ProcessInput(); //process the input for this frame and set the Current Event State to later check for input
 
+		//process the input for this frame
+		doContinue = input.ProcessInput(); 
+
+		//new ImGui frame
 		ImGui_ImplSDL2_NewFrame(window);
 		ImGui::NewFrame();
 
@@ -80,12 +76,18 @@ void dae::Minigin::Run()
 			lag -= GameInfo::fixedTime;
 		}
 
+		//draw Logger (imGui) information
 		Logger::GetInstance().Draw();
+
+		//end ImGui
 		ImGui::EndFrame();
 
+		//swap input buffers after everything is updated;
+		input.SwapInputBuffer(); 
+
+		//render everything
 		renderer.Render(); //also ImGui
 
-		input.SwapInputBuffer(); //swap input buffers after everything is updated;
 	}
 
 	Cleanup();

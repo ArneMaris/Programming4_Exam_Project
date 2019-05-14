@@ -37,7 +37,6 @@ bool dae::InputManager::ProcessInput()
 	}
 	while (SDL_PollEvent(&m_CurrentEvent))
 	{
-		ImGui_ImplSDL2_ProcessEvent(&m_CurrentEvent); //make sure ImGui also gets in the event
 		switch (m_CurrentEvent.type)
 		{
 		case SDL_QUIT:
@@ -50,6 +49,9 @@ bool dae::InputManager::ProcessInput()
 			inputComp->HandleKeyboardInput(m_CurrentEvent);
 		}
 	}
+
+	ImGui_ImplSDL2_ProcessEvent(&m_CurrentEvent); //make sure ImGui also gets in the event
+
 	for (auto& inputComp : m_pInputComponents)
 	{
 		int id = inputComp->m_ControllerId;

@@ -41,6 +41,8 @@ namespace dae
 
 	protected:
 		bool m_IsInitialized;
+		GridLevel* m_pActiveLevel;
+
 	private: 
 		virtual void Update() = 0; // different Update for every scene, called in BaseUpdate
 		virtual void Render() const = 0; // different Render for every scene, called in BaseRender
@@ -52,7 +54,6 @@ namespace dae
 		b2World *m_pPhysicsWorld;
 		b2ContactListener* m_MMCallbacks;
 
-		GridLevel* m_pActiveLevel;
 
 	};
 

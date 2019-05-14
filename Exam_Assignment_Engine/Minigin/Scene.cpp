@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "MMCallbacks.h"
 #include "Prefab.h"
+#include "GridLevel.h"
 
 dae::Scene::Scene(const std::wstring& name, const b2Vec2& gravity) 
 	:m_SceneName(name)
@@ -59,7 +60,11 @@ void dae::Scene::BaseUpdate()
 
 void dae::Scene::BaseRender() const
 {
+	if (m_pActiveLevel != nullptr)
+		m_pActiveLevel->Render();
+
 	Render();
+
 	for (const auto gameObject : m_pObjects)
 	{
 		gameObject->Render();
@@ -91,6 +96,7 @@ b2World* dae::Scene::GetPhysicsWorld() const
 
 void dae::Scene::ActivateGameObjects()
 {
+	m_pActiveLevel->Initialize();
 	for (auto gameObject : m_pObjects)
 	{
 		gameObject->Initialize();

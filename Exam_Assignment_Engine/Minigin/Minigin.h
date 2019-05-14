@@ -9,7 +9,6 @@ namespace dae
 		SDL_Window* window{};
 	public:
 		void Initialize();
-		void LoadGame() const;
 		void Cleanup();
 		void Run();
 	};
