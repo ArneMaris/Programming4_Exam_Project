@@ -33,8 +33,8 @@ void TestScene::Initialize()
 	obj1->GetTransform()->Translate(250, 500);
 	obj1->AddComponent(new dae::InputComponent(-1, true));
 
-	auto moveUpCommand = new MoveUp();
-	obj1->GetComponent<dae::InputComponent>()->AddInputAction(moveUpCommand, SDLK_w);
+	auto moveUpResp = new MoveUp();
+	obj1->GetComponent<dae::InputComponent>()->AddInputAction(moveUpResp, SDLK_w);
 
 	obj1->GetComponent<dae::AnimatedSpriteComponent>()->AddAnimation({ L"RunLeft",0.1f, 0,1,0,2 });
 
@@ -47,8 +47,8 @@ void TestScene::Initialize()
 	sm->AddState(L"Idle", new StateIdle(), true);
 	sm->AddState(L"Running", new StateRunning(), false);
 	sm->AddState(L"Dead", new StateDead(), false);
-	sm->AddStateToStateTransition(L"Idle", L"Running", moveUpCommand, true); //add trans from idle to run when MoveUpCommand is pressed
-	sm->AddStateToStateTransition(L"Running", L"Idle", moveUpCommand, false); //add trans from run to idle when MoveUpCommand is released
+	sm->AddStateToStateTransition(L"Idle", L"Running", moveUpResp, true); //add trans from idle to run when MoveUpCommand is pressed
+	sm->AddStateToStateTransition(L"Running", L"Idle", moveUpResp, false); //add trans from run to idle when MoveUpCommand is released
 	sm->AddToStateTransition(L"Dead", collResp, true);
 	AddGameObject(obj1);
 

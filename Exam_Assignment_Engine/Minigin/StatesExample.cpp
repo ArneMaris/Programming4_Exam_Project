@@ -13,6 +13,7 @@ void StateIdle::OnStateExit()
 
 void StateIdle::InState()
 {
+
 }
 
 
