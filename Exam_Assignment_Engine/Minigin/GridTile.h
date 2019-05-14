@@ -11,6 +11,9 @@ namespace dae
 		~GridTile() = default;
 
 		void Render();
+		void AddConnection(GridTile* toTile);
+
+		bool GetIsWalkable() const { return m_IsWalkable; };
 
 	private:
 		std::shared_ptr<SDL_Texture> m_pTexture;

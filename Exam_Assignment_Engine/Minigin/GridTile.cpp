@@ -3,6 +3,7 @@
 #include "Prefab.h"
 #include "GameObject.h"
 #include "Renderer.h"
+#include "TileConnection.h"
 
 dae::GridTile::GridTile(const b2Vec2& pos, const b2Vec2& size, std::shared_ptr<SDL_Texture> texture, bool isWalkable, Prefab* spawnOnThisTile)
 	:m_Pos{pos}
@@ -25,4 +26,9 @@ void dae::GridTile::Render()
 	renderPos.x -= m_Size.x / 2;
 	renderPos.y += m_Size.y / 2;
 	Renderer::GetInstance().RenderTexture(m_pTexture, renderPos.x, renderPos.y, m_Size.x, m_Size.y);
+}
+
+void dae::GridTile::AddConnection(GridTile * toTile)
+{
+	m_pConnections.push_back(new TileConnection(this, toTile));
 }

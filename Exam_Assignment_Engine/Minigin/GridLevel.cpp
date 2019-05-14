@@ -26,7 +26,6 @@ void dae::GridLevel::Initialize()
 	std::stringstream ss{ wholeFileStr };
 	try
 	{
-
 		int x = 0;
 		while (ss >> x)
 		{
@@ -65,6 +64,8 @@ void dae::GridLevel::BuildGridLevel()
 	int tileWidth = m_Width / m_HorTiles;
 	int tileHeight = m_Height / m_VertTiles;
 	b2Vec2 startPos = b2Vec2{ float(GameInfo::GetInstance().windowWidth / 2),float(GameInfo::GetInstance().windowHeight / 2) } + m_CenterOffset;
+
+	//START IN UPPER LEFT CORNOR BUILD LEVEL FROM LEFT TO RIGHT (BY COLUMN)
 	startPos.x -= tileWidth * (m_HorTiles / 2.0f);
 	startPos.y += tileHeight * (m_VertTiles / 2.0f);
 	float yStart = startPos.y;
@@ -82,7 +83,7 @@ void dae::GridLevel::BuildGridLevel()
 			}
 			else
 			{
-				m_pGridTiles.push_back(new GridTile(startPos, { float(tileWidth),float(tileHeight) }, pErrorTex, false, nullptr));
+				m_pGridTiles.push_back(new GridTile(startPos, { float(tileWidth),float(tileHeight) }, pErrorTex, true, nullptr));
 			}
 			startPos.y -= float(tileHeight);
 		}
@@ -92,19 +93,33 @@ void dae::GridLevel::BuildGridLevel()
 }
 
 
-//creates connections between all IsWalkable tiles!
+//creates connections between all IsWalkable tiles! (no diagonal connections for now!)
 void dae::GridLevel::MakeConnections()
 {
-
-	//make horizontal connections
-	for (size_t i = 0; i < m_pGridTiles.size(); i++)
+	int index = 0;
+	for (int i = 0; i < m_HorTiles; i++)
 	{
-		if (i - 1 >= 0)
+		for (int j = 0; j < m_VertTiles; j++)
 		{
-			//m_pGridTiles[i-1]
-			//CONNECT THESE 2
-			//m_pGridTiles[i];
+			index = i + j * m_HorTiles;
+			//when this tile is not walkable continue
+			if (!m_pGridTiles[index]->GetIsWalkable()) continue;
 
+			if (index+1 < m_pGridTiles.size())//1 right
+				if (m_pGridTiles[index + 1]->GetIsWalkable())
+					m_pGridTiles[index]->AddConnection(m_pGridTiles[index+1]);
+
+			if (index-1 > -1)//1 left
+				if (m_pGridTiles[index - 1]->GetIsWalkable())
+					m_pGridTiles[index]->AddConnection(m_pGridTiles[index-1]);
+
+			if (index - m_HorTiles > -1)//1 up
+				if (m_pGridTiles[index - m_HorTiles]->GetIsWalkable())
+					m_pGridTiles[index]->AddConnection(m_pGridTiles[index - m_HorTiles]);
+
+			if (index + m_HorTiles < m_pGridTiles.size())//1 down
+				if (m_pGridTiles[index + m_HorTiles]->GetIsWalkable())
+					m_pGridTiles[index]->AddConnection(m_pGridTiles[index + m_HorTiles]);
 		}
 	}
 }
