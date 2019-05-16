@@ -6,11 +6,20 @@ namespace dae
 {
 	struct TileSettings
 	{
+		TileSettings(std::shared_ptr<SDL_Texture> tex, bool walkable, Prefab* spawnThis = nullptr, const b2Vec2& texSizeOffset = { 0,0 })
+			:texture{tex}
+			,isWalkable{walkable}
+			,spawnThisOnTile{spawnThis}
+			,textureSizeOffset{ texSizeOffset }
+		{}
+
 		std::shared_ptr<SDL_Texture> texture;
-		bool m_IsWalkable;
+		bool isWalkable;
 		Prefab* spawnThisOnTile;
+		//default {0,0}, if > 0 makes the texture bigger than the tile, if < 0 makes the texture smaller 
+		b2Vec2 textureSizeOffset;
 	};
-	class GridLevel
+	class GridLevel final
 	{
 	public:
 		GridLevel(const std::wstring& levelsFilePath, const b2Vec2& offsetFromCenter);

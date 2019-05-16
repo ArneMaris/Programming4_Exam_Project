@@ -1,12 +1,14 @@
 #include "MiniginPCH.h"
 #include "Response.h"
 
+dae::Response::Response()
+	:m_ResponseID{ GameInfo::amountOfResponses }
+{
+	GameInfo::amountOfResponses++;
+}
+
 dae::Response::~Response()
 {
-	for (auto obs : m_pObservers)
-	{
-		delete obs;
-	}
 	m_pObservers.clear();
 }
 
@@ -34,7 +36,7 @@ void dae::Response::Notify(const NotifyEvent& notifyEvent)
 {
 	for (auto obs : m_pObservers)
 	{
-		obs->OnNotify(notifyEvent, this);
+		obs->OnNotify(notifyEvent, m_ResponseID);
 	}
 }
 

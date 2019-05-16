@@ -25,7 +25,8 @@ dae::PhysicsBodyComponent::PhysicsBodyComponent(b2BodyType bodyType, const b2Vec
 	m_pPhysicsWorldRef = SceneManager::GetInstance().GetPhysicsWorld();
 	if (m_pPhysicsWorldRef == nullptr)
 	{
-		Logger::GetInstance().LogError(L"No physics world to make physicsBodies!");
+		Logger::GetInstance().LogError(L"No physics world to make physicsBodies, component deleted!");
+		m_pGameObject->RemoveComponent(this);
 		return;
 	}
 	b2BodyDef def{};

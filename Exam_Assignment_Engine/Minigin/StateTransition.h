@@ -14,14 +14,16 @@ namespace dae
 	{
 		friend class StateMachineComponent;
 	public:
-		StateTransition(State* onlyFrom, State* to, Response* response, bool onExit);
-		StateTransition(State* to, Response* response,  bool onExit);
+		StateTransition(State* onlyFrom, State* to, Response* response, bool onEnterPressed);
+		StateTransition(State* to, Response* response,  bool onEnterPressed);
+		StateTransition(State* onlyFrom, State* to, const std::vector<Response*> responses, bool onEnterPressed);
+		StateTransition(State* to, const std::vector<Response*> responses, bool onEnterPressed);
 		~StateTransition() = default;
 
-		virtual void OnNotify(const NotifyEvent& notifyEvent, Response* notifier) override;
+		virtual void OnNotify(const NotifyEvent& notifyEvent, int notifierResponseId) override;
 
 	private:
-		Response* m_pResponse;
+		std::vector<Response*> m_pResponses;
 
 		bool m_OnEnter;
 		bool m_OnExit;

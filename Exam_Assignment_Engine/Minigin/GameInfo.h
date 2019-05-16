@@ -16,5 +16,6 @@ namespace dae
 		static bool drawPhysicsDebug;
 
 		static int amountOfGameObjects;
+		static int amountOfResponses;
 	};
 };

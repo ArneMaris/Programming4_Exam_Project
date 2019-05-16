@@ -18,6 +18,11 @@ dae::GridLevel::GridLevel(const std::wstring & levelFilePath, const b2Vec2& offs
 
 dae::GridLevel::~GridLevel()
 {
+	for (auto it = m_pGridTiles.begin(); it != m_pGridTiles.end(); ++it)
+	{
+		delete (*it);
+	}
+	m_pGridTiles.clear();
 }
 void dae::GridLevel::Initialize()
 {
@@ -79,7 +84,9 @@ void dae::GridLevel::BuildGridLevel()
 			auto it = m_TilesMap.find(m_Nrs[4 + hor]);
 			if (it != m_TilesMap.end())
 			{
-				m_pGridTiles.push_back(new GridTile(startPos, { float(tileWidth),float(tileHeight) }, it->second.texture, it->second.m_IsWalkable, (it->second.spawnThisOnTile != nullptr ? it->second.spawnThisOnTile : nullptr)));
+				m_pGridTiles.push_back(new GridTile({ startPos.x - it->second.textureSizeOffset.x,startPos.y - it->second.textureSizeOffset.x }, 
+					{ float(tileWidth + it->second.textureSizeOffset.x),float(tileHeight + it->second.textureSizeOffset.y) },
+					it->second.texture, it->second.isWalkable, (it->second.spawnThisOnTile != nullptr ? it->second.spawnThisOnTile : nullptr)));
 			}
 			else
 			{

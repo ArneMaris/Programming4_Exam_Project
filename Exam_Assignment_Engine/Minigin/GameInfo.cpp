@@ -18,3 +18,4 @@ bool dae::GameInfo::enableVsync = false;
 bool dae::GameInfo::drawPhysicsDebug = false; //this is the default value, can be changed during runtime
 
 int dae::GameInfo::amountOfGameObjects = 0; //just a counter to keep track of gameObject amount
+int dae::GameInfo::amountOfResponses = 0; //just a counter to keep track of Responses amount

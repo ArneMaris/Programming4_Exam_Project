@@ -8,6 +8,7 @@ namespace dae
 	{
 	public:
 		GridTile(const b2Vec2& pos, const b2Vec2& size, std::shared_ptr<SDL_Texture> texture, bool isWalkable, Prefab* spawnOnThisTile = nullptr);
+
 		~GridTile() = default;
 
 		void Render();

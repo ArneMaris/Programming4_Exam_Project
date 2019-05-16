@@ -13,6 +13,9 @@ namespace dae
 		Scene* GetActiveScene();
 		void SetActiveScene(const std::wstring& sceneName);
 
+		void SetNextSceneActive();
+		void SetPreviousSceneActive();
+
 		void Initialize();
 		void Update();
 		void Render();

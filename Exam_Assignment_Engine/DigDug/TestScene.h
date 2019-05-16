@@ -12,7 +12,7 @@ public:
 	~TestScene() = default;
 
 private:
-	dae::GameObject* obj1;
+	dae::GameObject* m_pDigDug;
 	dae::GameObject* obj2;
 };
 

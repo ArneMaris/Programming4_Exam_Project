@@ -41,7 +41,12 @@ void dae::SceneManager::FixedUpdate()
 
 b2World* dae::SceneManager::GetPhysicsWorld()
 {
-	return GetActiveScene()->GetPhysicsWorld();
+	auto scene = GetActiveScene();
+	if (scene != nullptr)
+	{
+		return scene->GetPhysicsWorld();
+	}
+	return nullptr;
 }
 
 void dae::SceneManager::CleanUp()
@@ -91,4 +96,38 @@ void dae::SceneManager::SetActiveScene(const std::wstring & sceneName)
 		}
 	}
 	Logger::GetInstance().LogWarning(L"Scene with name: " + sceneName + L" not found, have you added it to the sceneManager?");
+}
+
+void dae::SceneManager::SetNextSceneActive()
+{
+	for (size_t i = 0; i < m_pScenes.size(); i++)
+	{
+		if (m_pScenes[i]->GetIsActive() == true)
+		{
+			m_pScenes[i]->SetIsActive(false);
+			if (i + 1 < m_pScenes.size())
+				m_pScenes[i + 1]->SetIsActive(true);
+			else
+				m_pScenes[0]->SetIsActive(true);
+
+			break;
+		}
+	}
+}
+
+void dae::SceneManager::SetPreviousSceneActive()
+{
+	for (size_t i = 0; i < m_pScenes.size(); i++)
+	{
+		if (m_pScenes[i]->GetIsActive() == true)
+		{
+			m_pScenes[i]->SetIsActive(false);
+			if (i - 1 > 0)
+				m_pScenes[i - 1]->SetIsActive(true);
+			else 
+				m_pScenes[m_pScenes.size()-1]->SetIsActive(true);
+
+			break;
+		}
+	}
 }

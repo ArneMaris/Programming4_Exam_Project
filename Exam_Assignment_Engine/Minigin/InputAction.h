@@ -32,7 +32,7 @@ namespace dae
 		bool m_KeyHeld = false;
 
 		void HandleKeyBoardInput(SDL_Event& e); //if pressed this frame
-		void HandleControllerInput(XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState, bool gamePadConnected); //if pressed this frame
+		void HandleControllerInput(XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState); //if pressed this frame
 		b2Vec2 GetAxis(XINPUT_STATE& gamePadState);
 		void ClampStickInput(b2Vec2& stickInput, int deadZoneValue);
 

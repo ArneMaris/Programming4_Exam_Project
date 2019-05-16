@@ -6,20 +6,38 @@
 
 dae::StateTransition::StateTransition(State * to, Response* response,bool onEnterPressed)
 	:dae::StateTransition(nullptr, to, response, onEnterPressed)
-{}
+{
+}
+
 
 dae::StateTransition::StateTransition(State * onlyFrom, State * to, Response* response, bool onEnterPressed)
-	:m_pResponse{response}
-	,m_OnEnter{onEnterPressed }
+	:m_OnEnter{onEnterPressed }
 	,m_OnExit{!onEnterPressed }
 	,m_pFromState{onlyFrom}
 	,m_pToState{to}
 {
+	m_pResponses.push_back(response);
 }
 
-void dae::StateTransition::OnNotify(const NotifyEvent & notifyEvent, Response* notifier)
+dae::StateTransition::StateTransition(State * to, const std::vector<Response*> responses, bool onEnterPressed)
+	:dae::StateTransition(nullptr, to, responses, onEnterPressed)
 {
-	if (typeid(*m_pResponse) != typeid(*notifier)) return;
+}
+dae::StateTransition::StateTransition(State * onlyFrom, State * to, const std::vector<Response*> responses, bool onEnterPressed)
+	:m_OnEnter{ onEnterPressed }
+	, m_OnExit{ !onEnterPressed }
+	, m_pFromState{ onlyFrom }
+	, m_pToState{ to }
+{
+	m_pResponses.assign(responses.begin(), responses.end());
+}
+
+
+void dae::StateTransition::OnNotify(const NotifyEvent & notifyEvent, int notifierResponseId)
+{
+	//try to find notifier in the responseVector, if not present means this transition can't be calles by this notifier
+	auto it = std::find_if(m_pResponses.begin(), m_pResponses.end(), [notifierResponseId](Response* resp) {return resp->GetResponseID() == notifierResponseId; });
+	if (it == m_pResponses.end()) return;
 
 	switch (notifyEvent)
 	{

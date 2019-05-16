@@ -28,6 +28,7 @@ namespace dae
 		GameObject& operator=(GameObject&& other) = delete;
 
 		const std::wstring& GetName() const { return m_Name; };
+		void SetName(const std::wstring& newName) { m_Name = std::move(newName); };
 
 		//Lower order = more in the background, meaning 1 will draw over 0
 		void SetRenderOrder(int order) { m_RenderOrder = order; };
@@ -71,7 +72,7 @@ namespace dae
 		bool CheckIfAlreadyHasComponent(BaseComponent* compToAdd); //add all components that where you can't have 2 of on 1 gameObject
 
 		bool m_Initialized;
-		const std::wstring m_Name;
+		std::wstring m_Name;
 		int m_RenderOrder ;
 	};
 

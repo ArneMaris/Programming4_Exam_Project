@@ -20,6 +20,6 @@ namespace dae
 		Observer() = default;
 		virtual ~Observer() = default;
 
-		virtual void OnNotify(const NotifyEvent& notifyEvent, Response* notifier) = 0;
+		virtual void OnNotify(const NotifyEvent& notifyEvent, int notifierResponseId) = 0;
 	};
 }

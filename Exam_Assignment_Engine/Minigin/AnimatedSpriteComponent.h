@@ -9,7 +9,7 @@ namespace dae
 	class AnimationResponse;
 		struct Animation
 		{
-			Animation(const std::wstring& name, float secPerFrame = 0.1f, int minrow = 0, int maxrow = 10, int mincolumn = 0, int maxcolumn = 10, AnimationResponse* animresponse = nullptr)
+			Animation(const std::wstring& name, int minrow, int maxrow, int mincolumn, int maxcolumn, float secPerFrame = 0.2f, AnimationResponse* animresponse = nullptr)
 				: minRow{ minrow }
 				, maxColumn{ maxcolumn }
 				, minColumn{ mincolumn }

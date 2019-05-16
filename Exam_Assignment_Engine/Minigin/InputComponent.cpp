@@ -48,7 +48,7 @@ void dae::InputComponent::HandleControllerInput(XINPUT_STATE& gamePadState, XINP
 {
 	for (auto& action : m_pInputActions)
 	{
-		action->HandleControllerInput(gamePadState, prevGamePadState, m_ControllerId);
+		action->HandleControllerInput(gamePadState, prevGamePadState);
 	}
 }
 

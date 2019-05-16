@@ -20,42 +20,30 @@
     <ClInclude Include="Game.h">
       <Filter>CORE%28don%27t touch%29</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionResponseExample.h">
-      <Filter>YourFiles</Filter>
-    </ClInclude>
     <ClInclude Include="DigDugCharacter.h">
-      <Filter>YourFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="ExamplePrefab.h">
       <Filter>YourFiles</Filter>
     </ClInclude>
     <ClInclude Include="TestScene.h">
       <Filter>YourFiles</Filter>
     </ClInclude>
-    <ClInclude Include="StatesExample.h">
+    <ClInclude Include="Prefabs.h">
       <Filter>YourFiles</Filter>
     </ClInclude>
-    <ClInclude Include="MoveUp.h">
+    <ClInclude Include="InputResponses.h">
+      <Filter>YourFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="States.h">
+      <Filter>YourFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionResponses.h">
       <Filter>YourFiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CollisionResponseExample.cpp">
-      <Filter>YourFiles</Filter>
-    </ClCompile>
     <ClCompile Include="DigDugCharacter.cpp">
       <Filter>YourFiles</Filter>
     </ClCompile>
-    <ClCompile Include="ExamplePrefab.cpp">
-      <Filter>YourFiles</Filter>
-    </ClCompile>
     <ClCompile Include="TestScene.cpp">
-      <Filter>YourFiles</Filter>
-    </ClCompile>
-    <ClCompile Include="StatesExample.cpp">
-      <Filter>YourFiles</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveUp.cpp">
       <Filter>YourFiles</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
@@ -63,6 +51,18 @@
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>MainGameFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Prefabs.cpp">
+      <Filter>YourFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="InputResponses.cpp">
+      <Filter>YourFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="States.cpp">
+      <Filter>YourFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionResponses.cpp">
+      <Filter>YourFiles</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

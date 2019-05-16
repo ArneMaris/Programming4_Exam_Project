@@ -51,9 +51,9 @@ void dae::InputAction::HandleKeyBoardInput(SDL_Event&e)
 }
 
 
-void dae::InputAction::HandleControllerInput(XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState, bool gamePadConnected)
+void dae::InputAction::HandleControllerInput(XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState)
 {
-	if (!m_ControllerInputIsAxis && gamePadConnected && m_ControllerInput != ControllerInput::NONE)
+	if (!m_ControllerInputIsAxis && m_ControllerInput != ControllerInput::NONE)
 	{
 		if (gamePadState.Gamepad.wButtons == DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons != DWORD(m_ControllerInput))
 			m_pResponse->ExecuteOnPress();
@@ -62,11 +62,25 @@ void dae::InputAction::HandleControllerInput(XINPUT_STATE& gamePadState, XINPUT_
 		else if (gamePadState.Gamepad.wButtons == DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons == DWORD(m_ControllerInput))
 			m_pResponse->ExecuteOnHold({ 0,0 });
 	}
-	else if (gamePadConnected)
+	else if (m_ControllerInput != ControllerInput::NONE)
 	{
+		b2Vec2 prevAxis = GetAxis(prevGamePadState);
+		if (!prevAxis.IsValid()) return;
+
 		b2Vec2 axis = GetAxis(gamePadState);
-		if (axis.Length() > float32(0.1f))
+
+		if (prevAxis.Length() < float32(0.1f) && axis.Length() >= float32(0.1f))
+		{
+			m_pResponse->ExecuteOnPress();
+		}
+		else if (axis.Length() < float32(0.1f) && prevAxis.Length() >= float32(0.1f))
+		{
+			m_pResponse->ExecuteOnRelease();
+		}
+		else if (axis.Length() >= float32(0.1f) && prevAxis.Length() >= float32(0.1f))
+		{
 			m_pResponse->ExecuteOnHold(axis);
+		}
 	}
 }
 
@@ -78,6 +92,7 @@ b2Vec2 dae::InputAction::GetAxis(XINPUT_STATE& gamePadState)
 	case ControllerInput::JoyStickLeft:
 		stickInput = { float32(gamePadState.Gamepad.sThumbLX), float32(gamePadState.Gamepad.sThumbLY) };
 		ClampStickInput(stickInput, XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);
+		break;
 	case ControllerInput::JoyStickRight:
 		stickInput = { float32(gamePadState.Gamepad.sThumbRX), float32(gamePadState.Gamepad.sThumbRY) };
 		ClampStickInput(stickInput, XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE);
@@ -96,7 +111,6 @@ void dae::InputAction::ClampStickInput(b2Vec2 & stickInput, int deadZoneValue)
 {
 	//determine how far the controller is pushed
 	float magnitude = sqrt(stickInput.x*stickInput.x + stickInput.y * stickInput.y);
-
 	//determine the direction the controller is pushed
 	float normalizedLX = stickInput.x / magnitude;
 	float normalizedLY = stickInput.y / magnitude;
