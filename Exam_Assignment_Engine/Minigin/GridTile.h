@@ -16,6 +16,8 @@ namespace dae
 
 		bool GetIsWalkable() const { return m_IsWalkable; };
 
+		void ClearAllConnections();
+
 	private:
 		std::shared_ptr<SDL_Texture> m_pTexture;
 		const b2Vec2 m_Pos;

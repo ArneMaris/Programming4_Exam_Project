@@ -25,6 +25,7 @@ namespace dae
 		void AddGameObject(Prefab* object);
 
 		void AddLevel(GridLevel* level);
+		std::vector<GridLevel*> GetLevels() const { return m_pLevels; };
 		const std::wstring& GetSceneName() const;
 
 		Scene(const std::wstring& name, const b2Vec2& gravity = { 0, -10 });

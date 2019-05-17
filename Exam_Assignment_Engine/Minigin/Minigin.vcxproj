@@ -280,7 +280,6 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClCompile Include="Response.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
-    <ClCompile Include="TileConnection.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

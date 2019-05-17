@@ -22,23 +22,25 @@ void TestScene::Initialize()
 	dae::Logger::GetInstance().EnableInfoLogging();
 
 	auto backGroundLevel = new dae::GridLevel(L"Level1Back.txt", false);
-	backGroundLevel->AddTile(0, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Empty.png"), false));
-	backGroundLevel->AddTile(1, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Layer1.png"), false));
-	backGroundLevel->AddTile(2, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Layer2.png"), false));
-	backGroundLevel->AddTile(3, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Layer3.png"), false));
-	backGroundLevel->AddTile(4, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Layer4.png"), false));
+	backGroundLevel->AddTileConfiguration(0, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Empty.png"), false));
+	backGroundLevel->AddTileConfiguration(1, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Layer1.png"), false));
+	backGroundLevel->AddTileConfiguration(2, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Layer2.png"), false));
+	backGroundLevel->AddTileConfiguration(3, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Layer3.png"), false));
+	backGroundLevel->AddTileConfiguration(4, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Layer4.png"), false));
 
 	//DIGDUG Spawn
-	backGroundLevel->AddTile(5, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Layer1.png"), false, new DigDug()));
+	dae::TileByNrConnections tileNrConSettings;
+	dae::TileRotationsByConnections tileRotByConSettings;
+	backGroundLevel->AddTileConfiguration(5, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Layer1.png"), false, new DigDug()));
 
 	auto overlayLevel = new dae::GridLevel(L"Level1Tunnels.txt", true);
-	overlayLevel->AddTile(0, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Empty.png"), true));
-	overlayLevel->AddTile(1, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Air.png"), false));
-	overlayLevel->AddTile(2, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelEnd.png"), true));
-	overlayLevel->AddTile(3, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelPassS.png"), true));
-	overlayLevel->AddTile(4, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelPassC.png"), true));
-	overlayLevel->AddTile(5, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelT.png"), true));
-	overlayLevel->AddTile(6, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelOpen.png"), true));
+	overlayLevel->AddTileConfiguration(0, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Empty.png"), true));
+	overlayLevel->AddTileConfiguration(1, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Air.png"), false));
+	overlayLevel->AddTileConfiguration(2, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelEnd.png"), true));
+	overlayLevel->AddTileConfiguration(3, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelPassS.png"), true));
+	overlayLevel->AddTileConfiguration(4, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelPassC.png"), true));
+	overlayLevel->AddTileConfiguration(5, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelT.png"), true));
+	overlayLevel->AddTileConfiguration(6, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelOpen.png"), true));
 
 	AddLevel(backGroundLevel);
 	AddLevel(overlayLevel);
@@ -50,8 +52,9 @@ void TestScene::Initialize()
 
 void TestScene::Update()
 {
-
-
+	auto obj = GetGameObject(L"DigDug");
+	auto lastTile = GetLevels()[1]->GetTileByPos(obj->GetTransform()->GetPosition());
+	UNREFERENCED_PARAMETER(lastTile);
 }
 
 void TestScene::Render() const

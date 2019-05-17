@@ -32,3 +32,13 @@ void dae::GridTile::AddConnection(GridTile * toTile)
 {
 	m_pConnections.push_back(new TileConnection(this, toTile));
 }
+
+void dae::GridTile::ClearAllConnections()
+{
+	for (auto& con : m_pConnections)
+	{
+		delete con;
+	}
+	m_pConnections.clear();
+	m_pConnections.shrink_to_fit();
+}

@@ -239,9 +239,6 @@
     <ClCompile Include="Main.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="TileConnection.cpp">
-      <Filter>ComponentHelperClasses</Filter>
-    </ClCompile>
     <ClCompile Include="GameInfo.cpp">
       <Filter>Managers</Filter>
     </ClCompile>

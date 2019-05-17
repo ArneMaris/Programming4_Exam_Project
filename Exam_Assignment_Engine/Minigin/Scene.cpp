@@ -58,7 +58,7 @@ const std::wstring & dae::Scene::GetSceneName() const
 void dae::Scene::BaseUpdate()
 {
 	Update();
-	for(auto gameObject : m_pObjects)
+	for(auto& gameObject : m_pObjects)
 	{
 		gameObject->Update();
 	}
@@ -73,7 +73,7 @@ void dae::Scene::BaseRender() const
 		lvl->Render();
 	}
 
-	for (const auto gameObject : m_pObjects)
+	for (const auto& gameObject : m_pObjects)
 	{
 		gameObject->Render();
 	}
@@ -108,7 +108,7 @@ void dae::Scene::ActivateGameObjects()
 	{
 		lvl->Initialize();
 	}
-	for (auto gameObject : m_pObjects)
+	for (auto& gameObject : m_pObjects)
 	{
 		gameObject->Initialize();
 	}
