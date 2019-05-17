@@ -3,7 +3,6 @@
 #include "Logger.h"
 #include "Observer.h"
 
-
 namespace dae
 {
 	class Response
@@ -12,8 +11,8 @@ namespace dae
 		Response();
 		virtual ~Response();
 
-		void AddObserver(Observer* observer);
-		void RemoveObserver(Observer* observer);
+		void AddObserver(std::shared_ptr<Observer> observer);
+		void RemoveObserver(std::shared_ptr<Observer> observer);
 		void Notify(const NotifyEvent& notifyEvent);
 
 		const int GetResponseID() const { return m_ResponseID; };

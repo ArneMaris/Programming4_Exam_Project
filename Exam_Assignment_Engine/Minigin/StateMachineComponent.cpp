@@ -10,10 +10,6 @@ dae::StateMachineComponent::~StateMachineComponent()
 		delete it->second;
 	}
 	m_pStates.clear();
-	for (auto it = m_pStateTransitions.begin(); it != m_pStateTransitions.end(); ++it)
-	{
-		delete (*it);
-	}
 	m_pStateTransitions.clear();
 	m_pCurrentState = nullptr;
 }
@@ -29,12 +25,12 @@ void dae::StateMachineComponent::AddStateToStateTransition(const std::wstring& f
 {
 	if (m_pStates.find(fromName) != m_pStates.end() && m_pStates.find(toName) != m_pStates.end())
 	{
-		m_pStateTransitions.push_back(new StateTransition(m_pStates.at(fromName), m_pStates.at(toName), response, onEnterPressed));
+		m_pStateTransitions.push_back(std::make_shared<StateTransition>(m_pStates.at(fromName), m_pStates.at(toName), response, onEnterPressed));
 		m_pStateTransitions.back()->m_pStateMachine = this;
 	}
 	else if (m_pStates.find(toName) != m_pStates.end())
 	{
-		m_pStateTransitions.push_back(new StateTransition(nullptr, m_pStates.at(toName), response, onEnterPressed));
+		m_pStateTransitions.push_back(std::make_shared<StateTransition>(nullptr, m_pStates.at(toName), response, onEnterPressed));
 		m_pStateTransitions.back()->m_pStateMachine = this;
 	}
 }
@@ -43,7 +39,7 @@ void dae::StateMachineComponent::AddToStateTransition(const std::wstring & toNam
 {
 	if (m_pStates.find(toName) != m_pStates.end())
 	{
-		m_pStateTransitions.push_back(new StateTransition(nullptr, m_pStates.at(toName), response, onEnterPressed));
+		m_pStateTransitions.push_back(std::make_shared<StateTransition>(nullptr, m_pStates.at(toName), response, onEnterPressed));
 		m_pStateTransitions.back()->m_pStateMachine = this;
 	}
 }

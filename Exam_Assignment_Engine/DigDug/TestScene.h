@@ -10,9 +10,5 @@ public:
 	virtual void Initialize() override;
 
 	~TestScene() = default;
-
-private:
-	dae::GameObject* m_pDigDug;
-	dae::GameObject* obj2;
 };
 

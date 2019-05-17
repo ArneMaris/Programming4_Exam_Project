@@ -33,7 +33,7 @@ void dae::InputComponent::Initialize()
 		{
 			for (auto& inputAct : m_pInputActions)
 			{
-				inputAct->GetResponse()->AddObserver(reinterpret_cast<Observer*>(trans));
+				inputAct->GetResponse()->AddObserver(std::reinterpret_pointer_cast<Observer>(trans));
 			}
 		}
 	}

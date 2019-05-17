@@ -13,7 +13,6 @@ namespace dae
 		none
 	};
 
-	class Response;
 	class Observer
 	{
 	public:

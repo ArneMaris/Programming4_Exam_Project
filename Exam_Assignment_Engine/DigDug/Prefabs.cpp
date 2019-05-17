@@ -13,13 +13,15 @@ dae::GameObject* DigDug::Setup()
 
 	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_kinematicBody));
 	m_GameObject->AddComponent(new dae::ColliderComponent(m_GameObject->GetComponent<dae::PhysicsBodyComponent>()));
-	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(10, 10, dae::ShapeSettings(false, 1, 0.5f, 0));
+	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(25, 25, dae::ShapeSettings(false, 1, 0.5f, 0));
 
 	m_GameObject->AddComponent(new dae::AnimatedSpriteComponent(L"DD_Movement.png", 4, 2));
+	m_GameObject->GetComponent<dae::AnimatedSpriteComponent>()->SetScale(2);
 	m_GameObject->AddComponent(new dae::InputComponent(0, false));
 
 	//INPUT ACTIONS
 	auto moveResponse = new Move();
+	moveResponse->SetOwnerObject(m_GameObject);
 	m_GameObject->GetComponent<dae::InputComponent>()->AddInputAction(moveResponse, dae::ControllerInput::JoyStickLeft);
 
 	//RUN ANIMATIONS
@@ -30,6 +32,7 @@ dae::GameObject* DigDug::Setup()
 	animCmp->AddAnimation({ L"RunVerticalWeapon", 2,2,3,4,0.2f });
 
 	auto collResp = new CollisionResponseExample2;
+	collResp->SetOwnerObject(m_GameObject);
 	m_GameObject->GetComponent<dae::ColliderComponent>()->AddCollisionResponse(collResp);
 
 
@@ -40,8 +43,6 @@ dae::GameObject* DigDug::Setup()
 	sm->AddState(L"Running", new StateRunning(), false);
 	sm->AddStateToStateTransition(L"Idle", L"Running", moveResponse, true); //add trans from idle to run when MoveUpCommand is pressed
 	sm->AddStateToStateTransition(L"Running", L"Idle", moveResponse, false); //add trans from run to idle when MoveUpCommand is released
-
-	m_GameObject->GetTransform()->Translate(250, 500);
 
 	return m_GameObject;
 }

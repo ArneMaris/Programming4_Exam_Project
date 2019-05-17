@@ -21,9 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameInfo.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
@@ -150,11 +147,11 @@
     <ClInclude Include="TileConnection.h">
       <Filter>ComponentHelperClasses</Filter>
     </ClInclude>
+    <ClInclude Include="GameInfo.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameInfo.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
@@ -244,6 +241,9 @@
     </ClCompile>
     <ClCompile Include="TileConnection.cpp">
       <Filter>ComponentHelperClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInfo.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

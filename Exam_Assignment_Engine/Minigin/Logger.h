@@ -18,7 +18,7 @@ namespace dae
 		 void EnableInfoLogging();
 		 void DisableInfoLogging();
 
-		 void Draw(bool* p_open = NULL);
+		 void Draw();
 
 	private:
 		 void AddLog(const char* fmt, ...) IM_FMTARGS(2);
@@ -33,5 +33,7 @@ namespace dae
 		bool m_logInfo;
 
 		ImVec4 m_CurrColor;
+
+		bool m_Open;
 	};
 }

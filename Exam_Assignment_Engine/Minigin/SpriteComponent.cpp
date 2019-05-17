@@ -30,8 +30,8 @@ void dae::SpriteComponent::Render() const
 	if (m_pTexture != nullptr)
 	{
 		auto pos = m_pGameObject->GetTransform()->GetPosition();
-		pos.x -= GetTextureWidth() / 2;
-		pos.y += GetTextureHeight() / 2;
+		pos.x -= (GetTextureWidth() * m_Scale) / 2;
+		pos.y += (GetTextureHeight() * m_Scale) / 2;
 		Renderer::GetInstance().RenderTexture(m_pTexture, pos.x + m_Offset.x, pos.y - m_Offset.y, m_pGameObject->GetTransform()->GetRotation(), { int(pos.x), int(pos.y) });
 	}
 }

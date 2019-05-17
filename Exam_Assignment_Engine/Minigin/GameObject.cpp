@@ -33,6 +33,21 @@ dae::GameObject::~GameObject()
 	GameInfo::amountOfGameObjects--;
 }
 
+dae::Script * dae::GameObject::GetScript() const
+{
+	auto comp = this->GetComponent<dae::ScriptComponent>();
+	if (comp != nullptr)
+	{
+		return comp->GetScript();
+	}
+	else
+	{
+		Logger::GetInstance().LogError(L"Trying to get a non existing Script from scriptComponent!");
+		return nullptr;
+	}
+}
+
+
 
 
 void dae::GameObject::Update()
@@ -64,6 +79,7 @@ void dae::GameObject::Initialize()
 		{
 			comp->Initialize();
 		}
+		
 		m_Initialized = true;
 	}
 }

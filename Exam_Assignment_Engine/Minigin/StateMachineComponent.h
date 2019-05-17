@@ -25,7 +25,7 @@ namespace dae
 		void SetToState(State* state);
 		void TryTransitionToState(State* fromState, State* toState);
 
-		std::vector<StateTransition*> GetStateTransitions() const {return m_pStateTransitions;};
+		std::vector<std::shared_ptr<StateTransition>> GetStateTransitions() const {return m_pStateTransitions;};
 	
 	protected:
 		virtual void Update() override;
@@ -35,7 +35,7 @@ namespace dae
 	private:
 		std::map<const std::wstring, State*> m_pStates;
 		//std::vector<State*> m_pStates;
-		std::vector<StateTransition*> m_pStateTransitions;
+		std::vector<std::shared_ptr<StateTransition>> m_pStateTransitions;
 
 		State* m_pCurrentState = nullptr;
 

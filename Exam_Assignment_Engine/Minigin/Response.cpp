@@ -12,18 +12,16 @@ dae::Response::~Response()
 	m_pObservers.clear();
 }
 
-void dae::Response::AddObserver(Observer* observer)
+void dae::Response::AddObserver(std::shared_ptr<Observer> observer)
 {
 	m_pObservers.push_back(observer);
 }
 
-void dae::Response::RemoveObserver(Observer * observer)
+void dae::Response::RemoveObserver(std::shared_ptr<Observer> observer)
 {
 	auto it = std::find(m_pObservers.begin(), m_pObservers.end(), observer);
 	if (it != m_pObservers.end())
 	{
-		delete *it;
-		*it = nullptr;
 		it = m_pObservers.erase(it);
 	}
 	else
@@ -34,7 +32,7 @@ void dae::Response::RemoveObserver(Observer * observer)
 
 void dae::Response::Notify(const NotifyEvent& notifyEvent)
 {
-	for (auto obs : m_pObservers)
+	for (auto& obs : m_pObservers)
 	{
 		obs->OnNotify(notifyEvent, m_ResponseID);
 	}

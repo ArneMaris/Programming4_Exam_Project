@@ -23,4 +23,24 @@ namespace dae
 	{
 		SceneManager::GetInstance().GetActiveScene()->GetGameObject(name);
 	};
+
 }
+	static float RadToDegrees(float angleInRad)
+	{
+		return angleInRad * 180 / float(M_PI);
+	}
+
+	static double RadToDegrees(double angleInRad)
+	{
+		return angleInRad * 180 / M_PI;
+	}
+
+	static float DegreesToRad(float angleInDegrees)
+	{
+		return angleInDegrees * float(M_PI) / 180.0f;
+	}
+
+	static double DegreesToRad(double angleInDegrees)
+	{
+		return angleInDegrees * M_PI / 180.0;
+	}

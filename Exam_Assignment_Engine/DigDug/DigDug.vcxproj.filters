@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="CORE%28don%27t touch%29">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="YourFiles">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
@@ -12,18 +8,19 @@
     <Filter Include="MainGameFile">
       <UniqueIdentifier>{ca2be2fa-1483-4e56-8883-1c8e8a78a14c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CORE">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
-      <Filter>CORE%28don%27t touch%29</Filter>
+      <Filter>CORE</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
-      <Filter>CORE%28don%27t touch%29</Filter>
+      <Filter>CORE</Filter>
     </ClInclude>
     <ClInclude Include="DigDugCharacter.h">
-      <Filter>YourFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="TestScene.h">
       <Filter>YourFiles</Filter>
     </ClInclude>
     <ClInclude Include="Prefabs.h">
@@ -38,16 +35,16 @@
     <ClInclude Include="CollisionResponses.h">
       <Filter>YourFiles</Filter>
     </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>MainGameFile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DigDugCharacter.cpp">
       <Filter>YourFiles</Filter>
     </ClCompile>
-    <ClCompile Include="TestScene.cpp">
-      <Filter>YourFiles</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
-      <Filter>CORE%28don%27t touch%29</Filter>
+      <Filter>CORE</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>MainGameFile</Filter>
@@ -63,6 +60,9 @@
     </ClCompile>
     <ClCompile Include="CollisionResponses.cpp">
       <Filter>YourFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>MainGameFile</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

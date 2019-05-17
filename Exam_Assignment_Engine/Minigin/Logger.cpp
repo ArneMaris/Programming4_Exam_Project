@@ -7,6 +7,7 @@ dae::Logger::Logger()
 	m_logInfo = true;
 	AutoScroll = true;
 	ScrollToBottom = false;
+	m_Open = true;
 	Clear();
 }
 
@@ -62,10 +63,12 @@ void dae::Logger::DisableInfoLogging()
 	m_logInfo = false;
 }
 
-void dae::Logger::Draw(bool * p_open)
+void dae::Logger::Draw()
 {
-	ImGui::SetNextWindowSize(ImVec2(400, 300), ImGuiCond_FirstUseEver);
-	if (!ImGui::Begin("LOGGER", p_open))
+	if (!m_Open) return;
+
+	ImGui::SetNextWindowSize(ImVec2(360, 240), ImGuiCond_FirstUseEver);
+	if (!ImGui::Begin("LOGGER", &m_Open, ImGuiWindowFlags_NoNavInputs))
 	{
 		ImGui::End();
 		return;

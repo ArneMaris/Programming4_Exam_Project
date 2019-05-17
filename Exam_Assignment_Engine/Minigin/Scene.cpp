@@ -44,6 +44,12 @@ void dae::Scene::AddGameObject(Prefab* object)
 	m_pObjects.push_back(obj);
 }
 
+void dae::Scene::AddLevel(GridLevel* level)
+{
+	if (std::find(m_pLevels.begin(), m_pLevels.end(), level) == m_pLevels.end())
+		m_pLevels.push_back(level);
+}
+
 const std::wstring & dae::Scene::GetSceneName() const
 {
 	return m_SceneName;
@@ -60,10 +66,12 @@ void dae::Scene::BaseUpdate()
 
 void dae::Scene::BaseRender() const
 {
-	if (m_pActiveLevel != nullptr)
-		m_pActiveLevel->Render();
-
 	Render();
+
+	for (auto& lvl : m_pLevels)
+	{
+		lvl->Render();
+	}
 
 	for (const auto gameObject : m_pObjects)
 	{
@@ -96,7 +104,10 @@ b2World* dae::Scene::GetPhysicsWorld() const
 
 void dae::Scene::ActivateGameObjects()
 {
-	m_pActiveLevel->Initialize();
+	for (auto& lvl : m_pLevels)
+	{
+		lvl->Initialize();
+	}
 	for (auto gameObject : m_pObjects)
 	{
 		gameObject->Initialize();

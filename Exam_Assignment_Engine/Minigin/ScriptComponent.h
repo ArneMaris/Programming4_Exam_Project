@@ -15,6 +15,7 @@ namespace dae
 
 		//carefull other will be deleted! dont use it anywhere else after this
 		void SetNewScript(Script* newScript);
+		Script* GetScript() const { return m_pScript; };
 
 		virtual void Update() override;
 		virtual void Initialize() override;

@@ -3,6 +3,7 @@
 
 namespace dae
 {
+	class PhysicsBodyComponent;
 	class TransformComponent final : public BaseComponent
 	{
 		friend class GameObject;
@@ -10,13 +11,13 @@ namespace dae
 		const b2Vec2& GetPosition() const { return m_Position; }
 		float GetRotation() const { return m_Rotation; }
 		void SetPosition(float x, float y);
-		void SetRotation(float rot);
+		void SetRotation(float rotInRadians);
 		void SetPosition(const b2Vec2& pos);
 
 		void Translate(float x, float y);
-		void Translate(b2Vec2& pos);
+		void Translate(const b2Vec2& pos);
 
-		void Rotate(float angle);
+		void Rotate(float angleInRadians);
 	protected:
 		virtual void Update() override;
 		virtual void Initialize() override;
@@ -25,5 +26,7 @@ namespace dae
 		TransformComponent();
 		b2Vec2 m_Position{};
 		float m_Rotation;
+
+		b2Body* m_pPhysicsBody;
 	};
 }

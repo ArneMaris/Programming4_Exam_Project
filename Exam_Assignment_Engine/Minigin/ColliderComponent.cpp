@@ -42,7 +42,7 @@ void dae::ColliderComponent::Initialize()
 		{
 			for (auto& collResponse : m_pCollisionResponses)
 			{
-				collResponse->AddObserver(reinterpret_cast<Observer*>(trans));
+				collResponse->AddObserver(std::reinterpret_pointer_cast<Observer>(trans));
 			}
 		}
 	}

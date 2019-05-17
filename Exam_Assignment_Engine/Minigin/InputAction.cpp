@@ -56,11 +56,19 @@ void dae::InputAction::HandleControllerInput(XINPUT_STATE& gamePadState, XINPUT_
 	if (!m_ControllerInputIsAxis && m_ControllerInput != ControllerInput::NONE)
 	{
 		if (gamePadState.Gamepad.wButtons == DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons != DWORD(m_ControllerInput))
+		{
 			m_pResponse->ExecuteOnPress();
+			m_pResponse->Notify(NotifyEvent::InputPressed);
+		}
 		else if (gamePadState.Gamepad.wButtons != DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons == DWORD(m_ControllerInput))
+		{
 			m_pResponse->ExecuteOnRelease();
+			m_pResponse->Notify(NotifyEvent::InputReleased);
+		}
 		else if (gamePadState.Gamepad.wButtons == DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons == DWORD(m_ControllerInput))
+		{
 			m_pResponse->ExecuteOnHold({ 0,0 });
+		}
 	}
 	else if (m_ControllerInput != ControllerInput::NONE)
 	{
@@ -72,10 +80,12 @@ void dae::InputAction::HandleControllerInput(XINPUT_STATE& gamePadState, XINPUT_
 		if (prevAxis.Length() < float32(0.1f) && axis.Length() >= float32(0.1f))
 		{
 			m_pResponse->ExecuteOnPress();
+			m_pResponse->Notify(NotifyEvent::InputPressed);
 		}
 		else if (axis.Length() < float32(0.1f) && prevAxis.Length() >= float32(0.1f))
 		{
 			m_pResponse->ExecuteOnRelease();
+			m_pResponse->Notify(NotifyEvent::InputReleased);
 		}
 		else if (axis.Length() >= float32(0.1f) && prevAxis.Length() >= float32(0.1f))
 		{

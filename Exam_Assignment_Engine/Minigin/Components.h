@@ -9,3 +9,4 @@
 #include "PhysicsBodyComponent.h"
 #include "InputComponent.h"
 #include "StateMachineComponent.h"
+#include "ScriptComponent.h"

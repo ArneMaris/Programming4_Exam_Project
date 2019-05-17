@@ -4,8 +4,10 @@
 
 namespace dae
 {
+	class Script;
 	class GameObject final
 	{
+		friend class TransformComponent;
 	public:
 		virtual void Update();
 		virtual void Render() const;
@@ -30,6 +32,8 @@ namespace dae
 		const std::wstring& GetName() const { return m_Name; };
 		void SetName(const std::wstring& newName) { m_Name = std::move(newName); };
 
+		Script* GetScript() const;
+
 		//Lower order = more in the background, meaning 1 will draw over 0
 		void SetRenderOrder(int order) { m_RenderOrder = order; };
 		int GetRenderOrder() const { return m_RenderOrder; };
@@ -37,7 +41,7 @@ namespace dae
 		//taken from DAE GP2 2018-2019
 #pragma region 
 		template <class T>
-		T* GetComponent()
+		T* GetComponent() const
 		{
 			const type_info& ti = typeid(T);
 			for (auto component : m_pComponents)
@@ -49,7 +53,7 @@ namespace dae
 		}
 
 		template <class T>
-		std::vector<T*> GetComponents()
+		std::vector<T*> GetComponents() const
 		{
 			const type_info& ti = typeid(T);
 			std::vector<T*> components;

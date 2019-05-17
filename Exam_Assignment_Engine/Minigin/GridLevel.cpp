@@ -8,8 +8,9 @@
 
 using nlohmann::json;
 
-dae::GridLevel::GridLevel(const std::wstring & levelFilePath, const b2Vec2& offsetFromCenter)
+dae::GridLevel::GridLevel(const std::wstring& levelFilePath, bool usePathfinding, const b2Vec2& offsetFromCenter)
 	:m_CenterOffset{offsetFromCenter}
+	, m_UsePathfinding{usePathfinding}
 {
 	std::wstring fullPath = { ResourceManager::GetInstance().GetResourcesPath() + levelFilePath };
 	m_FilePath = std::move(fullPath);
@@ -23,6 +24,15 @@ dae::GridLevel::~GridLevel()
 		delete (*it);
 	}
 	m_pGridTiles.clear();
+}
+
+void dae::GridLevel::EnablePathfinding()
+{
+	if (!m_UsePathfinding)
+	{
+		m_UsePathfinding = true;
+		MakeConnections();
+	}
 }
 void dae::GridLevel::Initialize()
 {
@@ -56,7 +66,9 @@ void dae::GridLevel::Initialize()
 		return;
 	}
 	BuildGridLevel();
-	MakeConnections();
+
+	if (m_UsePathfinding)
+		MakeConnections();
 }
 
 void dae::GridLevel::AddTile(int id, const TileSettings & tileSettings)
@@ -71,31 +83,31 @@ void dae::GridLevel::BuildGridLevel()
 	b2Vec2 startPos = b2Vec2{ float(GameInfo::GetInstance().windowWidth / 2),float(GameInfo::GetInstance().windowHeight / 2) } + m_CenterOffset;
 
 	//START IN UPPER LEFT CORNOR BUILD LEVEL FROM LEFT TO RIGHT (BY COLUMN)
-	startPos.x -= tileWidth * (m_HorTiles / 2.0f);
-	startPos.y += tileHeight * (m_VertTiles / 2.0f);
-	float yStart = startPos.y;
+	startPos.x -= tileWidth * ((m_HorTiles-1) / 2.0f);
+	startPos.y += tileHeight * ((m_VertTiles-1) / 2.0f);
+	float xStart = startPos.x;
 
 	std::shared_ptr<SDL_Texture> pErrorTex = ResourceManager::GetInstance().LoadTexture(L"ErrorTile.png");
 
-	for (int hor = 0; hor < m_HorTiles; hor++)
+	for (int vert = 0; vert < m_VertTiles; vert++)
 	{
-		for (int vert = 0; vert < m_VertTiles; vert++)
+		for (int hor = 0; hor < m_HorTiles; hor++)
 		{
-			auto it = m_TilesMap.find(m_Nrs[4 + hor]);
+			auto it = m_TilesMap.find(m_Nrs[hor + m_HorTiles * vert]);
 			if (it != m_TilesMap.end())
 			{
-				m_pGridTiles.push_back(new GridTile({ startPos.x - it->second.textureSizeOffset.x,startPos.y - it->second.textureSizeOffset.x }, 
-					{ float(tileWidth + it->second.textureSizeOffset.x),float(tileHeight + it->second.textureSizeOffset.y) },
+				m_pGridTiles.push_back(new GridTile({ startPos.x - it->second.textureSizeOffset.x,startPos.y + it->second.textureSizeOffset.x }, 
+					{ float(tileWidth + it->second.textureSizeOffset.x*2),float(tileHeight + it->second.textureSizeOffset.y*2) },
 					it->second.texture, it->second.isWalkable, (it->second.spawnThisOnTile != nullptr ? it->second.spawnThisOnTile : nullptr)));
 			}
 			else
 			{
 				m_pGridTiles.push_back(new GridTile(startPos, { float(tileWidth),float(tileHeight) }, pErrorTex, true, nullptr));
 			}
-			startPos.y -= float(tileHeight);
+			startPos.x += float(tileWidth);
 		}
-		startPos.x += float(tileWidth);
-		startPos.y = yStart;
+		startPos.y -= float(tileHeight);
+		startPos.x = xStart;
 	}
 }
 
@@ -103,7 +115,7 @@ void dae::GridLevel::BuildGridLevel()
 //creates connections between all IsWalkable tiles! (no diagonal connections for now!)
 void dae::GridLevel::MakeConnections()
 {
-	int index = 0;
+	unsigned int index = 0;
 	for (int i = 0; i < m_HorTiles; i++)
 	{
 		for (int j = 0; j < m_VertTiles; j++)

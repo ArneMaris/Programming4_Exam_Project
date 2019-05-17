@@ -2,7 +2,7 @@
 class Game final
 {
 public:
-	explicit Game() = default;
+	explicit Game();
 	~Game() = default;
 
 	void SetupGame();

@@ -52,8 +52,7 @@ b2Body* dae::PhysicsBodyComponent::GetPhysicsBody() const
 
 void dae::PhysicsBodyComponent::Update()
 {
-	m_pGameObject->GetTransform()->SetPosition(m_Body->GetPosition());
-	m_pGameObject->GetTransform()->SetRotation(m_Body->GetAngle());
+
 }
 
 void dae::PhysicsBodyComponent::Initialize()

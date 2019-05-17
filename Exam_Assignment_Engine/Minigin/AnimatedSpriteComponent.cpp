@@ -87,7 +87,7 @@ void dae::AnimatedSpriteComponent::Initialize()
 			{
 				for (auto& trans : m_pGameObject->GetComponent<StateMachineComponent>()->GetStateTransitions())
 				{
-					anim.second.animResponse->AddObserver(reinterpret_cast<Observer*>(trans));
+					anim.second.animResponse->AddObserver(std::reinterpret_pointer_cast<Observer>(trans));
 				}
 			}
 		}
@@ -102,8 +102,8 @@ void dae::AnimatedSpriteComponent::Render() const
 		auto rot = m_pGameObject->GetTransform()->GetRotation();
 		int frameWidth{ m_TextureWidth / m_Cols };
 		int frameHeight{ m_TextureHeight / m_Rows };
-		pos.x -= frameWidth / 2;
-		pos.y += frameHeight / 2;
+		pos.x -= (frameWidth * m_Scale) / 2;
+		pos.y += (frameHeight * m_Scale) / 2;
 		SDL_Rect destRect{ int(pos.x + m_Offset.x), int(pos.y + m_Offset.y), int(frameWidth * m_Scale), int(frameHeight * m_Scale) };
 		SDL_Rect srcRect{ frameWidth * (m_CurrColumn-1), frameHeight * (m_CurrRow-1), frameWidth, frameHeight };
 		SDL_RendererFlip flip = SDL_RendererFlip::SDL_FLIP_NONE;

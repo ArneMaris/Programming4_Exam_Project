@@ -23,6 +23,8 @@ namespace dae
 		b2World* GetPhysicsWorld() const;
 		void AddGameObject(GameObject* object);
 		void AddGameObject(Prefab* object);
+
+		void AddLevel(GridLevel* level);
 		const std::wstring& GetSceneName() const;
 
 		Scene(const std::wstring& name, const b2Vec2& gravity = { 0, -10 });
@@ -41,7 +43,7 @@ namespace dae
 
 	protected:
 		bool m_IsInitialized;
-		GridLevel* m_pActiveLevel;
+		std::vector<GridLevel*> m_pLevels;
 
 	private: 
 		virtual void Update() = 0; // different Update for every scene, called in BaseUpdate
