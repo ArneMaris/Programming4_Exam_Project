@@ -29,18 +29,29 @@ void TestScene::Initialize()
 	backGroundLevel->AddTileConfiguration(4, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Layer4.png"), false));
 
 	//DIGDUG Spawn
-	dae::TileByNrConnections tileNrConSettings;
-	dae::TileRotationsByConnections tileRotByConSettings;
 	backGroundLevel->AddTileConfiguration(5, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Layer1.png"), false, new DigDug()));
 
-	auto overlayLevel = new dae::GridLevel(L"Level1Tunnels.txt", true);
-	overlayLevel->AddTileConfiguration(0, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Empty.png"), true));
-	overlayLevel->AddTileConfiguration(1, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Air.png"), false));
-	overlayLevel->AddTileConfiguration(2, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelEnd.png"), true));
-	overlayLevel->AddTileConfiguration(3, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelPassS.png"), true));
-	overlayLevel->AddTileConfiguration(4, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelPassC.png"), true));
-	overlayLevel->AddTileConfiguration(5, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelT.png"), true));
-	overlayLevel->AddTileConfiguration(6, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelOpen.png"), true));
+	dae::TileByNrConnections tileNrConSettings{ 0,2,3,4,5,6 };
+	dae::TileRotationsByConnections tileRotByConSettings;
+	tileRotByConSettings.Down = 180;
+	tileRotByConSettings.Left = 270;
+	tileRotByConSettings.Right = 90;
+	tileRotByConSettings.DownLeft = 180;
+	tileRotByConSettings.DownRight = 90;
+	tileRotByConSettings.UpLeft = 270;
+	tileRotByConSettings.LeftRightDown = 90;
+	tileRotByConSettings.LeftRightUp = 270;
+	tileRotByConSettings.UpDownLeft = 180;
+	tileRotByConSettings.LeftRight = 90;
+	
+	auto overlayLevel = new dae::GridLevel(L"Level1Tunnels.txt", true, tileRotByConSettings, tileNrConSettings);
+	overlayLevel->AddTileConfiguration(0, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Empty.png"), false, false));
+	overlayLevel->AddTileConfiguration(1, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/Air.png"), true,false));
+	overlayLevel->AddTileConfiguration(2, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelEnd.png"), true,true));
+	overlayLevel->AddTileConfiguration(3, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelPassS.png"), true,true));
+	overlayLevel->AddTileConfiguration(4, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelPassC.png"), true,true));
+	overlayLevel->AddTileConfiguration(5, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelT.png"), true,true));
+	overlayLevel->AddTileConfiguration(6, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture(L"Tiles/TunnelOpen.png"), true,true));
 
 	AddLevel(backGroundLevel);
 	AddLevel(overlayLevel);

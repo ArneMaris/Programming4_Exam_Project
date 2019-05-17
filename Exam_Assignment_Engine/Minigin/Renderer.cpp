@@ -84,3 +84,15 @@ void dae::Renderer::RenderTexture(std::shared_ptr<SDL_Texture> texture, const fl
 	SDL_QueryTexture(texture.get(), nullptr, nullptr, &dst.w, &dst.h);
 	SDL_RenderCopyEx(GetSDLRenderer(), texture.get(), nullptr, &dst, dbAngle, &rotationCenter, SDL_RendererFlip::SDL_FLIP_NONE);
 }
+
+void dae::Renderer::RenderTexture(std::shared_ptr<SDL_Texture> texture, const float x, const float y, const float w, const float h, float angle, const SDL_Point& rotationCenter) const
+{
+	SDL_Rect dst;
+	dst.x = static_cast<int>(x);
+	dst.y = static_cast<int>(GameInfo::windowHeight - y);
+	dst.w = static_cast<int>(w);
+	dst.h = static_cast<int>(h);
+	double dbAngle = static_cast<double>(angle);
+	SDL_QueryTexture(texture.get(), nullptr, nullptr, &dst.w, &dst.h);
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.get(), nullptr, &dst, dbAngle, &rotationCenter, SDL_RendererFlip::SDL_FLIP_NONE);
+}

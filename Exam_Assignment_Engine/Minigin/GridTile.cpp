@@ -5,11 +5,14 @@
 #include "Renderer.h"
 #include "TileConnection.h"
 
-dae::GridTile::GridTile(const b2Vec2& pos, const b2Vec2& size, std::shared_ptr<SDL_Texture> texture, bool isWalkable, Prefab* spawnOnThisTile)
+dae::GridTile::GridTile(unsigned int id, const b2Vec2& pos, const b2Vec2& size, std::shared_ptr<SDL_Texture> texture, bool isWalkable, bool isChangable, Prefab* spawnOnThisTile)
 	:m_Pos{pos}
 	,m_Size{size}
 	,m_IsWalkable{isWalkable}
 	,m_pTexture {texture}
+	,m_IsChangeable{ isChangable }
+	,m_Id{ id }
+	,m_Rotation{0}
 {
 
 	if (spawnOnThisTile != nullptr)
@@ -25,7 +28,7 @@ void dae::GridTile::Render()
 	b2Vec2 renderPos = m_Pos;
 	renderPos.x -= m_Size.x / 2;
 	renderPos.y += m_Size.y / 2;
-	Renderer::GetInstance().RenderTexture(m_pTexture, renderPos.x, renderPos.y, m_Size.x, m_Size.y);
+	Renderer::GetInstance().RenderTexture(m_pTexture, renderPos.x, renderPos.y, m_Size.x, m_Size.y, DegreesToRad(m_Rotation));
 }
 
 void dae::GridTile::AddConnection(GridTile * toTile)
