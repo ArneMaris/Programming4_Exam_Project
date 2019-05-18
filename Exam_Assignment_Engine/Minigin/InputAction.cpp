@@ -6,6 +6,7 @@
 dae::InputAction::InputAction(InputResponse* response, SDL_Keycode keyCode, ControllerInput controllerInput)
 	:m_ControllerInputIsAxis{false}
 	, m_pResponse{ response }
+	,m_KeyHeld{false}
 {
 	m_KeyCode = keyCode;
 	m_ControllerInput = controllerInput;
@@ -30,18 +31,20 @@ void dae::InputAction::HandleKeyBoardInput(SDL_Event&e)
 	//KEYBOARD INPUT
 	if (m_KeyCode != SDLK_UNKNOWN)
 	{
-
-		if (e.key.keysym.sym == m_KeyCode && e.type == SDL_KEYDOWN) // if now is true and prev is false key is just pressed
+		
+		if (e.key.keysym.sym == m_KeyCode && e.type == SDL_KEYDOWN && !m_KeyHeld) // if now is true and prev is false key is just pressed
 		{
 			m_pResponse->ExecuteOnPress();
 			m_pResponse->Notify(NotifyEvent::InputPressed);
+			m_pResponse->SetLastKeyPressed(m_KeyCode);
 			m_KeyHeld = true;
 		}
-		else if (e.key.keysym.sym == m_KeyCode && e.type == SDL_KEYUP)
+		else if (e.key.keysym.sym == m_KeyCode && e.type == SDL_KEYUP && m_KeyHeld)
 		{
 			m_pResponse->ExecuteOnRelease();
 			m_pResponse->Notify(NotifyEvent::InputReleased);
 			m_KeyHeld = false;
+			m_pResponse->SetLastKeyPressed(SDLK_UNKNOWN);
 		}
 		if (m_KeyHeld)
 		{

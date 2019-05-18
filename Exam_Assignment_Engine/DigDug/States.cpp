@@ -1,14 +1,16 @@
 #include "pch.h"
 #include "States.h"
+#include "GameObject.h"
+#include "Components.h"
 
 void StateIdle::OnStateEnter()
 {
-	dae::Logger::GetInstance().LogInfo(L"Entered IdleState");
+	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->SetPaused(true);
 }
 
 void StateIdle::OnStateExit()
 {
-	dae::Logger::GetInstance().LogInfo(L"Left IdleState");
+
 }
 
 void StateIdle::InState()
@@ -19,12 +21,12 @@ void StateIdle::InState()
 
 void StateRunning::OnStateEnter()
 {
-	dae::Logger::GetInstance().LogInfo(L"Entered RunState");
+	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->SetPaused(false);
 }
 
 void StateRunning::OnStateExit()
 {
-	dae::Logger::GetInstance().LogInfo(L"Left RunState");
+
 }
 
 void StateRunning::InState()
@@ -34,7 +36,7 @@ void StateRunning::InState()
 
 void StateDead::OnStateEnter()
 {
-	dae::Logger::GetInstance().LogInfo(L"Entered DeadState");
+
 }
 
 void StateDead::OnStateExit()

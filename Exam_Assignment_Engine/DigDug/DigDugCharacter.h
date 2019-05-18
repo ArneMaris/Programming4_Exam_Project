@@ -13,7 +13,10 @@ public:
 	virtual void Render() const;
 	virtual void PostRender() const;
 
+	float GetMoveSpeed() const { return m_MoveSpeed; };
+
 private:
 	dae::StateMachineComponent* m_pStateMachineComp;
+	float m_MoveSpeed;
 };
 

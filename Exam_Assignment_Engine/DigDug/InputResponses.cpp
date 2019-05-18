@@ -2,37 +2,168 @@
 #include "InputResponses.h"
 #include "GameObject.h"
 #include "Components.h"
+#include "DigDugCharacter.h"
+#include "SceneManager.h"
+#include "GridLevel.h"
 
-void Move::ExecuteOnPress()
+void MoveController::ExecuteOnPress()
 {
-	dae::Logger::GetInstance().LogInfo(L"Stick start");
 }
-void Move::ExecuteOnHold(const b2Vec2 axisValues)
+
+void MoveController::ExecuteOnHold(const b2Vec2 axisValues)
 {
-	UNREFERENCED_PARAMETER(axisValues);
-	//dae::Logger::GetInstance().LogInfo(L"Stick being used");
+	b2Vec2 frontPos;
+	frontPos = m_pOwnerObject->GetTransform()->GetPosition();
+	auto level = dae::SceneManager::GetInstance().GetActiveScene()->GetLevels()[1];
+	float moveSpeed = static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->GetMoveSpeed();
+
 	float angle = RadToDegrees(atan2f(axisValues.x, axisValues.y));
 	if (abs(angle) > 135)
 	{
-		m_pOwnerObject->GetTransform()->Translate(0, -1);
+		frontPos.y -= float(level->GetTileHeight());
 	}
 	else if (abs(angle) > 45)
 	{
 		if (angle > 0)
-			m_pOwnerObject->GetTransform()->Translate(1, 0);
+			frontPos.x += float(level->GetTileWidth());
 		else
-			m_pOwnerObject->GetTransform()->Translate(-1, 0);
+			frontPos.x -= float(level->GetTileWidth());
 	}
 	else
 	{
-		m_pOwnerObject->GetTransform()->Translate(0, 1);
+		frontPos.y += float(level->GetTileHeight());
 	}
-	//m_pOwnerObject->GetTransform()->SetRotation(DegreesToRad(angle));
-	dae::Logger::GetInstance().LogInfo(std::to_wstring(angle));
-	//m_pOwnerObject->GetTransform()->Translate(axisValues);
+	b2Vec2 tilePos = level->GetTileByPos(frontPos)->GetPos();
+
+	//return value of false means NO new movetarget is set!
+	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tilePos, moveSpeed)) return;
+
+	//So only rotate if new moveTarget is set
+	if (abs(angle) > 135)
+	{
+		if (m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->GetFlipDirection() == SDL_FLIP_HORIZONTAL)
+			m_pOwnerObject->GetTransform()->SetRotation(-90);
+		else
+			m_pOwnerObject->GetTransform()->SetRotation(90);
+	}
+	else if (abs(angle) > 45)
+	{
+		if (angle > 0)
+			m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->SetFlipDirection(SDL_FLIP_NONE);
+		else
+			m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->SetFlipDirection(SDL_FLIP_HORIZONTAL);
+		m_pOwnerObject->GetTransform()->SetRotation(0);
+	}
+	else
+	{
+		if (m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->GetFlipDirection() == SDL_FLIP_HORIZONTAL)
+			m_pOwnerObject->GetTransform()->SetRotation(90);
+		else
+			m_pOwnerObject->GetTransform()->SetRotation(-90);
+	}
 }
-void Move::ExecuteOnRelease()
+void MoveController::ExecuteOnRelease()
+{
+}
+
+void MoveUpKey::ExecuteOnPress()
+{
+	dae::Logger::GetInstance().LogInfo(L"Stick start");
+}
+
+void MoveUpKey::ExecuteOnHold(const b2Vec2 axisValues)
+{
+	UNREFERENCED_PARAMETER(axisValues);
+	b2Vec2 frontPos;
+	frontPos = m_pOwnerObject->GetTransform()->GetPosition();
+	auto level = dae::SceneManager::GetInstance().GetActiveScene()->GetLevels()[1];
+	float moveSpeed = static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->GetMoveSpeed();
+
+	frontPos.y += level->GetTileHeight();
+	b2Vec2 tilePos = level->GetTileByPos(frontPos)->GetPos();
+	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tilePos, moveSpeed)) return;
+
+	if (m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->GetFlipDirection() == SDL_FLIP_HORIZONTAL)
+		m_pOwnerObject->GetTransform()->SetRotation(90);
+	else
+		m_pOwnerObject->GetTransform()->SetRotation(-90);
+}
+
+void MoveUpKey::ExecuteOnRelease()
 {
 	dae::Logger::GetInstance().LogInfo(L"Stick end");
 }
 
+void MoveDownKey::ExecuteOnPress()
+{
+}
+
+void MoveDownKey::ExecuteOnHold(const b2Vec2 axisValues)
+{
+	UNREFERENCED_PARAMETER(axisValues);
+	b2Vec2 frontPos;
+	frontPos = m_pOwnerObject->GetTransform()->GetPosition();
+	auto level = dae::SceneManager::GetInstance().GetActiveScene()->GetLevels()[1];
+	float moveSpeed = static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->GetMoveSpeed();
+
+	frontPos.y -= level->GetTileHeight();
+	b2Vec2 tilePos = level->GetTileByPos(frontPos)->GetPos();
+	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tilePos, moveSpeed)) return;
+
+	if (m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->GetFlipDirection() == SDL_FLIP_HORIZONTAL)
+		m_pOwnerObject->GetTransform()->SetRotation(-90);
+	else
+		m_pOwnerObject->GetTransform()->SetRotation(90);
+}
+
+void MoveDownKey::ExecuteOnRelease()
+{
+}
+
+void MoveLeftKey::ExecuteOnPress()
+{
+}
+
+void MoveLeftKey::ExecuteOnHold(const b2Vec2 axisValues)
+{
+	UNREFERENCED_PARAMETER(axisValues);
+	b2Vec2 frontPos;
+	frontPos = m_pOwnerObject->GetTransform()->GetPosition();
+	auto level = dae::SceneManager::GetInstance().GetActiveScene()->GetLevels()[1];
+	float moveSpeed = static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->GetMoveSpeed();
+
+	frontPos.x -= level->GetTileWidth();
+	b2Vec2 tilePos = level->GetTileByPos(frontPos)->GetPos();
+	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tilePos, moveSpeed)) return;
+
+	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->SetFlipDirection(SDL_FLIP_HORIZONTAL);
+	m_pOwnerObject->GetTransform()->SetRotation(0);
+}
+
+void MoveLeftKey::ExecuteOnRelease()
+{
+}
+
+void MoveRightKey::ExecuteOnPress()
+{
+}
+
+void MoveRightKey::ExecuteOnHold(const b2Vec2 axisValues)
+{
+	UNREFERENCED_PARAMETER(axisValues);
+	b2Vec2 frontPos;
+	frontPos = m_pOwnerObject->GetTransform()->GetPosition();
+	auto level = dae::SceneManager::GetInstance().GetActiveScene()->GetLevels()[1];
+	float moveSpeed = static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->GetMoveSpeed();
+
+	frontPos.x += level->GetTileWidth();
+	b2Vec2 tilePos = level->GetTileByPos(frontPos)->GetPos();
+	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tilePos, moveSpeed)) return;
+
+	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->SetFlipDirection(SDL_FLIP_NONE);
+	m_pOwnerObject->GetTransform()->SetRotation(0);
+}
+
+void MoveRightKey::ExecuteOnRelease()
+{
+}

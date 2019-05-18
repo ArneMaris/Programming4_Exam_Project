@@ -29,17 +29,11 @@ namespace dae
 	class AnimatedSpriteComponent final : public SpriteComponent
 	{
 	public:
-		enum FlipDirection
-		{
-			none,
-			vertical,
-			horizontal
-		};
-		AnimatedSpriteComponent(const std::wstring& assetName, int nrCols, int nrRows, 
+		AnimatedSpriteComponent(const std::wstring& assetName, unsigned int nrCols, unsigned int nrRows,
 			float scale = 1, float secPerFrame = 0.1f, const b2Vec2& offset = { 0,0 },
-			const FlipDirection& flipDir = FlipDirection::none, float angle = 0, const b2Vec2& rotationCenter = { 0,0 });
+			const SDL_RendererFlip& flipDir = SDL_FLIP_NONE, float angle = 0, const b2Vec2& rotationCenter = { 0,0 });
 
-		AnimatedSpriteComponent(const std::wstring& assetName, int nrCols, int nrRows, float secPerFrame);
+		AnimatedSpriteComponent(const std::wstring& assetName, unsigned int nrCols, unsigned int nrRows, float secPerFrame);
 
 		~AnimatedSpriteComponent();
 		AnimatedSpriteComponent(const AnimatedSpriteComponent& other) = delete;
@@ -47,17 +41,16 @@ namespace dae
 		AnimatedSpriteComponent& operator=(const AnimatedSpriteComponent& other) = delete;
 		AnimatedSpriteComponent& operator=(AnimatedSpriteComponent&& other) = delete;
 
-		void SetFlipDirection(const FlipDirection& flipDir);
-		void SetAngleDegrees(float newAngle);
-		void SetAngleRadians(float newAngle);
-		void SetRotationCenter(b2Vec2 newCenter);
-		void SetActiveRow(int newRow, bool reset = true);
-		void SetActiveColumn(int newColumn, bool reset = true);
+		void SetPaused(bool value) {m_Paused = value;};
+		void SetActiveRow(unsigned int newRow, bool reset = true);
+		void SetActiveColumn(unsigned int newColumn, bool reset = true);
 		void SetSecondsPerFrame(float newSecPerFrame);
 
 		void AddAnimation(const Animation& animation, bool autoPlay = true);
 		void PlayAnimation(const std::wstring& name);
 		void ResetAnimationEventTriggers();
+
+		const SDL_RendererFlip& GetFlipDirection() const { return m_FlipDirection; };
 
 	protected:
 		virtual void Update() override;
@@ -65,25 +58,24 @@ namespace dae
 		virtual void Render() const override;
 
 	private:
-		void SetRowLimit(int min, int max);
-		void SetColumnLimit(int min, int max);
-		int GetNrFrames() const;
+		void SetRowLimit(unsigned int min, unsigned int max);
+		void SetColumnLimit(unsigned int min, unsigned int max);
+		unsigned int GetNrFrames() const;
 
-		const int m_Cols;
-		const int m_Rows;
+		const unsigned int m_Cols;
+		const unsigned int m_Rows;
 		float m_SecPerFrame;
 		float m_AccuSec;
-		int m_MinRow;
-		int m_MaxRow;
-		int m_MinColumn;
-		int m_MaxColumn;
+		unsigned int m_MinRow;
+		unsigned int m_MaxRow;
+		unsigned int m_MinColumn;
+		unsigned int m_MaxColumn;
 
-		int m_CurrRow;
-		int m_CurrColumn;
+		unsigned int m_CurrRow;
+		unsigned int m_CurrColumn;
 
-		float m_Angle;
-		SDL_Point m_RotationCenter;
-		FlipDirection m_FlipDirection;
+		bool m_Paused;
+
 		std::map<const std::wstring, const Animation> m_Animations;
 
 		AnimationResponse* m_pCurrAnimationResponse;

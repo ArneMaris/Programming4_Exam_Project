@@ -7,27 +7,24 @@
 #include "StateMachineComponent.h"
 #include "Observer.h"
 
-dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::wstring& assetName, int nrCols, int nrRows,
-	float scale, float secPerFrame, const b2Vec2& offset, const FlipDirection& flipDir, float angle, const b2Vec2& rotationCenter)
-	:SpriteComponent(assetName, scale, offset)
+dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::wstring& assetName, unsigned int nrCols, unsigned int nrRows,
+	float scale, float secPerFrame, const b2Vec2& offset, const SDL_RendererFlip& flipDir, float angle, const b2Vec2& rotationCenter)
+	:SpriteComponent(assetName, scale, offset, angle, rotationCenter, flipDir)
 	, m_Cols{ nrCols }
 	, m_Rows{ nrRows }
 	, m_SecPerFrame{ secPerFrame }
 	, m_AccuSec{ 0 }
 	, m_CurrRow{ 0 }
 	, m_CurrColumn{ 0 }
-	, m_FlipDirection {flipDir}
 	, m_MinColumn{1}
 	, m_MinRow {1}
 	, m_MaxColumn{nrCols}
 	, m_MaxRow{nrRows}
-	, m_Angle{ angle }
-	, m_RotationCenter{ int(rotationCenter.x), int(rotationCenter.y) }
 	, m_pCurrAnimationResponse{ nullptr }
 {
 }
 
-dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::wstring & assetName, int nrCols, int nrRows, float secPerFrame)
+dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::wstring & assetName, unsigned int nrCols, unsigned int nrRows, float secPerFrame)
 	:SpriteComponent(assetName, 1, { 0,0 })
 	, m_Cols{ nrCols }
 	, m_Rows{ nrRows }
@@ -35,13 +32,10 @@ dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::wstring & asset
 	, m_AccuSec{ 0 }
 	, m_CurrRow{ 1 }
 	, m_CurrColumn{ 1 }
-	, m_FlipDirection{ FlipDirection::none }
 	, m_MinColumn{ 1 }
 	, m_MinRow{ 1 }
 	, m_MaxColumn{ nrCols }
 	, m_MaxRow{ nrRows }
-	, m_Angle{ 0 }
-	, m_RotationCenter{ 0,0 }
 	, m_pCurrAnimationResponse{ nullptr }
 {
 }
@@ -58,7 +52,10 @@ dae::AnimatedSpriteComponent::~AnimatedSpriteComponent()
 
 void dae::AnimatedSpriteComponent::Update()
 {
-	m_AccuSec += GameInfo::deltaTime;
+
+	if (!m_Paused)
+		m_AccuSec += GameInfo::deltaTime;
+
 	if (m_SecPerFrame < m_AccuSec)
 	{
 		++m_CurrColumn;
@@ -99,52 +96,22 @@ void dae::AnimatedSpriteComponent::Render() const
 	if (m_pTexture != nullptr)
 	{
 		auto pos = m_pGameObject->GetTransform()->GetPosition();
-		auto rot = m_pGameObject->GetTransform()->GetRotation();
-		int frameWidth{ m_TextureWidth / m_Cols };
-		int frameHeight{ m_TextureHeight / m_Rows };
+		auto rot = m_pGameObject->GetTransform()->GetRotationDegrees();
+		unsigned int frameWidth{ m_TextureWidth / m_Cols };
+		unsigned int frameHeight{ m_TextureHeight / m_Rows };
 		pos.x -= (frameWidth * m_Scale) / 2;
 		pos.y += (frameHeight * m_Scale) / 2;
 		SDL_Rect destRect{ int(pos.x + m_Offset.x), int(pos.y + m_Offset.y), int(frameWidth * m_Scale), int(frameHeight * m_Scale) };
-		SDL_Rect srcRect{ frameWidth * (m_CurrColumn-1), frameHeight * (m_CurrRow-1), frameWidth, frameHeight };
-		SDL_RendererFlip flip = SDL_RendererFlip::SDL_FLIP_NONE;
-		switch (m_FlipDirection)
-		{
-		case dae::AnimatedSpriteComponent::vertical:
-			flip = SDL_RendererFlip::SDL_FLIP_VERTICAL;
-			srcRect = { frameWidth * (m_CurrColumn - 1), m_TextureHeight - (frameHeight * (m_CurrRow - 1)), frameWidth, m_TextureHeight - frameHeight };
-			break;
-		case dae::AnimatedSpriteComponent::horizontal:
-			flip = SDL_RendererFlip::SDL_FLIP_HORIZONTAL;
-			srcRect = { m_TextureWidth - (frameWidth * (m_CurrColumn - 1)), frameHeight * (m_CurrRow - 1), m_TextureWidth - frameWidth, frameHeight };
-			break;
-		}
+		SDL_Rect srcRect{ int(frameWidth * (m_CurrColumn-1)), int(frameHeight * (m_CurrRow-1)), int(frameWidth), int(frameHeight) };
 
-		Renderer::GetInstance().RenderTexture(m_pTexture, destRect, srcRect, rot + m_Angle, { int(pos.x) + m_RotationCenter.x, int(pos.y) + m_RotationCenter.y }, flip);
+		Renderer::GetInstance().RenderTexture(m_pTexture, destRect, srcRect, rot + m_Angle, { m_RotationCenter.x, m_RotationCenter.y }, m_FlipDirection);
 	}
 }
 
 
-void dae::AnimatedSpriteComponent::SetFlipDirection(const FlipDirection & flipDir)
-{
-	m_FlipDirection = flipDir;
-}
 
-void dae::AnimatedSpriteComponent::SetAngleDegrees(float newAngle)
-{
-	m_Angle = newAngle;
-}
 
-void dae::AnimatedSpriteComponent::SetAngleRadians(float newAngle)
-{
-	m_Angle = float(newAngle * 180 / M_PI);
-}
-
-void dae::AnimatedSpriteComponent::SetRotationCenter(b2Vec2 newCenter)
-{
-	m_RotationCenter = { int(newCenter.x), int(newCenter.y) };
-}
-
-void dae::AnimatedSpriteComponent::SetActiveRow(int newRow, bool reset)
+void dae::AnimatedSpriteComponent::SetActiveRow(unsigned int newRow, bool reset)
 {
 	m_CurrRow = newRow;
 
@@ -152,7 +119,7 @@ void dae::AnimatedSpriteComponent::SetActiveRow(int newRow, bool reset)
 		m_AccuSec = 0;
 }
 
-void dae::AnimatedSpriteComponent::SetActiveColumn(int newColumn, bool reset)
+void dae::AnimatedSpriteComponent::SetActiveColumn(unsigned int newColumn, bool reset)
 {
 	m_CurrColumn = newColumn;
 
@@ -191,7 +158,7 @@ void dae::AnimatedSpriteComponent::ResetAnimationEventTriggers()
 	}
 }
 
-void dae::AnimatedSpriteComponent::SetRowLimit(int min, int max)
+void dae::AnimatedSpriteComponent::SetRowLimit(unsigned int min, unsigned int max)
 {
 	if (min > 0)
 		m_MinRow = min;
@@ -203,7 +170,7 @@ void dae::AnimatedSpriteComponent::SetRowLimit(int min, int max)
 	if (m_CurrRow > m_MaxRow) m_CurrRow = m_MaxRow;
 }
 
-void dae::AnimatedSpriteComponent::SetColumnLimit(int min, int max)
+void dae::AnimatedSpriteComponent::SetColumnLimit(unsigned int min, unsigned int max)
 {
 	if (min > 0)
 		m_MinColumn = min;
@@ -221,7 +188,7 @@ void dae::AnimatedSpriteComponent::SetSecondsPerFrame(float newSecPerFrame)
 	m_AccuSec = 0;
 }
 
-int dae::AnimatedSpriteComponent::GetNrFrames() const
+unsigned int dae::AnimatedSpriteComponent::GetNrFrames() const
 {
 	return m_Cols * m_Rows;
 }

@@ -86,7 +86,7 @@ void dae::GameObject::Initialize()
 
 dae::TransformComponent* dae::GameObject::GetTransform() const
 {
-	return static_cast<TransformComponent*>(m_pComponents.front()); //return first component (always transform cause got added in constructor of gameobject
+	return GetComponent<dae::TransformComponent>();
 }
 
 void dae::GameObject::AddComponent(BaseComponent* pComp)

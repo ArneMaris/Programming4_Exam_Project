@@ -14,6 +14,7 @@ dae::GridLevel::GridLevel(const std::wstring& levelFilePath, bool usePathfinding
 	, m_UsePathfinding{ usePathfinding }
 	, m_SetTileByNrConnections{ false }
 	, m_RotateTilesByConnections{ false }
+	, m_TileRotationByConnections{}
 	, m_TileByNrConnections{ 0,0,0,0,0,0 }
 {
 	std::wstring fullPath = { ResourceManager::GetInstance().GetResourcesPath() + levelFilePath };
@@ -25,6 +26,7 @@ dae::GridLevel::GridLevel(const std::wstring & levelFilePath, bool usePathfindin
 	:m_CenterOffset{ offsetFromCenter }
 	, m_UsePathfinding{ usePathfinding }
 	, m_TileByNrConnections{ tileNrByCon }
+	, m_TileRotationByConnections{}
 	, m_SetTileByNrConnections{ true }
 	, m_RotateTilesByConnections{ false }
 {
@@ -37,6 +39,8 @@ dae::GridLevel::GridLevel(const std::wstring & levelFilePath, bool usePathfindin
 	, m_UsePathfinding{ usePathfinding }
 	, m_TileRotationByConnections{ tileRotByCon }
 	, m_TileByNrConnections{ 0,0,0,0,0,0 }
+	, m_SetTileByNrConnections{ false }
+	, m_RotateTilesByConnections{ true }
 
 {
 	std::wstring fullPath = { ResourceManager::GetInstance().GetResourcesPath() + levelFilePath };
@@ -112,7 +116,10 @@ void dae::GridLevel::Initialize()
 		MakeConnections(false);
 
 	if (m_SetTileByNrConnections || m_RotateTilesByConnections)
+	{
+		BuildDirectionCodesForTiles();
 		UpdateTileTextureAndRotation();
+	}
 
 	m_Initialized = true;
 }
@@ -201,9 +208,9 @@ void dae::GridLevel::BuildGridLevel()
 			auto it = m_TilesMap.find(m_Nrs[index]);
 			if (it != m_TilesMap.end())
 			{
-				m_pGridTiles.push_back(new GridTile(index, { startPos.x - it->second.textureSizeOffset.x,startPos.y + it->second.textureSizeOffset.x },
-					{ float(tileWidth + it->second.textureSizeOffset.x * 2),float(tileHeight + it->second.textureSizeOffset.y * 2) },
-					it->second.texture, it->second.isWalkable, (it->second.spawnThisOnTile != nullptr ? it->second.spawnThisOnTile : nullptr)));
+				m_pGridTiles.push_back(new GridTile(index, { startPos.x - it->second.textureSizeOffset.x, startPos.y + it->second.textureSizeOffset.x },
+					{ float(tileWidth + it->second.textureSizeOffset.x * 2), float(tileHeight + it->second.textureSizeOffset.y * 2) },
+					it->second.texture, it->second.isWalkable, it->second.isChangable, it->second.spawnThisOnTile));
 			}
 			else
 			{
@@ -216,7 +223,6 @@ void dae::GridLevel::BuildGridLevel()
 	}
 }
 
-
 //creates connections between all IsWalkable tiles! (no diagonal connections for now!)
 void dae::GridLevel::MakeConnections(bool clearFirst)
 {
@@ -227,12 +233,12 @@ void dae::GridLevel::MakeConnections(bool clearFirst)
 			tile->ClearAllConnections();
 		}
 	}
-	unsigned int index = 0;
-	for (unsigned int i = 0; i < m_HorTiles; i++)
+	int index = 0;
+	for (unsigned int i = 0; i < m_VertTiles; i++)
 	{
-		for (unsigned int j = 0; j < m_VertTiles; j++)
+		for (unsigned int j = 0; j < m_HorTiles; j++)
 		{
-			index = i + j * m_HorTiles;
+			index = j + i * m_HorTiles;
 			//when this tile is not walkable continue
 			if (!m_pGridTiles[index]->m_IsWalkable) continue;
 
@@ -240,16 +246,15 @@ void dae::GridLevel::MakeConnections(bool clearFirst)
 				if (m_pGridTiles[index - 1]->m_IsWalkable)
 					m_pGridTiles[index]->AddConnection(m_pGridTiles[index - 1]);
 
-			if (index + 1 < m_pGridTiles.size())//1 right
+			if (index + 1 < int(m_pGridTiles.size()))//1 right
 				if (m_pGridTiles[index + 1]->m_IsWalkable)
 					m_pGridTiles[index]->AddConnection(m_pGridTiles[index + 1]);
 
-
-			if (index - m_HorTiles > -1)//1 up
+			if (index - int(m_HorTiles) > -1)//1 up
 				if (m_pGridTiles[index - m_HorTiles]->m_IsWalkable)
 					m_pGridTiles[index]->AddConnection(m_pGridTiles[index - m_HorTiles]);
 
-			if (index + m_HorTiles < m_pGridTiles.size())//1 down
+			if (index + m_HorTiles < int(m_pGridTiles.size()))//1 down
 				if (m_pGridTiles[index + m_HorTiles]->m_IsWalkable)
 					m_pGridTiles[index]->AddConnection(m_pGridTiles[index + m_HorTiles]);
 		}
@@ -259,6 +264,8 @@ void dae::GridLevel::MakeConnections(bool clearFirst)
 
 void dae::GridLevel::UpdateTileTextureAndRotation()
 {
+	std::pair<unsigned int, unsigned int> values;
+	unsigned int code = 0;
 	for (auto& tile : m_pGridTiles)
 	{
 		if (tile->m_IsChangeable)
@@ -269,18 +276,48 @@ void dae::GridLevel::UpdateTileTextureAndRotation()
 				tile->m_pTexture = m_TilesMap[m_TileByNrConnections.NoConnectionTileID].texture;
 				break;
 			case 1:
-				Handle1Connection(tile, GetConnectionDirection(tile->m_Id, tile->m_pConnections[0]->GetBack()->m_Id));
+				if (m_SetTileByNrConnections)
+					tile->m_pTexture = m_TilesMap[m_TileByNrConnections.OneConnectionTileID].texture;
+
+				if (m_RotateTilesByConnections)
+				{
+					switch (GetConnectionDirection(tile->m_Id, tile->m_pConnections[0]->GetBack()->m_Id))
+					{
+					case ConnectionDirection::left:
+						tile->m_Rotation = m_TileRotationByConnections.Left;
+						break;
+					case ConnectionDirection::right:
+						tile->m_Rotation = m_TileRotationByConnections.Right;
+						break;
+					case ConnectionDirection::up:
+						tile->m_Rotation = m_TileRotationByConnections.Up;
+						break;
+					case ConnectionDirection::down:
+						tile->m_Rotation = m_TileRotationByConnections.Down;
+						break;
+					}
+				}
 				break;
 			case 2:
-				Handle2Connections(tile,
-					GetConnectionDirection(tile->m_Id, tile->m_pConnections[0]->GetBack()->m_Id),
-					GetConnectionDirection(tile->m_Id, tile->m_pConnections[1]->GetBack()->m_Id));
+				code = GetConnectionDirection(tile->m_Id, tile->m_pConnections[0]->GetBack()->m_Id) + GetConnectionDirection(tile->m_Id, tile->m_pConnections[1]->GetBack()->m_Id);
+				values = m_DirectionCodesForTiles.at(code);
+
+				if (m_SetTileByNrConnections)
+					tile->m_pTexture = m_TilesMap.at(values.first).texture;
+				if (m_RotateTilesByConnections)
+					tile->m_Rotation = values.second;
 				break;
 			case 3:
-				Handle3Connections(tile,
-					GetConnectionDirection(tile->m_Id, tile->m_pConnections[0]->GetBack()->m_Id),
-					GetConnectionDirection(tile->m_Id, tile->m_pConnections[1]->GetBack()->m_Id),
-					GetConnectionDirection(tile->m_Id, tile->m_pConnections[2]->GetBack()->m_Id));
+				code = GetConnectionDirection(tile->m_Id, tile->m_pConnections[0]->GetBack()->m_Id)
+					+ GetConnectionDirection(tile->m_Id, tile->m_pConnections[1]->GetBack()->m_Id)
+					+ GetConnectionDirection(tile->m_Id, tile->m_pConnections[2]->GetBack()->m_Id);
+
+				values = m_DirectionCodesForTiles.at(code);
+
+				if (m_SetTileByNrConnections)
+					tile->m_pTexture = m_TilesMap.at(values.first).texture;
+				if (m_RotateTilesByConnections)
+					tile->m_Rotation = values.second;
 				break;
 			case 4:
 				tile->m_pTexture = m_TilesMap[m_TileByNrConnections.FourConnectionsTileID].texture;
@@ -289,167 +326,81 @@ void dae::GridLevel::UpdateTileTextureAndRotation()
 		}
 	}
 }
-void dae::GridLevel::Handle1Connection(GridTile* tile, dae::GridLevel::ConnectionDirection dirOne)
+
+void dae::GridLevel::BuildDirectionCodesForTiles()
 {
-	if (m_SetTileByNrConnections)
-		tile->m_pTexture = m_TilesMap[m_TileByNrConnections.OneConnectionTileID].texture;
+	std::pair<unsigned int, std::pair<unsigned int, unsigned int>> valueToInsert;
+	m_DirectionCodesForTiles.clear();
 
-	if (!m_RotateTilesByConnections) return;
+	//allocate this variable 10 times (6 times for 2 connections, 4 times for 3 connections
 
-	switch (dirOne)
-	{
-	case ConnectionDirection::left:
-		tile->m_Rotation = m_TileRotationByConnections.Left;
-		break;
-	case ConnectionDirection::right:
-		tile->m_Rotation = m_TileRotationByConnections.Right;
-		break;
-	case ConnectionDirection::up:
-		tile->m_Rotation = m_TileRotationByConnections.Up;
-		break;
-	case ConnectionDirection::down:
-		tile->m_Rotation = m_TileRotationByConnections.Down;
-		break;
-	}
-}
-void dae::GridLevel::Handle2Connections(GridTile* tile, dae::GridLevel::ConnectionDirection dirOne, dae::GridLevel::ConnectionDirection dirTwo)
-{
-	switch (dirOne)
-	{
-	case ConnectionDirection::left:
-		switch (dirTwo)
-		{
-		case ConnectionDirection::right:
-			if (m_SetTileByNrConnections)
-				tile->m_pTexture = m_TilesMap[m_TileByNrConnections.TwoConnectionsStraightTileID].texture;
-			if (m_RotateTilesByConnections)
-				tile->m_Rotation = m_TileRotationByConnections.LeftRight;
-			break;
-		case ConnectionDirection::up:
-			if (m_SetTileByNrConnections)
-				tile->m_pTexture = m_TilesMap[m_TileByNrConnections.TwoConnectionsCornerTileID].texture;
-			if (m_RotateTilesByConnections)
-				tile->m_Rotation = m_TileRotationByConnections.UpLeft;
-			break;
-		case ConnectionDirection::down:
-			if (m_SetTileByNrConnections)
-				tile->m_pTexture = m_TilesMap[m_TileByNrConnections.TwoConnectionsCornerTileID].texture;
-			if (m_RotateTilesByConnections)
-				tile->m_Rotation = m_TileRotationByConnections.DownLeft;
-			break;
-		}
-		break;
-	case ConnectionDirection::right:
-		switch (dirTwo)
-		{
-		case ConnectionDirection::left:
-			if (m_SetTileByNrConnections)
-				tile->m_pTexture = m_TilesMap[m_TileByNrConnections.TwoConnectionsStraightTileID].texture;
-			if (m_RotateTilesByConnections)
-				tile->m_Rotation = m_TileRotationByConnections.LeftRight;
-			break;
-		case ConnectionDirection::up:
-			if (m_SetTileByNrConnections)
-				tile->m_pTexture = m_TilesMap[m_TileByNrConnections.TwoConnectionsCornerTileID].texture;
-			if (m_RotateTilesByConnections)
-				tile->m_Rotation = m_TileRotationByConnections.UpRight;
-			break;
-		case ConnectionDirection::down:
-			if (m_SetTileByNrConnections)
-				tile->m_pTexture = m_TilesMap[m_TileByNrConnections.TwoConnectionsCornerTileID].texture;
-			if (m_RotateTilesByConnections)
-				tile->m_Rotation = m_TileRotationByConnections.DownRight;
-			break;
-		}
-		break;
-	case ConnectionDirection::up:
-		switch (dirTwo)
-		{
-		case ConnectionDirection::left:
-			if (m_SetTileByNrConnections)
-				tile->m_pTexture = m_TilesMap[m_TileByNrConnections.TwoConnectionsCornerTileID].texture;
-			if (m_RotateTilesByConnections)
-				tile->m_Rotation = m_TileRotationByConnections.UpLeft;
-			break;
-		case ConnectionDirection::right:
-			if (m_SetTileByNrConnections)
-				tile->m_pTexture = m_TilesMap[m_TileByNrConnections.TwoConnectionsCornerTileID].texture;
-			if (m_RotateTilesByConnections)
-				tile->m_Rotation = m_TileRotationByConnections.UpRight;
-			break;
-		case ConnectionDirection::down:
-			if (m_SetTileByNrConnections)
-				tile->m_pTexture = m_TilesMap[m_TileByNrConnections.TwoConnectionsStraightTileID].texture;
-			if (m_RotateTilesByConnections)
-				tile->m_Rotation = m_TileRotationByConnections.UpDown;
-			break;
-		}
-		break;
-	case ConnectionDirection::down:
-		switch (dirTwo)
-		{
-		case ConnectionDirection::left:
-			if (m_SetTileByNrConnections)
-				tile->m_pTexture = m_TilesMap[m_TileByNrConnections.TwoConnectionsCornerTileID].texture;
-			if (m_RotateTilesByConnections)
-				tile->m_Rotation = m_TileRotationByConnections.DownLeft;
-			break;
-		case ConnectionDirection::right:
-			if (m_SetTileByNrConnections)
-				tile->m_pTexture = m_TilesMap[m_TileByNrConnections.TwoConnectionsCornerTileID].texture;
-			if (m_RotateTilesByConnections)
-				tile->m_Rotation = m_TileRotationByConnections.DownRight;
-			break;
-		case ConnectionDirection::up:
-			if (m_SetTileByNrConnections)
-				tile->m_pTexture = m_TilesMap[m_TileByNrConnections.TwoConnectionsStraightTileID].texture;
-			if (m_RotateTilesByConnections)
-				tile->m_Rotation = m_TileRotationByConnections.UpDown;
-			break;
-		}
-		break;
-	}
-}
+	//~~~~~~~~~~~~~~~~~~~~~~~~~ 2 CONNECTIONS~~~~~~~~~~~~~~~~~~~~~~~~
+	//Up-Left
+	valueToInsert.first = ConnectionDirection::up + ConnectionDirection::left;
+	valueToInsert.second.first = m_TileByNrConnections.TwoConnectionsCornerTileID;
+	valueToInsert.second.second = m_TileRotationByConnections.UpLeft;
+	m_DirectionCodesForTiles.insert(valueToInsert);
 
-void dae::GridLevel::Handle3Connections(GridTile* tile, dae::GridLevel::ConnectionDirection dirOne, dae::GridLevel::ConnectionDirection dirTwo, dae::GridLevel::ConnectionDirection dirThree)
-{
-	switch (dirOne)
-	{
-	case ConnectionDirection::left:
-		switch (dirTwo)
-		{
-		case ConnectionDirection::right:
+	//Up-Right
+	valueToInsert.first = ConnectionDirection::up + ConnectionDirection::right;
+	valueToInsert.second.first = m_TileByNrConnections.TwoConnectionsCornerTileID;
+	valueToInsert.second.second = m_TileRotationByConnections.UpRight;
+	m_DirectionCodesForTiles.insert(valueToInsert);
 
-			break;
-		}
-		break;
-	case ConnectionDirection::right:
-		switch (dirTwo)
-		{
-		
-		}
-		break;
-	case ConnectionDirection::up:
-		switch (dirTwo)
-		{
-		
-		}
-		break;
-	case ConnectionDirection::down:
-		switch (dirTwo)
-		{
-		
-		}
-		break;
-	}
+	//Down-Left
+	valueToInsert.first = ConnectionDirection::down + ConnectionDirection::left;
+	valueToInsert.second.first = m_TileByNrConnections.TwoConnectionsCornerTileID;
+	valueToInsert.second.second = m_TileRotationByConnections.DownLeft;
+	m_DirectionCodesForTiles.insert(valueToInsert);
+
+	//Down-Right
+	valueToInsert.first = ConnectionDirection::down + ConnectionDirection::right;
+	valueToInsert.second.first = m_TileByNrConnections.TwoConnectionsCornerTileID;
+	valueToInsert.second.second = m_TileRotationByConnections.DownRight;
+	m_DirectionCodesForTiles.insert(valueToInsert);
+
+	//Left-Right
+	valueToInsert.first = ConnectionDirection::left + ConnectionDirection::right;
+	valueToInsert.second.first = m_TileByNrConnections.TwoConnectionsStraightTileID;
+	valueToInsert.second.second = m_TileRotationByConnections.LeftRight;
+	m_DirectionCodesForTiles.insert(valueToInsert);
+
+	//Up-Down
+	valueToInsert.first = ConnectionDirection::up + ConnectionDirection::down;
+	valueToInsert.second.first = m_TileByNrConnections.TwoConnectionsStraightTileID;
+	valueToInsert.second.second = m_TileRotationByConnections.UpDown;
+	m_DirectionCodesForTiles.insert(valueToInsert);
+
+	//~~~~~~~~~~~~~~~~~~~~~~~~~ 3 CONNECTIONS~~~~~~~~~~~~~~~~~~~~~~~~
+	//Up-Down-Left
+	valueToInsert.first = ConnectionDirection::up + ConnectionDirection::down + ConnectionDirection::left;
+	valueToInsert.second.first = m_TileByNrConnections.ThreeConnectionsTileID;
+	valueToInsert.second.second = m_TileRotationByConnections.UpDownLeft;
+	m_DirectionCodesForTiles.insert(valueToInsert);
+
+	//Up-Down-Right
+	valueToInsert.first = ConnectionDirection::up + ConnectionDirection::down + ConnectionDirection::right;
+	valueToInsert.second.first = m_TileByNrConnections.ThreeConnectionsTileID;
+	valueToInsert.second.second = m_TileRotationByConnections.UpDownRight;
+	m_DirectionCodesForTiles.insert(valueToInsert);
+
+	//Left-Right-Up
+	valueToInsert.first = ConnectionDirection::left + ConnectionDirection::right + ConnectionDirection::up;
+	valueToInsert.second.first = m_TileByNrConnections.ThreeConnectionsTileID;
+	valueToInsert.second.second = m_TileRotationByConnections.LeftRightUp;
+	m_DirectionCodesForTiles.insert(valueToInsert);
+
+	//Left-Right-Down
+	valueToInsert.first = ConnectionDirection::left + ConnectionDirection::right + ConnectionDirection::down;
+	valueToInsert.second.first = m_TileByNrConnections.ThreeConnectionsTileID;
+	valueToInsert.second.second = m_TileRotationByConnections.LeftRightDown;
+	m_DirectionCodesForTiles.insert(valueToInsert);
 }
 
 dae::GridLevel::ConnectionDirection dae::GridLevel::GetConnectionDirection(unsigned int IdOne, unsigned int IdTwo)
 {
-	bool left = false;
-	bool up = false;
 	//if true, connection to left
-	if (IdOne - 1 == IdTwo)
+	if (int(IdOne) - 1 == int(IdTwo))
 	{
 		return ConnectionDirection::left;
 	}
@@ -459,15 +410,16 @@ dae::GridLevel::ConnectionDirection dae::GridLevel::GetConnectionDirection(unsig
 		return ConnectionDirection::right;
 	}
 	//if true, connection to top
-	else if (IdOne + m_HorTiles == IdTwo)
+	else if ((int(IdOne) - int(m_HorTiles)) == int(IdTwo))
 	{
 		return ConnectionDirection::up;
 	}
 	//if true, connection to bot
-	else if (IdOne + m_HorTiles == IdTwo)
+	else if ((IdOne + m_HorTiles) == IdTwo)
 	{
 		return ConnectionDirection::down;
 	}
+	return ConnectionDirection::none;
 }
 
 

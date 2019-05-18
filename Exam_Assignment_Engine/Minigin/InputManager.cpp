@@ -22,19 +22,6 @@ void dae::InputManager::CleanUp()
 
 bool dae::InputManager::ProcessInput()
 {
-	for (int i = 0; i < MAX_CONTROLLERS; ++i)
-	{
-		DWORD result = XInputGetState(i, &m_CurrentGpState[i]);
-		if (result != ERROR_SUCCESS) // if not succes means controller not connected zero out memory to make sure you have no trash there
-		{
-			ZeroMemory(&m_CurrentGpState[i], sizeof(XINPUT_STATE));
-			m_GamepadConnected[i] = false;
-		}
-		else
-		{
-			m_GamepadConnected[i] = true;
-		}
-	}
 	while (SDL_PollEvent(&m_CurrentEvent))
 	{
 		switch (m_CurrentEvent.type)
@@ -49,9 +36,21 @@ bool dae::InputManager::ProcessInput()
 			inputComp->HandleKeyboardInput(m_CurrentEvent);
 		}
 	}
-
 	ImGui_ImplSDL2_ProcessEvent(&m_CurrentEvent); //make sure ImGui also gets in the event
 
+	for (int i = 0; i < MAX_CONTROLLERS; ++i)
+	{
+		DWORD result = XInputGetState(i, &m_CurrentGpState[i]);
+		if (result != ERROR_SUCCESS) // if not succes means controller not connected zero out memory to make sure you have no trash there
+		{
+			ZeroMemory(&m_CurrentGpState[i], sizeof(XINPUT_STATE));
+			m_GamepadConnected[i] = false;
+		}
+		else
+		{
+			m_GamepadConnected[i] = true;
+		}
+	}
 	for (auto& inputComp : m_pInputComponents)
 	{
 		int id = inputComp->m_ControllerId;

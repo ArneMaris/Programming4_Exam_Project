@@ -54,9 +54,12 @@ void dae::InputComponent::HandleControllerInput(XINPUT_STATE& gamePadState, XINP
 
 void dae::InputComponent::HandleKeyboardInput(SDL_Event & e)
 {
-	for (auto& action : m_pInputActions)
+	if (m_UsingKeyboardInput)
 	{
-		action->HandleKeyBoardInput(e);
+		for (auto& action : m_pInputActions)
+		{
+			action->HandleKeyBoardInput(e);
+		}
 	}
 }
 
@@ -73,6 +76,7 @@ void dae::InputComponent::AddInputAction(InputResponse* response, SDL_Keycode ke
 void dae::InputComponent::AddInputAction(InputResponse* response, ControllerInput controllerInput)
 {
 	AddInputAction(response, SDLK_UNKNOWN, controllerInput);;
+	response->SetOwnerObject(m_pGameObject);
 }
 
 void dae::InputComponent::GetInputAction(const std::wstring & responseName)

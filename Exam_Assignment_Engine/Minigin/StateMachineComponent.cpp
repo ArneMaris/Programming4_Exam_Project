@@ -19,6 +19,7 @@ void dae::StateMachineComponent::AddState(const std::wstring& name, State* state
 	m_pStates.insert(std::make_pair(std::move(name),state));
 	if (defaultState)
 		m_DefaultStateName = name;
+	state->SetOwnerObject(m_pGameObject);
 }
 
 void dae::StateMachineComponent::AddStateToStateTransition(const std::wstring& fromName, const std::wstring& toName, Response* response, bool onEnterPressed)

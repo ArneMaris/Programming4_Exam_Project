@@ -5,7 +5,7 @@ namespace dae
 	class State
 	{
 	public:
-		State() = default;
+		explicit State() = default;
 		virtual ~State() = default;
 
 		//Called the frame the statemachine enters this state
@@ -16,6 +16,11 @@ namespace dae
 
 		//Called every frame the statemachine is in this state
 		virtual void InState() = 0;
+
+		void SetOwnerObject(GameObject* newOwner) { m_pOwnerObject = newOwner; };
+
+	protected:
+		GameObject* m_pOwnerObject = nullptr;
 	};
 
 }

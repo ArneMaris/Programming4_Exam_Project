@@ -4,12 +4,15 @@
 #include "Renderer.h"
 #include "GameObject.h"
 
-dae::SpriteComponent::SpriteComponent(const std::wstring& assetPath, float scale, b2Vec2 offset)
+dae::SpriteComponent::SpriteComponent(const std::wstring& assetPath, float scale, const b2Vec2& offset, float angle, const b2Vec2& rotationCenter, const SDL_RendererFlip& flipDir)
 	: m_pTexture{nullptr}
 	, m_Offset{ offset }
 	, m_TextureWidth{0}
 	, m_TextureHeight{0}
 	, m_Scale{scale}
+	, m_FlipDirection{ flipDir }
+	, m_Angle{ angle }
+	, m_RotationCenter{ int(rotationCenter.x), int(rotationCenter.y) }
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(assetPath);
 	if (m_pTexture != nullptr)
@@ -32,7 +35,7 @@ void dae::SpriteComponent::Render() const
 		auto pos = m_pGameObject->GetTransform()->GetPosition();
 		pos.x -= (GetTextureWidth() * m_Scale) / 2;
 		pos.y += (GetTextureHeight() * m_Scale) / 2;
-		Renderer::GetInstance().RenderTexture(m_pTexture, pos.x + m_Offset.x, pos.y - m_Offset.y, m_pGameObject->GetTransform()->GetRotation(), { int(pos.x), int(pos.y) });
+		Renderer::GetInstance().RenderTexture(m_pTexture, pos.x + m_Offset.x, pos.y - m_Offset.y, GetTextureWidth() * m_Scale, GetTextureHeight() * m_Scale, m_pGameObject->GetTransform()->GetRotationDegrees());
 	}
 }
 
@@ -64,4 +67,24 @@ int dae::SpriteComponent::GetTextureWidth() const
 int dae::SpriteComponent::GetTextureHeight() const
 {
 	return m_TextureHeight;
+}
+
+void dae::SpriteComponent::SetFlipDirection(const SDL_RendererFlip& flipDir)
+{
+	m_FlipDirection = flipDir;
+}
+
+void dae::SpriteComponent::SetAngleDegrees(float newAngle)
+{
+	m_Angle = newAngle;
+}
+
+void dae::SpriteComponent::SetAngleRadians(float newAngle)
+{
+	m_Angle = RadToDegrees(newAngle);
+}
+
+void dae::SpriteComponent::SetRotationCenter(b2Vec2 newCenter)
+{
+	m_RotationCenter = { int(newCenter.x), int(newCenter.y) };
 }

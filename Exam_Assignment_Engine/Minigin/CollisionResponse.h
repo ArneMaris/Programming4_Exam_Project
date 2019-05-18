@@ -7,7 +7,7 @@ namespace dae
 	class CollisionResponse : public Response
 		{
 		public:
-			CollisionResponse() = default;
+			explicit CollisionResponse() = default;
 			virtual ~CollisionResponse() = default;
 
 			//may be called multiple times in a single frame

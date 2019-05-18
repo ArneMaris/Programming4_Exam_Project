@@ -13,13 +13,14 @@ namespace dae
 		~GridTile() = default;
 
 		void Render();
+		const b2Vec2& GetPos() const { return m_Pos; };
 
 	private:
 		void AddConnection(GridTile* toTile);
 		void ClearAllConnections();
 
 		std::shared_ptr<SDL_Texture> m_pTexture;
-		float m_Rotation;
+		unsigned int m_Rotation;
 		const b2Vec2 m_Pos;
 		const bool m_IsWalkable;
 		const bool m_IsChangeable;

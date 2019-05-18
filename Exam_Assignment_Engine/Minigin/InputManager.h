@@ -47,6 +47,7 @@ namespace dae
 		bool m_GamepadConnected[MAX_CONTROLLERS];
 		SDL_Event m_CurrentEvent;
 
+
 		std::vector<InputComponent*> m_pInputComponents;
 	};
 

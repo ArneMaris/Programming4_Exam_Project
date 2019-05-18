@@ -28,8 +28,8 @@ namespace dae
 
 		SDL_Keycode m_KeyCode = SDLK_UNKNOWN;
 		dae::ControllerInput m_ControllerInput = dae::ControllerInput::NONE;
-		bool m_ControllerInputIsAxis = false;
-		bool m_KeyHeld = false;
+		bool m_ControllerInputIsAxis;
+		bool m_KeyHeld;
 
 		void HandleKeyBoardInput(SDL_Event& e); //if pressed this frame
 		void HandleControllerInput(XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState); //if pressed this frame

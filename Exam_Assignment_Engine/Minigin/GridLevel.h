@@ -1,4 +1,5 @@
 #pragma once
+#include <unordered_map>
 #include <map>
 #include "GridTile.h"
 
@@ -14,26 +15,37 @@ namespace dae
 			,isChangable{changeable}
 		{}
 
-		std::shared_ptr<SDL_Texture> texture;
-		bool isWalkable;
-		bool isChangable;
-		Prefab* spawnThisOnTile;
+		TileSettings() {};
+
+		std::shared_ptr<SDL_Texture> texture = nullptr;
+		bool isWalkable = false;
+		bool isChangable = false;
+		Prefab* spawnThisOnTile = nullptr;
 		//default {0,0}, if > 0 makes the texture bigger than the tile, if < 0 makes the texture smaller 
-		b2Vec2 textureSizeOffset;
+		b2Vec2 textureSizeOffset{ 0,0 };
 	};
 
 	//Tile by amount of connections usefull in some cases...
 	struct TileByNrConnections
 	{
 		TileByNrConnections(unsigned int no, unsigned int one, unsigned int twoStraight, unsigned int twoCorner, unsigned int three, unsigned int four)
-			:NoConnectionTileID{no}
-			, OneConnectionTileID{one}
-			, TwoConnectionsStraightTileID{twoStraight}
-			, TwoConnectionsCornerTileID{twoCorner}
+			:NoConnectionTileID{ no }
+			, OneConnectionTileID{ one }
+			, TwoConnectionsStraightTileID{ twoStraight }
+			, TwoConnectionsCornerTileID{ twoCorner }
 			, ThreeConnectionsTileID{ three }
 			, FourConnectionsTileID{ four }
 		{
 		}
+		TileByNrConnections()
+			:NoConnectionTileID{ 0 }
+			, OneConnectionTileID{ 0 }
+			, TwoConnectionsStraightTileID{ 0 }
+			, TwoConnectionsCornerTileID{ 0 }
+			, ThreeConnectionsTileID{ 0 }
+			, FourConnectionsTileID{0}
+		
+		{};
 		unsigned int NoConnectionTileID = 0;
 		unsigned int OneConnectionTileID = 0;
 		unsigned int TwoConnectionsStraightTileID = 0;
@@ -73,6 +85,9 @@ namespace dae
 		void Initialize();
 		void EnablePathfinding();
 
+		unsigned int GetTileWidth() const { return m_Width / m_HorTiles; };
+		unsigned int GetTileHeight() const { return m_Height / m_VertTiles; };
+
 		void AddTileConfiguration(unsigned int id, const TileSettings& tileSettings);
 
 		void AddConnection(GridTile* fromTile, GridTile* toTile);
@@ -84,10 +99,11 @@ namespace dae
 	private:
 		enum ConnectionDirection
 		{
-			left,
-			right,
-			up,
-			down
+			none = 0,
+			left = 3,
+			right = 5,
+			up = 7,
+			down = 11
 		};
 		std::wstring m_FilePath;
 		unsigned int m_HorTiles;
@@ -100,8 +116,9 @@ namespace dae
 		bool m_SetTileByNrConnections;
 		bool m_Initialized;
 		std::vector<unsigned int> m_Nrs;
-		//std::vector<Tiles> m_Tiles;
 		std::map<const unsigned  int, const TileSettings> m_TilesMap; //this map you link a number from the file to a GridTile class you made
+		std::unordered_map<unsigned int, std::pair<unsigned int, unsigned int>> m_DirectionCodesForTiles;
+
 
 		std::vector<GridTile*> m_pGridTiles;
 
@@ -110,13 +127,10 @@ namespace dae
 		void BuildGridLevel();
 		void MakeConnections(bool clearFirst);
 		void UpdateTileTextureAndRotation();
+		void BuildDirectionCodesForTiles();
 
 		//returns left-right bool (true = left) and Up-Down bool (up = true)
 		ConnectionDirection GetConnectionDirection(unsigned int IdOne, unsigned int IdTwo);
-
-		void Handle1Connection(GridTile* tile, ConnectionDirection dirOne);
-		void Handle2Connections(GridTile* tile, ConnectionDirection dirOne, ConnectionDirection dirTwo);
-		void Handle3Connections(GridTile* tile, ConnectionDirection dirOne, ConnectionDirection dirTwo, ConnectionDirection dirThree);
 	};
 }
 

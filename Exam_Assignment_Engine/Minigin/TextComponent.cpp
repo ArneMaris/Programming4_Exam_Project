@@ -45,7 +45,7 @@ void dae::TextComponent::Render() const
 	if (m_pTexture != nullptr)
 	{
 		auto pos = m_pGameObject->GetTransform()->GetPosition();
-		Renderer::GetInstance().RenderTexture(m_pTexture, pos.x, pos.y, m_pGameObject->GetTransform()->GetRotation(), { int(pos.x), int(pos.y) });
+		Renderer::GetInstance().RenderTexture(m_pTexture, pos.x, pos.y, m_pGameObject->GetTransform()->GetRotationDegrees());
 	}
 }
 

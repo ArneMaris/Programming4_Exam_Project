@@ -9,15 +9,18 @@ namespace dae
 		friend class GameObject;
 	public:
 		const b2Vec2& GetPosition() const { return m_Position; }
-		float GetRotation() const { return m_Rotation; }
+		float GetRotationDegrees() const { return m_Rotation; }
+		float GetRotationRadians() const { return DegreesToRad(m_Rotation); }
 		void SetPosition(float x, float y);
-		void SetRotation(float rotInRadians);
+		void SetRotation(float rotInDegrees);
 		void SetPosition(const b2Vec2& pos);
 
 		void Translate(float x, float y);
 		void Translate(const b2Vec2& pos);
 
-		void Rotate(float angleInRadians);
+		bool MoveToPosition(const b2Vec2& pos, float speed, bool force = false);
+
+		void Rotate(float rotInDegrees);
 	protected:
 		virtual void Update() override;
 		virtual void Initialize() override;
@@ -25,8 +28,14 @@ namespace dae
 	private:
 		TransformComponent();
 		b2Vec2 m_Position{};
+
+		//IN DEGREES!!!
 		float m_Rotation;
 
 		b2Body* m_pPhysicsBody;
+
+		b2Vec2 m_TargetPos;
+		float m_TargetSeekSpeed;
+		bool m_Seeking;
 	};
 }

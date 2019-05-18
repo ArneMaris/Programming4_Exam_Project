@@ -3,6 +3,7 @@
 
 
 DigDugCharacter::DigDugCharacter()
+	:m_MoveSpeed{100}
 {
 }
 

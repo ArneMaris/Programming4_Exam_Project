@@ -58,7 +58,7 @@ void dae::PhysicsBodyComponent::Update()
 void dae::PhysicsBodyComponent::Initialize()
 {
 	m_Body->SetUserData(GetGameObject());
-	m_Body->SetTransform(m_pGameObject->GetTransform()->GetPosition(), m_pGameObject->GetTransform()->GetRotation());
+	m_Body->SetTransform(m_pGameObject->GetTransform()->GetPosition(), m_pGameObject->GetTransform()->GetRotationRadians());
 }
 
 

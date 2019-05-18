@@ -1,5 +1,7 @@
 #pragma once
 #include "CollisionResponse.h"
+#include "GameObject.h"
+
 class CollisionResponseExample :public dae::CollisionResponse
 {
 public:
