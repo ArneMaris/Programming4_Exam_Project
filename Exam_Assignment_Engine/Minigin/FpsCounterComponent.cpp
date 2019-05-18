@@ -5,7 +5,7 @@
 #include "Renderer.h"
 
 
-dae::FpsCounterComponent::FpsCounterComponent(std::shared_ptr<Font> font, bool leftTopCorner)
+dae::FpsCounterComponent::FpsCounterComponent(std::shared_ptr<TTF_Font> font, bool leftTopCorner)
 	: m_FPS{0}
 	, m_FpsCount{0}
 	, m_FpsTimer{0}

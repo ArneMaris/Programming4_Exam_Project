@@ -44,7 +44,9 @@ namespace dae
 		void AddEdgeShape(const b2Vec2& beginPos, const b2Vec2& endPos, const ShapeSettings& shapeSettings);
 		void AddPolygonShape(const std::vector<b2Vec2>& vertices, const ShapeSettings& shapeSettings);
 		void AddChainShape(const std::vector<b2Vec2>& vertices, bool closedLoop, const ShapeSettings& shapeSettings);
-		void AddSVGCollision(const std::wstring& svgFilePath, bool closedLoop, const ShapeSettings& shapeSettings);
+		void AddSVGCollision(const std::string& svgFilePath, bool closedLoop, const ShapeSettings& shapeSettings);
+
+		bool IsColliding() const {return m_Colliding;};
 
 		std::vector<b2Fixture*> GetFixturesVector() const;
 		void RemoveShape(int creationOrder = 1);
@@ -62,7 +64,8 @@ namespace dae
 		void EndCollisionWith(GameObject* collisionObj);
 
 	private:
-
+		bool m_Colliding;
+		int m_Collisions;
 		b2Body* m_pBodyRef;
 		std::vector<b2Fixture*> m_Fixtures;
 		Scene* m_pSceneRef;

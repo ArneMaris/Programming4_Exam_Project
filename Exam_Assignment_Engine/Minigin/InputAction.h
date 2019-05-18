@@ -1,6 +1,7 @@
 #pragma once
 #include "SDL_keyCode.h"
 #include "InputManager.h"
+#include "SDL_scancode.h"
 
 namespace dae
 {
@@ -26,12 +27,12 @@ namespace dae
 		InputAction& operator=(const InputAction& other) = delete;
 		InputAction& operator=(InputAction&& other) = delete;
 
-		SDL_Keycode m_KeyCode = SDLK_UNKNOWN;
+		SDL_Scancode m_Scancode = SDL_SCANCODE_UNKNOWN;
 		dae::ControllerInput m_ControllerInput = dae::ControllerInput::NONE;
 		bool m_ControllerInputIsAxis;
 		bool m_KeyHeld;
 
-		void HandleKeyBoardInput(SDL_Event& e); //if pressed this frame
+		void HandleKeyBoardInput(const UINT8* keyBoardState, const UINT8* prevKeyboardState); //if pressed this frame
 		void HandleControllerInput(XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState); //if pressed this frame
 		b2Vec2 GetAxis(XINPUT_STATE& gamePadState);
 		void ClampStickInput(b2Vec2& stickInput, int deadZoneValue);

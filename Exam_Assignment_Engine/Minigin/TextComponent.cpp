@@ -2,12 +2,10 @@
 
 #include "TextComponent.h"
 #include "Renderer.h"
-#include "Font.h"
 #include "GameObject.h"
 #include "Utility.h"
 
-
-dae::TextComponent::TextComponent(std::shared_ptr<Font> font, const std::string& text, const SDL_Color& color)
+dae::TextComponent::TextComponent(std::shared_ptr<TTF_Font> font, const std::string& text, const SDL_Color& color)
 	: m_NeedsUpdate(true)
 	, m_Text(std::move(text))
 	, m_pFont(font)
@@ -21,7 +19,7 @@ void dae::TextComponent::Update()
 	if (m_NeedsUpdate)
 	{
 		const SDL_Color color = m_TextColor;
-		const auto surf = TTF_RenderText_Blended(m_pFont->GetFont(), reinterpret_cast<const char*>(m_Text.c_str()), color);
+		const auto surf = TTF_RenderText_Blended(m_pFont.get(), reinterpret_cast<const char*>(m_Text.c_str()), color);
 		if (surf == nullptr) 
 		{
 			throw std::runtime_error(std::string("Render text failed: ") + SDL_GetError());

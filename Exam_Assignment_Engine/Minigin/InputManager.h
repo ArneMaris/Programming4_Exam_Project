@@ -6,6 +6,7 @@
 #include "SDL_events.h"
 
 #define MAX_CONTROLLERS 4
+#define MAX_KEYS 8
 
 namespace dae
 {
@@ -45,8 +46,8 @@ namespace dae
 		XINPUT_STATE m_CurrentGpState[MAX_CONTROLLERS]{};
 		XINPUT_STATE m_PreviousGpState[MAX_CONTROLLERS]{};
 		bool m_GamepadConnected[MAX_CONTROLLERS];
-		SDL_Event m_CurrentEvent;
-
+		const UINT8* m_KeyBoardState;
+		UINT8 m_PrevKeyBoardState;
 
 		std::vector<InputComponent*> m_pInputComponents;
 	};

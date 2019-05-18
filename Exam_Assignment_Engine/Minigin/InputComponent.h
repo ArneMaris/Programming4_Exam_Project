@@ -31,7 +31,7 @@ namespace dae
 
 	private:
 		void HandleControllerInput(XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState);
-		void HandleKeyboardInput(SDL_Event& e);
+		void HandleKeyboardInput(const UINT8* keyboardState, const UINT8* prevKeyboardState);
 
 		int m_ControllerId;
 		bool m_UsingKeyboardInput;

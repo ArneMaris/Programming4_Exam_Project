@@ -4,7 +4,7 @@
 #include "Renderer.h"
 #include "GameObject.h"
 
-dae::SpriteComponent::SpriteComponent(const std::wstring& assetPath, float scale, const b2Vec2& offset, float angle, const b2Vec2& rotationCenter, const SDL_RendererFlip& flipDir)
+dae::SpriteComponent::SpriteComponent(const std::string& assetPath, float scale, const b2Vec2& offset, float angle, const b2Vec2& rotationCenter, const SDL_RendererFlip& flipDir)
 	: m_pTexture{nullptr}
 	, m_Offset{ offset }
 	, m_TextureWidth{0}
@@ -13,6 +13,7 @@ dae::SpriteComponent::SpriteComponent(const std::wstring& assetPath, float scale
 	, m_FlipDirection{ flipDir }
 	, m_Angle{ angle }
 	, m_RotationCenter{ int(rotationCenter.x), int(rotationCenter.y) }
+	, m_DoRender{ true }
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(assetPath);
 	if (m_pTexture != nullptr)
@@ -30,7 +31,7 @@ void dae::SpriteComponent::Initialize()
 
 void dae::SpriteComponent::Render() const
 {
-	if (m_pTexture != nullptr)
+	if (m_pTexture != nullptr && m_DoRender)
 	{
 		auto pos = m_pGameObject->GetTransform()->GetPosition();
 		pos.x -= (GetTextureWidth() * m_Scale) / 2;
@@ -44,7 +45,7 @@ void dae::SpriteComponent::SetSpriteOffset(b2Vec2 newOffset)
 	m_Offset = newOffset;
 }
 
-void dae::SpriteComponent::SetTexture(const std::wstring& assetPathNewTexture)
+void dae::SpriteComponent::SetTexture(const std::string& assetPathNewTexture)
 {
 	m_pTexture = ResourceManager::GetInstance().LoadTexture(assetPathNewTexture);
 }

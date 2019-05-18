@@ -3,16 +3,19 @@
 #include "Logger.h"
 
 
-void CollisionResponseExample::OnCollisionStart(dae::GameObject * otherObj)
+void DigDugCollision::OnCollisionStart(dae::GameObject * otherObj)
 {
 	UNREFERENCED_PARAMETER(otherObj);
 	dae::Logger::GetInstance().LogInfo(L"collision detected!");
 }
 
-void CollisionResponseExample::OnCollisionEnd(dae::GameObject * otherObj)
+void DigDugCollision::OnCollisionEnd(dae::GameObject * otherObj)
 {
 	UNREFERENCED_PARAMETER(otherObj);
 }
+
+
+
 
 void CollisionResponseExample2::OnCollisionStart(dae::GameObject * otherObj)
 {

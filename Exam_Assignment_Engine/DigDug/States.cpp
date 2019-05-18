@@ -2,6 +2,7 @@
 #include "States.h"
 #include "GameObject.h"
 #include "Components.h"
+#include "DigDugCharacter.h"
 
 void StateIdle::OnStateEnter()
 {
@@ -18,7 +19,6 @@ void StateIdle::InState()
 
 }
 
-
 void StateRunning::OnStateEnter()
 {
 	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->SetPaused(false);
@@ -31,6 +31,7 @@ void StateRunning::OnStateExit()
 
 void StateRunning::InState()
 {
+
 }
 
 

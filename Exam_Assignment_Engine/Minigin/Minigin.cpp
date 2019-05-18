@@ -17,7 +17,6 @@ void dae::Minigin::Initialize()
 	// Create ImGui AS ABSOLUTE FIRST (logger works with imGui and initialization message may get printed there
 	ImGui::CreateContext();
 	Logger::GetInstance();
-	GameInfo::GetInstance();
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
@@ -40,7 +39,7 @@ void dae::Minigin::Initialize()
 void dae::Minigin::Run()
 {
 	// tell the resource manager where he can find the game data
-	ResourceManager::GetInstance().Init(L"../Resources/");
+	ResourceManager::GetInstance().Init("../Resources/");
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();

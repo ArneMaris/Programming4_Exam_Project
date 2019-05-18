@@ -10,7 +10,8 @@ dae::GameObject::GameObject()
 	, m_Name{L"GameObject" + std::to_wstring(GameInfo::amountOfGameObjects+1) }
 	, m_RenderOrder{0}
 {
-	AddComponent(new TransformComponent());
+	m_TransformComp = new TransformComponent();
+	AddComponent(m_TransformComp);
 	GameInfo::amountOfGameObjects++;
 }
 
@@ -19,7 +20,8 @@ dae::GameObject::GameObject(const std::wstring & name)
 	, m_Initialized{ false }
 	, m_Name{std::move(name)}
 {
-	AddComponent(new TransformComponent());
+	m_TransformComp = new TransformComponent();
+	AddComponent(m_TransformComp);
 	GameInfo::amountOfGameObjects++;
 }
 
@@ -86,7 +88,7 @@ void dae::GameObject::Initialize()
 
 dae::TransformComponent* dae::GameObject::GetTransform() const
 {
-	return GetComponent<dae::TransformComponent>();
+	return m_TransformComp;
 }
 
 void dae::GameObject::AddComponent(BaseComponent* pComp)
@@ -98,17 +100,19 @@ void dae::GameObject::AddComponent(BaseComponent* pComp)
 	}
 	else
 	{
-		Logger::GetInstance().LogError(L"Cant add a second component of this Type!\n (PhysicsBody, Collider or Input");
+		Logger::GetInstance().LogError(L"Cant add a second component of this Type!\n (PhysicsBody, Collider or Input, transform)");
 	}
 }
 
 bool dae::GameObject::CheckIfAlreadyHasComponent(BaseComponent * compToAdd)
 {
-	if (dynamic_cast<PhysicsBodyComponent*>(compToAdd) && GetComponent<PhysicsBodyComponent>() != nullptr)
+	if (dynamic_cast<TransformComponent*>(compToAdd) && GetComponent<TransformComponent>() != nullptr)
+		return true;
+	else if (dynamic_cast<PhysicsBodyComponent*>(compToAdd) && GetComponent<PhysicsBodyComponent>() != nullptr)
 		return true;
 	else if (dynamic_cast<ColliderComponent*>(compToAdd) && GetComponent<ColliderComponent>() != nullptr)
 		return true;
-	else if (dynamic_cast<ColliderComponent*>(compToAdd) && GetComponent<InputComponent>() != nullptr)
+	else if (dynamic_cast<InputComponent*>(compToAdd) && GetComponent<InputComponent>() != nullptr)
 		return true;
 
 	return false;

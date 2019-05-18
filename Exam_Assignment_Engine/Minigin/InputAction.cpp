@@ -6,9 +6,9 @@
 dae::InputAction::InputAction(InputResponse* response, SDL_Keycode keyCode, ControllerInput controllerInput)
 	:m_ControllerInputIsAxis{false}
 	, m_pResponse{ response }
-	,m_KeyHeld{false}
+	, m_KeyHeld{false}
 {
-	m_KeyCode = keyCode;
+	m_Scancode = SDL_GetScancodeFromKey(keyCode);
 	m_ControllerInput = controllerInput;
 	switch (m_ControllerInput)
 	{
@@ -26,29 +26,27 @@ dae::InputAction::~InputAction()
 	delete m_pResponse;
 }
 
-void dae::InputAction::HandleKeyBoardInput(SDL_Event&e)
+void dae::InputAction::HandleKeyBoardInput(const UINT8* keyBoardState, const UINT8* prevKeyboardState)
 {
 	//KEYBOARD INPUT
-	if (m_KeyCode != SDLK_UNKNOWN)
+	UNREFERENCED_PARAMETER(prevKeyboardState);
+	if (m_Scancode != SDL_SCANCODE_UNKNOWN)
 	{
-		
-		if (e.key.keysym.sym == m_KeyCode && e.type == SDL_KEYDOWN && !m_KeyHeld) // if now is true and prev is false key is just pressed
+		if (keyBoardState[m_Scancode] == 1 && m_KeyHeld)
 		{
-			m_pResponse->ExecuteOnPress();
-			m_pResponse->Notify(NotifyEvent::InputPressed);
-			m_pResponse->SetLastKeyPressed(m_KeyCode);
-			m_KeyHeld = true;
+			m_pResponse->ExecuteOnHold({ 0,0 });
 		}
-		else if (e.key.keysym.sym == m_KeyCode && e.type == SDL_KEYUP && m_KeyHeld)
+		if (keyBoardState[m_Scancode] == 0 && m_KeyHeld)
 		{
 			m_pResponse->ExecuteOnRelease();
 			m_pResponse->Notify(NotifyEvent::InputReleased);
 			m_KeyHeld = false;
-			m_pResponse->SetLastKeyPressed(SDLK_UNKNOWN);
 		}
-		if (m_KeyHeld)
+		else if (keyBoardState[m_Scancode] == 1 && !m_KeyHeld) // if now is true and prev is false key is just pressed
 		{
-			m_pResponse->ExecuteOnHold({ 0,0 });
+			m_pResponse->ExecuteOnPress();
+			m_pResponse->Notify(NotifyEvent::InputPressed);
+			m_KeyHeld = true;
 		}
 	}
 }

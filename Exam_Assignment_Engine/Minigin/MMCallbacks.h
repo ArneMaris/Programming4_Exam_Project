@@ -9,8 +9,8 @@ namespace dae
 		MMCallbacks();
 		~MMCallbacks();
 
-		virtual void BeginContact(b2Contact* contact);
-		virtual void EndContact(b2Contact* contact);
+		virtual void BeginContact(b2Contact* contact) override;
+		virtual void EndContact(b2Contact* contact) override;
 
 	private:
 		void HandleContact(b2Contact* contact, bool begin);

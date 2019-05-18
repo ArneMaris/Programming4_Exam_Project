@@ -33,10 +33,13 @@ void MoveController::ExecuteOnHold(const b2Vec2 axisValues)
 	{
 		frontPos.y += float(level->GetTileHeight());
 	}
-	b2Vec2 tilePos = level->GetTileByPos(frontPos)->GetPos();
 
-	//return value of false means NO new movetarget is set!
-	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tilePos, moveSpeed)) return;
+	auto tile = level->GetTileByPos(frontPos);
+	if (!tile->GetIsWalkable())
+		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->StartDigging();
+	else
+		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->EndDigging();
+	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tile->GetPos(), moveSpeed, true)) return;
 
 	//So only rotate if new moveTarget is set
 	if (abs(angle) > 135)
@@ -68,7 +71,7 @@ void MoveController::ExecuteOnRelease()
 
 void MoveUpKey::ExecuteOnPress()
 {
-	dae::Logger::GetInstance().LogInfo(L"Stick start");
+
 }
 
 void MoveUpKey::ExecuteOnHold(const b2Vec2 axisValues)
@@ -80,8 +83,12 @@ void MoveUpKey::ExecuteOnHold(const b2Vec2 axisValues)
 	float moveSpeed = static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->GetMoveSpeed();
 
 	frontPos.y += level->GetTileHeight();
-	b2Vec2 tilePos = level->GetTileByPos(frontPos)->GetPos();
-	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tilePos, moveSpeed)) return;
+	auto tile = level->GetTileByPos(frontPos);
+	if (!tile->GetIsWalkable())
+		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->StartDigging();
+	else
+		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->EndDigging();
+	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tile->GetPos(), moveSpeed, true)) return;
 
 	if (m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->GetFlipDirection() == SDL_FLIP_HORIZONTAL)
 		m_pOwnerObject->GetTransform()->SetRotation(90);
@@ -91,7 +98,6 @@ void MoveUpKey::ExecuteOnHold(const b2Vec2 axisValues)
 
 void MoveUpKey::ExecuteOnRelease()
 {
-	dae::Logger::GetInstance().LogInfo(L"Stick end");
 }
 
 void MoveDownKey::ExecuteOnPress()
@@ -107,8 +113,12 @@ void MoveDownKey::ExecuteOnHold(const b2Vec2 axisValues)
 	float moveSpeed = static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->GetMoveSpeed();
 
 	frontPos.y -= level->GetTileHeight();
-	b2Vec2 tilePos = level->GetTileByPos(frontPos)->GetPos();
-	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tilePos, moveSpeed)) return;
+	auto tile = level->GetTileByPos(frontPos);
+	if (!tile->GetIsWalkable())
+		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->StartDigging();
+	else
+		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->EndDigging();
+	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tile->GetPos(), moveSpeed, true)) return;
 
 	if (m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->GetFlipDirection() == SDL_FLIP_HORIZONTAL)
 		m_pOwnerObject->GetTransform()->SetRotation(-90);
@@ -133,8 +143,12 @@ void MoveLeftKey::ExecuteOnHold(const b2Vec2 axisValues)
 	float moveSpeed = static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->GetMoveSpeed();
 
 	frontPos.x -= level->GetTileWidth();
-	b2Vec2 tilePos = level->GetTileByPos(frontPos)->GetPos();
-	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tilePos, moveSpeed)) return;
+	auto tile = level->GetTileByPos(frontPos);
+	if (!tile->GetIsWalkable())
+		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->StartDigging();
+	else
+		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->EndDigging();
+	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tile->GetPos(), moveSpeed, true)) return;
 
 	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->SetFlipDirection(SDL_FLIP_HORIZONTAL);
 	m_pOwnerObject->GetTransform()->SetRotation(0);
@@ -157,8 +171,12 @@ void MoveRightKey::ExecuteOnHold(const b2Vec2 axisValues)
 	float moveSpeed = static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->GetMoveSpeed();
 
 	frontPos.x += level->GetTileWidth();
-	b2Vec2 tilePos = level->GetTileByPos(frontPos)->GetPos();
-	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tilePos, moveSpeed)) return;
+	auto tile = level->GetTileByPos(frontPos);
+	if (!tile->GetIsWalkable())
+		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->StartDigging();
+	else
+		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->EndDigging();
+	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tile->GetPos(), moveSpeed, true)) return;
 
 	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->SetFlipDirection(SDL_FLIP_NONE);
 	m_pOwnerObject->GetTransform()->SetRotation(0);

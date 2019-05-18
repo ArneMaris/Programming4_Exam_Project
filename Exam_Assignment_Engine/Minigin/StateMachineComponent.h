@@ -26,7 +26,10 @@ namespace dae
 		void TryTransitionToState(State* fromState, State* toState);
 
 		std::vector<std::shared_ptr<StateTransition>> GetStateTransitions() const {return m_pStateTransitions;};
-	
+		
+		inline int GetPressCount() const { return m_PressCount; };
+		inline void IncreasedPressCount() { ++m_PressCount; };
+		inline void DecreasePressCount() { --m_PressCount; };
 	protected:
 		virtual void Update() override;
 		virtual void Initialize() override;
@@ -40,6 +43,8 @@ namespace dae
 		State* m_pCurrentState = nullptr;
 
 		std::wstring m_DefaultStateName =L"";
+
+		int m_PressCount = 0;
 	};
 }
 

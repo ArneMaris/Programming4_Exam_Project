@@ -72,6 +72,7 @@ namespace dae
 		b2World* m_pPhysicsWorldRef;
 	private:
 		std::vector<BaseComponent*> m_pComponents;
+		TransformComponent* m_TransformComp;
 
 		bool CheckIfAlreadyHasComponent(BaseComponent* compToAdd); //add all components that where you can't have 2 of on 1 gameObject
 

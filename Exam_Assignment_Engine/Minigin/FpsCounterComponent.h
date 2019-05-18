@@ -4,11 +4,10 @@
 
 namespace dae
 {
-	class Font;
 	class FpsCounterComponent final : public BaseComponent
 	{
 	public:
-		explicit FpsCounterComponent(std::shared_ptr<Font> font, bool leftTopCorner = true);
+		explicit FpsCounterComponent(std::shared_ptr<TTF_Font> font, bool leftTopCorner = true);
 		~FpsCounterComponent() = default;
 		FpsCounterComponent(const FpsCounterComponent& other) = delete;
 		FpsCounterComponent(FpsCounterComponent&& other) = delete;

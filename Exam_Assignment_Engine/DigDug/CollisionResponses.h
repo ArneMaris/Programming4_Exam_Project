@@ -2,11 +2,11 @@
 #include "CollisionResponse.h"
 #include "GameObject.h"
 
-class CollisionResponseExample :public dae::CollisionResponse
+class DigDugCollision :public dae::CollisionResponse
 {
 public:
-	CollisionResponseExample() = default;
-	~CollisionResponseExample() = default;
+	DigDugCollision() = default;
+	~DigDugCollision() = default;
 
 	virtual void OnCollisionStart(dae::GameObject* otherObj) override;
 	virtual void OnCollisionEnd(dae::GameObject* otherObj) override;

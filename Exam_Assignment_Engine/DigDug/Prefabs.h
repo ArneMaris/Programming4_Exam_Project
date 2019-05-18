@@ -9,12 +9,3 @@ public:
 	dae::GameObject* Setup() override;
 };
 
-class Background : public dae::Prefab
-{
-public:
-	Background() = default;
-	~Background() = default;
-
-	dae::GameObject* Setup() override;
-};
-

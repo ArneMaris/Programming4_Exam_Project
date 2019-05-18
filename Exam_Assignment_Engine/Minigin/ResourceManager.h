@@ -1,32 +1,33 @@
 #pragma once
 #include "Singleton.h"
-#include <map>
+#include <unordered_map>
 #include <SDL.h>
+#include <SDL_ttf.h>
 struct B2Vec2;
+
+#define TextureMapStartSize 30
+#define FontMapStartSize 3
 
 namespace dae
 {
-	class Font;
 	class ResourceManager final : public Singleton<ResourceManager>
 	{
-		std::wstring m_ResourcesPath;
 	public:
 		ResourceManager() = default;
 
+		void Init(const std::string& resourcesPath);
 		void CleanUp();
 
-		const std::wstring& GetResourcesPath() { return m_ResourcesPath; };
+		const std::string& GetResourcesPath() { return m_ResourcesPath; };
 
-		void Init(std::wstring&& resourcesPath);
+		std::shared_ptr<TTF_Font> LoadFont(const std::string& fileName, unsigned int size);
+		std::shared_ptr<SDL_Texture> LoadTexture(const std::string& fileName);
+		std::vector<b2Vec2> GetVerticesFromSVG(const std::string& fileName);
 
-		std::shared_ptr<Font> LoadFont(const std::wstring& fileName, unsigned int size);
-		std::map<std::wstring, std::shared_ptr<Font>> m_FontMap{};
-
-		std::shared_ptr<SDL_Texture> LoadTexture(const std::wstring& fileName);
-		std::map<const std::wstring, std::shared_ptr<SDL_Texture>> m_TexturesMap{};
-
-		std::vector<b2Vec2> GetVerticesFromSVG(const std::wstring& fileName);
-
+	private:
+		std::string m_ResourcesPath;
+		std::unordered_map<std::string, std::shared_ptr<TTF_Font>> m_FontMap{};
+		std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> m_TexturesMap{};
 	};
 
 }

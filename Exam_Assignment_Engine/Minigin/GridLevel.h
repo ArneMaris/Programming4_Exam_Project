@@ -75,10 +75,10 @@ namespace dae
 	class GridLevel final
 	{
 	public:
-		GridLevel(const std::wstring& levelFilePath, bool usePathfinding, const b2Vec2& offsetFromCenter = { 0,0 });
-		GridLevel(const std::wstring& levelFilePath, bool usePathfinding, const TileByNrConnections& tileNrByCon, const b2Vec2& offsetFromCenter = { 0,0 });
-		GridLevel(const std::wstring& levelFilePath, bool usePathfinding, const TileRotationsByConnections& tileRotByCon, const b2Vec2& offsetFromCenter = { 0,0 });
-		GridLevel(const std::wstring& levelFilePath, bool usePathfinding, const TileRotationsByConnections& tileRotByCon, const TileByNrConnections& tileNrByCon, const b2Vec2& offsetFromCenter = { 0,0 });
+		GridLevel(const std::string& levelFilePath, bool usePathfinding, const b2Vec2& offsetFromCenter = { 0,0 });
+		GridLevel(const std::string& levelFilePath, bool usePathfinding, const TileByNrConnections& tileNrByCon, const b2Vec2& offsetFromCenter = { 0,0 });
+		GridLevel(const std::string& levelFilePath, bool usePathfinding, const TileRotationsByConnections& tileRotByCon, const b2Vec2& offsetFromCenter = { 0,0 });
+		GridLevel(const std::string& levelFilePath, bool usePathfinding, const TileRotationsByConnections& tileRotByCon, const TileByNrConnections& tileNrByCon, const b2Vec2& offsetFromCenter = { 0,0 });
 		virtual ~GridLevel();
 
 		void Render();
@@ -105,7 +105,7 @@ namespace dae
 			up = 7,
 			down = 11
 		};
-		std::wstring m_FilePath;
+		std::string m_FilePath;
 		unsigned int m_HorTiles;
 		unsigned int m_VertTiles;
 		unsigned int m_Width;

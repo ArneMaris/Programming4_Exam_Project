@@ -11,6 +11,8 @@
 
 dae::ColliderComponent::ColliderComponent(PhysicsBodyComponent* physicsBody)
 	:m_pBodyRef{ physicsBody->GetPhysicsBody() }
+	, m_Colliding{false}
+	, m_Collisions{0}
 {
 	Logger::GetInstance().LogInfo(L"ColliderComponent created, you can add Collision/trigger(shapes) by doing Add...()");
 	m_pSceneRef = SceneManager::GetInstance().GetActiveScene();
@@ -31,7 +33,7 @@ dae::ColliderComponent::~ColliderComponent()
 
 void dae::ColliderComponent::Update()
 {
-
+	PhysicsDebugDrawer::GetInstance().DrawPoint(m_pBodyRef->GetTransform().p);
 }
 
 void dae::ColliderComponent::Initialize()
@@ -94,7 +96,7 @@ void dae::ColliderComponent::AddBoxShape(float height, float width, const b2Vec2
 	}
 	b2PolygonShape shape;
 	shape.m_type = shape.e_polygon;
-	shape.SetAsBox(height/2, width/2, relativePos, rot);
+	shape.SetAsBox(width /2, height /2, relativePos, rot);
 	CreateFixture(shape, shapeSettings);
 }
 
@@ -173,7 +175,7 @@ void dae::ColliderComponent::AddChainShape(const std::vector<b2Vec2>& vertices, 
 	CreateFixture(shape, shapeSettings);
 }
 
-void dae::ColliderComponent::AddSVGCollision(const std::wstring & svgFilePath, bool closedLoop, const ShapeSettings & shapeSettings)
+void dae::ColliderComponent::AddSVGCollision(const std::string& svgFilePath, bool closedLoop, const ShapeSettings & shapeSettings)
 {
 	AddChainShape(ResourceManager::GetInstance().GetVerticesFromSVG(svgFilePath), closedLoop, shapeSettings);
 }
@@ -235,6 +237,9 @@ std::vector<dae::CollisionResponse*> dae::ColliderComponent::GetAllCollisionResp
 
 void dae::ColliderComponent::StartCollisionWith(GameObject * collisionObj)
 {
+	++m_Collisions;
+	m_Colliding = true;
+	m_pGameObject->GetComponent<TransformComponent>()->CancelMoveToPos();
 	for (auto& colR : m_pCollisionResponses)
 	{
 		colR->OnCollisionStart(collisionObj);
@@ -244,6 +249,10 @@ void dae::ColliderComponent::StartCollisionWith(GameObject * collisionObj)
 
 void dae::ColliderComponent::EndCollisionWith(GameObject * collisionObj)
 {
+	--m_Collisions;
+	if (m_Collisions == 0)
+		m_Colliding = false;
+
 	for (auto& colR : m_pCollisionResponses)
 	{
 		colR->OnCollisionEnd(collisionObj);

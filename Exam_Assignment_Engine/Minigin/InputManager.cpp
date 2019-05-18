@@ -22,21 +22,18 @@ void dae::InputManager::CleanUp()
 
 bool dae::InputManager::ProcessInput()
 {
-	while (SDL_PollEvent(&m_CurrentEvent))
+
+	SDL_Event ev;
+	SDL_PollEvent(&ev);
+	if (ev.type == SDL_QUIT) return false;
+	ImGui_ImplSDL2_ProcessEvent(&ev); //make sure ImGui also gets in the event
+
+	//get the keyboardState and send it to all inputComponents to handle
+	m_KeyBoardState = SDL_GetKeyboardState(NULL);
+	for (auto& inputComp : m_pInputComponents)
 	{
-		switch (m_CurrentEvent.type)
-		{
-		case SDL_QUIT:
-		case SDL_WINDOWEVENT_CLOSE:
-			return false;
-			break;
-		}
-		for (auto& inputComp : m_pInputComponents)
-		{
-			inputComp->HandleKeyboardInput(m_CurrentEvent);
-		}
+		inputComp->HandleKeyboardInput(m_KeyBoardState, &m_PrevKeyBoardState);
 	}
-	ImGui_ImplSDL2_ProcessEvent(&m_CurrentEvent); //make sure ImGui also gets in the event
 
 	for (int i = 0; i < MAX_CONTROLLERS; ++i)
 	{
@@ -66,6 +63,7 @@ void dae::InputManager::SwapInputBuffer()
 	{
 		m_PreviousGpState[i] = m_CurrentGpState[i];
 	}
+	m_PrevKeyBoardState = *m_KeyBoardState;
 }
 
 void dae::InputManager::RegisterInputComponent(InputComponent * inputComp)

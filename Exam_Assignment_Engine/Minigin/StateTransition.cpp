@@ -48,6 +48,7 @@ void dae::StateTransition::OnNotify(const NotifyEvent & notifyEvent, int notifie
 			m_pStateMachine->TryTransitionToState(m_pFromState, m_pToState);
 		break;
 	case NotifyEvent::InputPressed:
+		m_pStateMachine->IncreasedPressCount();
 	case NotifyEvent::CollisionStart:
 		if (m_OnEnter)
 		{
@@ -58,6 +59,8 @@ void dae::StateTransition::OnNotify(const NotifyEvent & notifyEvent, int notifie
 		}
 		break;
 	case NotifyEvent::InputReleased:
+		m_pStateMachine->DecreasePressCount();
+		if (m_pStateMachine->GetPressCount() != 0) return;
 	case NotifyEvent::CollisionEnd:
 		if (m_OnExit)
 		{

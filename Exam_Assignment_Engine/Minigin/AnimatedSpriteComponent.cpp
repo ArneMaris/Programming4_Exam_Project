@@ -7,7 +7,7 @@
 #include "StateMachineComponent.h"
 #include "Observer.h"
 
-dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::wstring& assetName, unsigned int nrCols, unsigned int nrRows,
+dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::string& assetName, unsigned int nrCols, unsigned int nrRows,
 	float scale, float secPerFrame, const b2Vec2& offset, const SDL_RendererFlip& flipDir, float angle, const b2Vec2& rotationCenter)
 	:SpriteComponent(assetName, scale, offset, angle, rotationCenter, flipDir)
 	, m_Cols{ nrCols }
@@ -24,7 +24,7 @@ dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::wstring& assetN
 {
 }
 
-dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::wstring & assetName, unsigned int nrCols, unsigned int nrRows, float secPerFrame)
+dae::AnimatedSpriteComponent::AnimatedSpriteComponent(const std::string & assetName, unsigned int nrCols, unsigned int nrRows, float secPerFrame)
 	:SpriteComponent(assetName, 1, { 0,0 })
 	, m_Cols{ nrCols }
 	, m_Rows{ nrRows }
@@ -93,7 +93,7 @@ void dae::AnimatedSpriteComponent::Initialize()
 
 void dae::AnimatedSpriteComponent::Render() const
 {
-	if (m_pTexture != nullptr)
+	if (m_pTexture != nullptr && m_DoRender)
 	{
 		auto pos = m_pGameObject->GetTransform()->GetPosition();
 		auto rot = m_pGameObject->GetTransform()->GetRotationDegrees();

@@ -39,9 +39,6 @@
     <ClInclude Include="Singleton.h">
       <Filter>Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="Font.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="Minigin.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -166,9 +163,6 @@
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Font.cpp">
-      <Filter>Helpers</Filter>
     </ClCompile>
     <ClCompile Include="Minigin.cpp">
       <Filter>Core</Filter>

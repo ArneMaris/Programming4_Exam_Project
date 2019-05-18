@@ -16,11 +16,13 @@ namespace dae
 		void SetPosition(const b2Vec2& pos);
 
 		void Translate(float x, float y);
-		void Translate(const b2Vec2& pos);
+		void Translate(const b2Vec2& displacement);
 
-		bool MoveToPosition(const b2Vec2& pos, float speed, bool force = false);
+		bool MoveToPosition(const b2Vec2& pos, float speed, bool useAddForce = false, bool forceNewTarget = false);
 
 		void Rotate(float rotInDegrees);
+
+		void CancelMoveToPos();
 	protected:
 		virtual void Update() override;
 		virtual void Initialize() override;
@@ -37,5 +39,6 @@ namespace dae
 		b2Vec2 m_TargetPos;
 		float m_TargetSeekSpeed;
 		bool m_Seeking;
+		bool m_UsingAddForce;
 	};
 }

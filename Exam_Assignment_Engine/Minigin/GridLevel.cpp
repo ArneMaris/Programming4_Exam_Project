@@ -9,7 +9,7 @@
 
 using nlohmann::json;
 
-dae::GridLevel::GridLevel(const std::wstring& levelFilePath, bool usePathfinding, const b2Vec2& offsetFromCenter)
+dae::GridLevel::GridLevel(const std::string& levelFilePath, bool usePathfinding, const b2Vec2& offsetFromCenter)
 	:m_CenterOffset{ offsetFromCenter }
 	, m_UsePathfinding{ usePathfinding }
 	, m_SetTileByNrConnections{ false }
@@ -17,12 +17,11 @@ dae::GridLevel::GridLevel(const std::wstring& levelFilePath, bool usePathfinding
 	, m_TileRotationByConnections{}
 	, m_TileByNrConnections{ 0,0,0,0,0,0 }
 {
-	std::wstring fullPath = { ResourceManager::GetInstance().GetResourcesPath() + levelFilePath };
-	m_FilePath = std::move(fullPath);
+	m_FilePath = std::move(ResourceManager::GetInstance().GetResourcesPath() + levelFilePath);
 
 }
 
-dae::GridLevel::GridLevel(const std::wstring & levelFilePath, bool usePathfinding, const TileByNrConnections & tileNrByCon, const b2Vec2 & offsetFromCenter)
+dae::GridLevel::GridLevel(const std::string & levelFilePath, bool usePathfinding, const TileByNrConnections & tileNrByCon, const b2Vec2 & offsetFromCenter)
 	:m_CenterOffset{ offsetFromCenter }
 	, m_UsePathfinding{ usePathfinding }
 	, m_TileByNrConnections{ tileNrByCon }
@@ -30,11 +29,10 @@ dae::GridLevel::GridLevel(const std::wstring & levelFilePath, bool usePathfindin
 	, m_SetTileByNrConnections{ true }
 	, m_RotateTilesByConnections{ false }
 {
-	std::wstring fullPath = { ResourceManager::GetInstance().GetResourcesPath() + levelFilePath };
-	m_FilePath = std::move(fullPath);
+	m_FilePath = std::move(ResourceManager::GetInstance().GetResourcesPath() + levelFilePath);
 }
 
-dae::GridLevel::GridLevel(const std::wstring & levelFilePath, bool usePathfinding, const TileRotationsByConnections & tileRotByCon, const b2Vec2 & offsetFromCenter)
+dae::GridLevel::GridLevel(const std::string & levelFilePath, bool usePathfinding, const TileRotationsByConnections & tileRotByCon, const b2Vec2 & offsetFromCenter)
 	:m_CenterOffset{ offsetFromCenter }
 	, m_UsePathfinding{ usePathfinding }
 	, m_TileRotationByConnections{ tileRotByCon }
@@ -43,11 +41,10 @@ dae::GridLevel::GridLevel(const std::wstring & levelFilePath, bool usePathfindin
 	, m_RotateTilesByConnections{ true }
 
 {
-	std::wstring fullPath = { ResourceManager::GetInstance().GetResourcesPath() + levelFilePath };
-	m_FilePath = std::move(fullPath);
+	m_FilePath = std::move(ResourceManager::GetInstance().GetResourcesPath() + levelFilePath);
 }
 
-dae::GridLevel::GridLevel(const std::wstring & levelFilePath, bool usePathfinding, const TileRotationsByConnections & tileRotByCon, const TileByNrConnections & tileNrByCon, const b2Vec2 & offsetFromCenter)
+dae::GridLevel::GridLevel(const std::string & levelFilePath, bool usePathfinding, const TileRotationsByConnections & tileRotByCon, const TileByNrConnections & tileNrByCon, const b2Vec2 & offsetFromCenter)
 	:m_CenterOffset{ offsetFromCenter }
 	, m_UsePathfinding{ usePathfinding }
 	, m_TileRotationByConnections{ tileRotByCon }
@@ -55,8 +52,7 @@ dae::GridLevel::GridLevel(const std::wstring & levelFilePath, bool usePathfindin
 	, m_SetTileByNrConnections{ true }
 	, m_RotateTilesByConnections{ true }
 {
-	std::wstring fullPath = { ResourceManager::GetInstance().GetResourcesPath() + levelFilePath };
-	m_FilePath = std::move(fullPath);
+	m_FilePath = std::move(ResourceManager::GetInstance().GetResourcesPath() + levelFilePath);
 }
 
 dae::GridLevel::~GridLevel()
@@ -96,7 +92,7 @@ void dae::GridLevel::Initialize()
 	}
 	catch (std::exception&)
 	{
-		Logger::GetInstance().LogError(L"Something wrong with level file: " + m_FilePath);
+		Logger::GetInstance().LogError(L"Something wrong with level file");
 	}
 	m_Width = m_Nrs[0];
 	m_Height = m_Nrs[1];
@@ -155,17 +151,24 @@ dae::GridTile* dae::GridLevel::GetTileByPos(const b2Vec2 & pos)
 	//first check hor pos;
 	unsigned int columnWidth = m_Width / m_HorTiles;
 	unsigned int rowHeight = m_Height / m_VertTiles;
-	unsigned int row = 0;
-	unsigned int column = 0;
-	for (unsigned int i = 0; i < m_HorTiles; i++)
+	 int row = -1;
+	 int column = -1;
+	for ( int i = 0; i < int(m_HorTiles); i++)
 	{
 		if (pos.x > (i * columnWidth) && pos.x < ((i + 1) * columnWidth))
 		{
 			column = i;
 			break;
 		}
+		else
+		{
+			if (pos.x >= GameInfo::windowWidth / 2 + m_Width / 2 + m_CenterOffset.x)
+				column = m_HorTiles-1;
+			else if (pos.x <= GameInfo::windowWidth / 2 - m_Width / 2 + m_CenterOffset.x)
+				column = 0;
+		}
 	}
-	for (unsigned int i = 0; i < m_VertTiles; i++)
+	for ( int i = 0; i < int(m_VertTiles); i++)
 	{
 		if (pos.y > (i * rowHeight) && pos.y < ((i + 1) * rowHeight))
 		{
@@ -173,8 +176,15 @@ dae::GridTile* dae::GridLevel::GetTileByPos(const b2Vec2 & pos)
 			row = m_VertTiles - 1 - i;
 			break;
 		}
+		else
+		{
+			if (pos.y >= GameInfo::windowHeight / 2 + m_Height / 2 + m_CenterOffset.y)
+				row = 0;
+			else if (pos.y <= GameInfo::windowHeight / 2 - m_Height / 2 + m_CenterOffset.y)
+				row = m_VertTiles-1;
+		}
 	}
-	if (row >= 0 && row < m_VertTiles && column >= 0 && column < m_HorTiles)
+	if (row >= 0 && row < int(m_VertTiles) && column >= 0 && column < int(m_HorTiles))
 	{
 		return m_pGridTiles[column + row * m_HorTiles];
 	}
@@ -189,14 +199,14 @@ void dae::GridLevel::BuildGridLevel()
 {
 	unsigned int tileWidth = m_Width / m_HorTiles;
 	unsigned int tileHeight = m_Height / m_VertTiles;
-	b2Vec2 startPos = b2Vec2{ float(GameInfo::GetInstance().windowWidth / 2),float(GameInfo::GetInstance().windowHeight / 2) } +m_CenterOffset;
+	b2Vec2 startPos = b2Vec2{ float(GameInfo::windowWidth / 2),float(GameInfo::windowHeight / 2) } + m_CenterOffset;
 
 	//START IN UPPER LEFT CORNOR BUILD LEVEL FROM LEFT TO RIGHT (BY COLUMN)
 	startPos.x -= tileWidth * ((m_HorTiles - 1) / 2.0f);
 	startPos.y += tileHeight * ((m_VertTiles - 1) / 2.0f);
 	float xStart = startPos.x;
 
-	std::shared_ptr<SDL_Texture> pErrorTex = ResourceManager::GetInstance().LoadTexture(L"ErrorTile.png");
+	std::shared_ptr<SDL_Texture> pErrorTex = ResourceManager::GetInstance().LoadTexture("ErrorTile.png");
 
 	m_pGridTiles.reserve(m_HorTiles * m_VertTiles);
 
