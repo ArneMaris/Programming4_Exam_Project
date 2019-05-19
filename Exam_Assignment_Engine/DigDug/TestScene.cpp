@@ -21,16 +21,17 @@ void TestScene::Initialize()
 		return;
 
 	dae::Logger::GetInstance().EnableInfoLogging();
+	auto& resourceManager = dae::ResourceManager::GetInstance();
 
 	auto backGroundLevel = new dae::GridLevel("Level1Back.txt", false);
-	backGroundLevel->AddTileConfiguration(0, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture("Tiles/Empty.png"), false));
-	backGroundLevel->AddTileConfiguration(1, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture("Tiles/Layer1.png"), false));
-	backGroundLevel->AddTileConfiguration(2, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture("Tiles/Layer2.png"), false));
-	backGroundLevel->AddTileConfiguration(3, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture("Tiles/Layer3.png"), false));
-	backGroundLevel->AddTileConfiguration(4, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture("Tiles/Layer4.png"), false));
+	backGroundLevel->AddTileConfiguration(0, dae::TileSettings(resourceManager.LoadTexture("Tiles/Empty.png"), false));
+	backGroundLevel->AddTileConfiguration(1, dae::TileSettings(resourceManager.LoadTexture("Tiles/Layer1.png"), false));
+	backGroundLevel->AddTileConfiguration(2, dae::TileSettings(resourceManager.LoadTexture("Tiles/Layer2.png"), false));
+	backGroundLevel->AddTileConfiguration(3, dae::TileSettings(resourceManager.LoadTexture("Tiles/Layer3.png"), false));
+	backGroundLevel->AddTileConfiguration(4, dae::TileSettings(resourceManager.LoadTexture("Tiles/Layer4.png"), false));
 
 	//DIGDUG Spawn
-	backGroundLevel->AddTileConfiguration(5, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture("Tiles/Layer1.png"), false, false, new DigDug()));
+	backGroundLevel->AddTileConfiguration(5, dae::TileSettings(resourceManager.LoadTexture("Tiles/Layer1.png"), false, false, new DigDug()));
 
 
 	dae::TileByNrConnections tileNrConSettings{ 0,2,3,4,5,6 };
@@ -51,13 +52,13 @@ void TestScene::Initialize()
 	tileRotByConSettings.UpDown = 0;
 	
 	auto overlayLevel = new dae::GridLevel("Level1Tunnels.txt", true, tileRotByConSettings, tileNrConSettings);
-	overlayLevel->AddTileConfiguration(0, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture("Tiles/Empty.png"), false, false));
-	overlayLevel->AddTileConfiguration(1, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture("Tiles/Air.png"), true,false));
-	overlayLevel->AddTileConfiguration(2, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture("Tiles/TunnelEnd.png"), true,true));
-	overlayLevel->AddTileConfiguration(3, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture("Tiles/TunnelPassS.png"), true,true));
-	overlayLevel->AddTileConfiguration(4, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture("Tiles/TunnelPassC.png"), true,true));
-	overlayLevel->AddTileConfiguration(5, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture("Tiles/TunnelT.png"), true,true));
-	overlayLevel->AddTileConfiguration(6, dae::TileSettings(dae::ResourceManager::GetInstance().LoadTexture("Tiles/TunnelOpen.png"), true,true));
+	overlayLevel->AddTileConfiguration(0, dae::TileSettings(resourceManager.LoadTexture("Tiles/Empty.png"), false, true));
+	overlayLevel->AddTileConfiguration(1, dae::TileSettings(resourceManager.LoadTexture("Tiles/Air.png"), true,false));
+	overlayLevel->AddTileConfiguration(2, dae::TileSettings(resourceManager.LoadTexture("Tiles/TunnelEnd.png"), true,true));
+	overlayLevel->AddTileConfiguration(3, dae::TileSettings(resourceManager.LoadTexture("Tiles/TunnelPassS.png"), true,true));
+	overlayLevel->AddTileConfiguration(4, dae::TileSettings(resourceManager.LoadTexture("Tiles/TunnelPassC.png"), true,true));
+	overlayLevel->AddTileConfiguration(5, dae::TileSettings(resourceManager.LoadTexture("Tiles/TunnelT.png"), true,true));
+	overlayLevel->AddTileConfiguration(6, dae::TileSettings(resourceManager.LoadTexture("Tiles/TunnelOpen.png"), true,true));
 
 	AddLevel(backGroundLevel);
 	AddLevel(overlayLevel);
@@ -68,6 +69,7 @@ void TestScene::Initialize()
 	topCollider->GetComponent<dae::ColliderComponent>()->AddBoxShape(10, 800, dae::ShapeSettings(false, 1, 0, 1));
 	topCollider->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth / 2), float(dae::GameInfo::windowHeight - 116));
 	AddGameObject(topCollider);
+
 	EnablePhysicsDebugDrawing();
 
 	m_IsInitialized = true;

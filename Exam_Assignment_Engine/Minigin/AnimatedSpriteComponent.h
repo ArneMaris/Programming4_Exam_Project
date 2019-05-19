@@ -30,7 +30,7 @@ namespace dae
 	{
 	public:
 		AnimatedSpriteComponent(const std::string& assetName, unsigned int nrCols, unsigned int nrRows,
-			float scale = 1, float secPerFrame = 0.1f, const b2Vec2& offset = { 0,0 },
+			const b2Vec2 scale = { 1,1 }, float secPerFrame = 0.1f, const b2Vec2& offset = { 0,0 },
 			const SDL_RendererFlip& flipDir = SDL_FLIP_NONE, float angle = 0, const b2Vec2& rotationCenter = { 0,0 });
 
 		AnimatedSpriteComponent(const std::string& assetName, unsigned int nrCols, unsigned int nrRows, float secPerFrame);

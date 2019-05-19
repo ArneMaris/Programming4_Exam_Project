@@ -5,7 +5,6 @@
 dae::ScriptComponent::ScriptComponent(Script * script)
 	:m_pScript{script}
 {
-	m_pScript->m_pOwnerObject = m_pGameObject;
 }
 
 dae::ScriptComponent::~ScriptComponent()
@@ -20,6 +19,7 @@ void dae::ScriptComponent::SetNewScript(Script * newScript)
 	{
 		delete m_pScript;
 		m_pScript = newScript;
+		m_pScript->Initialize();
 		m_pScript->m_pOwnerObject = m_pGameObject;
 	}
 }
@@ -33,6 +33,7 @@ void dae::ScriptComponent::Initialize()
 {
 	if (m_pScript != nullptr)
 	{
+		m_pScript->m_pOwnerObject = m_pGameObject;
 		m_pScript->Initialize();
 	}
 	else

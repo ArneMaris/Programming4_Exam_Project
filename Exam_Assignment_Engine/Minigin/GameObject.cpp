@@ -54,7 +54,7 @@ dae::Script * dae::GameObject::GetScript() const
 
 void dae::GameObject::Update()
 {
-	for (BaseComponent* comp : m_pComponents)
+	for (auto& comp : m_pComponents)
 	{
 		comp->Update();
 	}
@@ -63,11 +63,11 @@ void dae::GameObject::Update()
 
 void dae::GameObject::Render() const
 {
-	for (BaseComponent* comp : m_pComponents)
+	for (auto& comp : m_pComponents)
 	{
 		comp->Render();
 	}
-	for (BaseComponent* comp : m_pComponents)
+	for (auto& comp : m_pComponents)
 	{
 		comp->PostRender();
 	}
@@ -77,11 +77,22 @@ void dae::GameObject::Initialize()
 {
 	if (!m_Initialized)
 	{
-		for (BaseComponent* comp : m_pComponents)
+		std::vector<BaseComponent*> scriptComps;
+		scriptComps.reserve(3);
+		for (auto& comp : m_pComponents)
 		{
+			if (dynamic_cast<ScriptComponent*>(comp))
+			{
+				scriptComps.push_back(comp);
+				continue;
+			}
 			comp->Initialize();
 		}
-		
+		//makes sure scripts go last (you might wanne set variables in script initialize method from other components, this ensures you dont get nullptr exceptions if you do that
+		for (auto& scriptCmp : scriptComps)
+		{
+			scriptCmp->Initialize();
+		}
 		m_Initialized = true;
 	}
 }

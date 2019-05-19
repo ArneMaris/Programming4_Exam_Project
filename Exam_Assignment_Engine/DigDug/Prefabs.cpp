@@ -16,7 +16,7 @@ dae::GameObject* DigDug::Setup()
 	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(25, 25, dae::ShapeSettings(false, 1, 0.5f, 0));
 
 	m_GameObject->AddComponent(new dae::AnimatedSpriteComponent("DD_Movement.png", 4, 2));
-	m_GameObject->GetComponent<dae::AnimatedSpriteComponent>()->SetScale(1.5f);
+	m_GameObject->GetComponent<dae::AnimatedSpriteComponent>()->SetScale({ 1.6f,1.6f });
 	m_GameObject->AddComponent(new dae::InputComponent(0, true));
 
 	//INPUT ACTIONS

@@ -114,7 +114,7 @@ void dae::GridLevel::Initialize()
 	if (m_SetTileByNrConnections || m_RotateTilesByConnections)
 	{
 		BuildDirectionCodesForTiles();
-		UpdateTileTextureAndRotation();
+		UpdateTileTextureAndRotation(m_pGridTiles);
 	}
 
 	m_Initialized = true;
@@ -127,26 +127,42 @@ void dae::GridLevel::AddTileConfiguration(unsigned int id, const TileSettings & 
 
 void dae::GridLevel::AddConnection(GridTile * fromTile, GridTile * toTile)
 {
-	auto it = std::find(m_pGridTiles.begin(), m_pGridTiles.end(), fromTile);
-	auto it2 = std::find(m_pGridTiles.begin(), m_pGridTiles.end(), toTile);
-	if (it != m_pGridTiles.end() && it2 != m_pGridTiles.end())
+	if (toTile != nullptr && fromTile != nullptr && toTile->m_Id != fromTile->m_Id)
 	{
-		(*it)->AddConnection(toTile);
+		if (!fromTile->HasConnectionToTile(toTile->m_Id))
+			fromTile->AddConnection(toTile);
+
+		if (!toTile->HasConnectionToTile(fromTile->m_Id))
+		{
+			toTile->AddConnection(fromTile);
+			toTile->m_IsWalkable = true;
+		}
+
+		if (m_RotateTilesByConnections || m_SetTileByNrConnections)
+		{
+			std::vector<GridTile*> tiles;
+			tiles.reserve(6);
+			tiles.push_back(fromTile);
+			tiles.push_back(toTile);
+			for (auto& con : toTile->m_pConnections)
+				tiles.push_back(con->GetBack());
+
+			std::sort(tiles.begin(), tiles.end());
+			tiles.erase(std::unique(tiles.begin(), tiles.end()), tiles.end());
+
+			UpdateTileTextureAndRotation(tiles);
+		}
 	}
 }
 
 void dae::GridLevel::AddConnection(const b2Vec2 & fromPos, const b2Vec2 & toPos)
 {
-	auto toTile = GetTileByPos(toPos);
-	auto it = std::find(m_pGridTiles.begin(), m_pGridTiles.end(), GetTileByPos(fromPos));
-	auto it2 = std::find(m_pGridTiles.begin(), m_pGridTiles.end(), toTile);
-	if (it != m_pGridTiles.end() && it2 != m_pGridTiles.end())
-	{
-		(*it)->AddConnection(toTile);
-	}
+	auto fromTile = GetTileByPos(fromPos, false);
+	auto toTile = GetTileByPos(toPos, false);
+	AddConnection(fromTile, toTile);
 }
 
-dae::GridTile* dae::GridLevel::GetTileByPos(const b2Vec2 & pos)
+dae::GridTile* dae::GridLevel::GetTileByPos(const b2Vec2 & pos, bool clip)
 {
 	//first check hor pos;
 	unsigned int columnWidth = m_Width / m_HorTiles;
@@ -160,7 +176,7 @@ dae::GridTile* dae::GridLevel::GetTileByPos(const b2Vec2 & pos)
 			column = i;
 			break;
 		}
-		else
+		else if (clip)
 		{
 			if (pos.x >= GameInfo::windowWidth / 2 + m_Width / 2 + m_CenterOffset.x)
 				column = m_HorTiles-1;
@@ -176,7 +192,7 @@ dae::GridTile* dae::GridLevel::GetTileByPos(const b2Vec2 & pos)
 			row = m_VertTiles - 1 - i;
 			break;
 		}
-		else
+		else if (clip)
 		{
 			if (pos.y >= GameInfo::windowHeight / 2 + m_Height / 2 + m_CenterOffset.y)
 				row = 0;
@@ -190,7 +206,9 @@ dae::GridTile* dae::GridLevel::GetTileByPos(const b2Vec2 & pos)
 	}
 	else
 	{
-		Logger::GetInstance().LogWarning(L"Tile on this position not found! Returned nullptr!");
+		if (clip)
+			Logger::GetInstance().LogWarning(L"Tile on this position not found! Returned nullptr!");
+
 		return nullptr;
 	}
 }
@@ -272,11 +290,12 @@ void dae::GridLevel::MakeConnections(bool clearFirst)
 
 }
 
-void dae::GridLevel::UpdateTileTextureAndRotation()
+void dae::GridLevel::UpdateTileTextureAndRotation(const std::vector<GridTile*>& gridTilesToChange)
 {
 	std::pair<unsigned int, unsigned int> values;
 	unsigned int code = 0;
-	for (auto& tile : m_pGridTiles)
+	auto it = m_DirectionCodesForTiles.end();
+	for (auto& tile : gridTilesToChange)
 	{
 		if (tile->m_IsChangeable)
 		{
@@ -310,7 +329,12 @@ void dae::GridLevel::UpdateTileTextureAndRotation()
 				break;
 			case 2:
 				code = GetConnectionDirection(tile->m_Id, tile->m_pConnections[0]->GetBack()->m_Id) + GetConnectionDirection(tile->m_Id, tile->m_pConnections[1]->GetBack()->m_Id);
-				values = m_DirectionCodesForTiles.at(code);
+				
+				it = m_DirectionCodesForTiles.find(code);
+				if (it != m_DirectionCodesForTiles.end())
+					values = it->second;
+				else
+					return;
 
 				if (m_SetTileByNrConnections)
 					tile->m_pTexture = m_TilesMap.at(values.first).texture;
@@ -322,7 +346,11 @@ void dae::GridLevel::UpdateTileTextureAndRotation()
 					+ GetConnectionDirection(tile->m_Id, tile->m_pConnections[1]->GetBack()->m_Id)
 					+ GetConnectionDirection(tile->m_Id, tile->m_pConnections[2]->GetBack()->m_Id);
 
-				values = m_DirectionCodesForTiles.at(code);
+				it = m_DirectionCodesForTiles.find(code);
+				if (it != m_DirectionCodesForTiles.end())
+					values = it->second;
+				else
+					return;
 
 				if (m_SetTileByNrConnections)
 					tile->m_pTexture = m_TilesMap.at(values.first).texture;
@@ -337,12 +365,14 @@ void dae::GridLevel::UpdateTileTextureAndRotation()
 	}
 }
 
+
 void dae::GridLevel::BuildDirectionCodesForTiles()
 {
 	std::pair<unsigned int, std::pair<unsigned int, unsigned int>> valueToInsert;
 	m_DirectionCodesForTiles.clear();
+	m_DirectionCodesForTiles.reserve(10);
 
-	//allocate this variable 10 times (6 times for 2 connections, 4 times for 3 connections
+	//allocate this variable 11 times (6 times for 2 connections, 4 times for 3 connections
 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~ 2 CONNECTIONS~~~~~~~~~~~~~~~~~~~~~~~~
 	//Up-Left

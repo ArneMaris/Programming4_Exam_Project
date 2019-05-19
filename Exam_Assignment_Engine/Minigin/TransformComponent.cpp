@@ -94,8 +94,11 @@ void dae::TransformComponent::Rotate(float rotInDegrees)
 	
 }
 
-void dae::TransformComponent::CancelMoveToPos()
+void dae::TransformComponent::CancelMoveToPos(int NoCancelDistance)
 {
+	float distanceToTarget = float(b2Distance(m_TargetPos, m_Position));
+	if (distanceToTarget < NoCancelDistance) return;
+
 	if (m_pPhysicsBody != nullptr)
 		m_pPhysicsBody->SetLinearVelocity({ 0,0 }); 
 	m_Seeking = false;
@@ -116,7 +119,11 @@ void dae::TransformComponent::Update()
 	{
 		b2Vec2 moveDir = (m_TargetPos - m_Position);
 		moveDir.Normalize();
+		if (abs(moveDir.x - moveDir.y) > (abs(moveDir.x) < abs(moveDir.y) ? moveDir.x : moveDir.y))
+			(abs(moveDir.x) < abs(moveDir.y) ? moveDir.x : moveDir.y) *= m_TargetSeekSpeed * 0.1f;
+
 		moveDir *= m_TargetSeekSpeed * GameInfo::deltaTime * 100;
+
 		m_pPhysicsBody->SetLinearVelocity(moveDir);
 	}
 	else

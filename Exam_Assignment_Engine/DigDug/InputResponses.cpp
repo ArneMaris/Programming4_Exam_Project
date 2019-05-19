@@ -35,10 +35,7 @@ void MoveController::ExecuteOnHold(const b2Vec2 axisValues)
 	}
 
 	auto tile = level->GetTileByPos(frontPos);
-	if (!tile->GetIsWalkable())
-		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->StartDigging();
-	else
-		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->EndDigging();
+
 	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tile->GetPos(), moveSpeed, true)) return;
 
 	//So only rotate if new moveTarget is set
@@ -84,10 +81,7 @@ void MoveUpKey::ExecuteOnHold(const b2Vec2 axisValues)
 
 	frontPos.y += level->GetTileHeight();
 	auto tile = level->GetTileByPos(frontPos);
-	if (!tile->GetIsWalkable())
-		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->StartDigging();
-	else
-		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->EndDigging();
+
 	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tile->GetPos(), moveSpeed, true)) return;
 
 	if (m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->GetFlipDirection() == SDL_FLIP_HORIZONTAL)
@@ -114,10 +108,7 @@ void MoveDownKey::ExecuteOnHold(const b2Vec2 axisValues)
 
 	frontPos.y -= level->GetTileHeight();
 	auto tile = level->GetTileByPos(frontPos);
-	if (!tile->GetIsWalkable())
-		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->StartDigging();
-	else
-		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->EndDigging();
+
 	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tile->GetPos(), moveSpeed, true)) return;
 
 	if (m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->GetFlipDirection() == SDL_FLIP_HORIZONTAL)
@@ -144,10 +135,7 @@ void MoveLeftKey::ExecuteOnHold(const b2Vec2 axisValues)
 
 	frontPos.x -= level->GetTileWidth();
 	auto tile = level->GetTileByPos(frontPos);
-	if (!tile->GetIsWalkable())
-		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->StartDigging();
-	else
-		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->EndDigging();
+
 	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tile->GetPos(), moveSpeed, true)) return;
 
 	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->SetFlipDirection(SDL_FLIP_HORIZONTAL);
@@ -172,10 +160,7 @@ void MoveRightKey::ExecuteOnHold(const b2Vec2 axisValues)
 
 	frontPos.x += level->GetTileWidth();
 	auto tile = level->GetTileByPos(frontPos);
-	if (!tile->GetIsWalkable())
-		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->StartDigging();
-	else
-		static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->EndDigging();
+
 	if (!m_pOwnerObject->GetTransform()->MoveToPosition(tile->GetPos(), moveSpeed, true)) return;
 
 	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->SetFlipDirection(SDL_FLIP_NONE);

@@ -44,7 +44,6 @@ void dae::Minigin::Run()
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
 
-
 	//initializes all scenes!
 	sceneManager.Initialize();
 
@@ -94,7 +93,6 @@ void dae::Minigin::Run()
 
 void dae::Minigin::Cleanup()
 {
-	Logger::GetInstance().LogInfo(L"Cleaning up!");
 	Renderer::GetInstance().Destroy(); // also destroys ImGuiSDL renderer
 	SceneManager::GetInstance().CleanUp();
 	InputManager::GetInstance().CleanUp();

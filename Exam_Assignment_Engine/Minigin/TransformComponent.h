@@ -22,7 +22,7 @@ namespace dae
 
 		void Rotate(float rotInDegrees);
 
-		void CancelMoveToPos();
+		void CancelMoveToPos(int NoCancelDistance = 10);
 	protected:
 		virtual void Update() override;
 		virtual void Initialize() override;

@@ -18,9 +18,19 @@ dae::GridTile::GridTile(unsigned int id, const b2Vec2& pos, const b2Vec2& size, 
 	if (spawnOnThisTile != nullptr)
 	{
 		GameObject* obj = spawnOnThisTile->Setup();
+		delete spawnOnThisTile;
 		obj->GetTransform()->SetPosition(m_Pos);
 		SceneManager::GetInstance().GetActiveScene()->AddGameObject(obj);
 	}
+}
+
+dae::GridTile::~GridTile()
+{
+	for (auto it = m_pConnections.begin(); it != m_pConnections.end(); ++it)
+	{
+		delete (*it);
+	}
+	m_pConnections.clear();
 }
 
 void dae::GridTile::Render()
@@ -36,6 +46,16 @@ void dae::GridTile::Render()
 	{
 		Renderer::GetInstance().RenderTexture(m_pTexture, renderPos.x, renderPos.y, m_Size.x, m_Size.y);
 	}
+}
+
+bool dae::GridTile::HasConnectionToTile(unsigned int toTileId)
+{
+	for (auto& con : m_pConnections)
+	{
+		if (toTileId == con->GetBack()->m_Id)
+			return true;
+	}
+	return false;
 }
 
 void dae::GridTile::AddConnection(GridTile * toTile)

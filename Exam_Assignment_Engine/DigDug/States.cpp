@@ -11,7 +11,7 @@ void StateIdle::OnStateEnter()
 
 void StateIdle::OnStateExit()
 {
-
+	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->SetPaused(false);
 }
 
 void StateIdle::InState()
@@ -21,12 +21,12 @@ void StateIdle::InState()
 
 void StateRunning::OnStateEnter()
 {
-	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->SetPaused(false);
+	static_cast<DigDugCharacter*>(m_pOwnerObject->GetScript())->StartDigging();
 }
 
 void StateRunning::OnStateExit()
 {
-
+	static_cast<DigDugCharacter*>(m_pOwnerObject->GetScript())->EndDigging();
 }
 
 void StateRunning::InState()

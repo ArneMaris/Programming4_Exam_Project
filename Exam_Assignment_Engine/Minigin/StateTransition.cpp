@@ -39,6 +39,7 @@ void dae::StateTransition::OnNotify(const NotifyEvent & notifyEvent, int notifie
 	auto it = std::find_if(m_pResponses.begin(), m_pResponses.end(), [notifierResponseId](Response* resp) {return resp->GetResponseID() == notifierResponseId; });
 	if (it == m_pResponses.end()) return;
 
+
 	switch (notifyEvent)
 	{
 	case NotifyEvent::AnimationResponseTriggered:
@@ -68,6 +69,8 @@ void dae::StateTransition::OnNotify(const NotifyEvent & notifyEvent, int notifie
 				m_pStateMachine->SetToState(m_pToState);
 			else
 				m_pStateMachine->TryTransitionToState(m_pFromState, m_pToState);
+
+			m_pStateMachine->GetGameObject()->GetComponent<TransformComponent>()->CancelMoveToPos();
 		}
 		break;
 	}

@@ -8,7 +8,7 @@ namespace dae
 	public:
 		TileConnection(GridTile* frontTile, GridTile* backTile)
 			:m_pFrontTile(frontTile)
-			, m_pBackTile(backTile)
+			,m_pBackTile(backTile)
 		{};
 
 		~TileConnection() = default;

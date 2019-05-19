@@ -1,8 +1,11 @@
 #pragma once
 #include "Script.h"
 #include "Components.h"
+#include "GridTile.h"
 
 class GameObject;
+class GridLevel;
+
 class DigDugCharacter : public dae::Script
 {
 public:
@@ -24,5 +27,7 @@ private:
 	float m_MoveSpeed;
 	bool m_Digging;
 	dae::GameObject* m_DigObject;
+	dae::GridLevel* m_pLevel;
+	dae::GridTile* m_PrevTile;
 };
 

@@ -16,7 +16,4 @@ void Game::SetupGame()
 {
 	dae::SceneManager& sceneManager = dae::SceneManager::GetInstance();
 	sceneManager.AddScene(new TestScene(), true);
-
-
-
 }

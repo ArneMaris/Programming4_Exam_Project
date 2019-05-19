@@ -94,7 +94,7 @@ namespace dae
 		//Does a GetTileByPos to determine the from and toTile for the connection, slower!
 		void AddConnection(const b2Vec2& fromPos, const b2Vec2& toPos);
 
-		GridTile* GetTileByPos(const b2Vec2& pos);
+		GridTile* GetTileByPos(const b2Vec2& pos, bool clip = true);
 
 	private:
 		enum ConnectionDirection
@@ -126,7 +126,7 @@ namespace dae
 		const TileByNrConnections m_TileByNrConnections;
 		void BuildGridLevel();
 		void MakeConnections(bool clearFirst);
-		void UpdateTileTextureAndRotation();
+		void UpdateTileTextureAndRotation(const std::vector<GridTile*>& gridTilesToChange);
 		void BuildDirectionCodesForTiles();
 
 		//returns left-right bool (true = left) and Up-Down bool (up = true)

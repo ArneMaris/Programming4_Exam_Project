@@ -26,7 +26,14 @@ dae::Scene::~Scene()
 		delete (*it);
 	}
 	m_pObjects.clear();
+
+	for (auto it = m_pLevels.begin(); it != m_pLevels.end(); ++it)
+	{
+		delete (*it);
+	}
+	m_pLevels.clear();
 	
+	delete m_MMCallbacks;
 	delete m_pPhysicsWorld;
 }
 
