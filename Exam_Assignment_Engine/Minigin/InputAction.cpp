@@ -39,13 +39,15 @@ void dae::InputAction::HandleKeyBoardInput(const UINT8* keyBoardState, const UIN
 		if (keyBoardState[m_Scancode] == 0 && m_KeyHeld)
 		{
 			m_pResponse->ExecuteOnRelease();
-			m_pResponse->Notify(NotifyEvent::InputReleased);
+			if (m_pResponse->MayDoTransition())
+				m_pResponse->Notify(NotifyEvent::InputReleased);
 			m_KeyHeld = false;
 		}
 		else if (keyBoardState[m_Scancode] == 1 && !m_KeyHeld) // if now is true and prev is false key is just pressed
 		{
 			m_pResponse->ExecuteOnPress();
-			m_pResponse->Notify(NotifyEvent::InputPressed);
+			if (m_pResponse->MayDoTransition())
+				m_pResponse->Notify(NotifyEvent::InputPressed);
 			m_KeyHeld = true;
 		}
 	}
@@ -59,12 +61,14 @@ void dae::InputAction::HandleControllerInput(XINPUT_STATE& gamePadState, XINPUT_
 		if (gamePadState.Gamepad.wButtons == DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons != DWORD(m_ControllerInput))
 		{
 			m_pResponse->ExecuteOnPress();
-			m_pResponse->Notify(NotifyEvent::InputPressed);
+			if (m_pResponse->MayDoTransition())
+				m_pResponse->Notify(NotifyEvent::InputPressed);
 		}
 		else if (gamePadState.Gamepad.wButtons != DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons == DWORD(m_ControllerInput))
 		{
 			m_pResponse->ExecuteOnRelease();
-			m_pResponse->Notify(NotifyEvent::InputReleased);
+			if (m_pResponse->MayDoTransition())
+				m_pResponse->Notify(NotifyEvent::InputReleased);
 		}
 		else if (gamePadState.Gamepad.wButtons == DWORD(m_ControllerInput) && prevGamePadState.Gamepad.wButtons == DWORD(m_ControllerInput))
 		{
@@ -81,12 +85,14 @@ void dae::InputAction::HandleControllerInput(XINPUT_STATE& gamePadState, XINPUT_
 		if (prevAxis.Length() < float32(0.1f) && axis.Length() >= float32(0.1f))
 		{
 			m_pResponse->ExecuteOnPress();
-			m_pResponse->Notify(NotifyEvent::InputPressed);
+			if (m_pResponse->MayDoTransition())
+				m_pResponse->Notify(NotifyEvent::InputPressed);
 		}
 		else if (axis.Length() < float32(0.1f) && prevAxis.Length() >= float32(0.1f))
 		{
 			m_pResponse->ExecuteOnRelease();
-			m_pResponse->Notify(NotifyEvent::InputReleased);
+			if (m_pResponse->MayDoTransition())
+				m_pResponse->Notify(NotifyEvent::InputReleased);
 		}
 		else if (axis.Length() >= float32(0.1f) && prevAxis.Length() >= float32(0.1f))
 		{

@@ -4,52 +4,40 @@
     <Filter Include="Components">
       <UniqueIdentifier>{55a0bc56-b55f-4e3a-9f54-0ac4df2d405f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core">
-      <UniqueIdentifier>{abab4cfd-2c82-468a-9d49-618b53c6325a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Helpers">
       <UniqueIdentifier>{01d6cac1-3873-4ae5-9af6-e1c42f254bcf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Managers">
-      <UniqueIdentifier>{9d6bc59b-efda-4c64-96c0-8293ee0c4bd5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UserClasses">
-      <UniqueIdentifier>{c2f34da8-7b87-4eb7-86fa-b82a4fb3a9a9}</UniqueIdentifier>
     </Filter>
     <Filter Include="ComponentHelperClasses">
       <UniqueIdentifier>{3eb43dbe-07d7-47d7-a60f-4350728023c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene/Level">
+      <UniqueIdentifier>{5653d068-2a32-4a68-9976-e952049c7564}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ToDeriveClasses">
+      <UniqueIdentifier>{c2f34da8-7b87-4eb7-86fa-b82a4fb3a9a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers/Singletons">
+      <UniqueIdentifier>{9d6bc59b-efda-4c64-96c0-8293ee0c4bd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{ec54b9f9-8011-42ff-ad06-b9863bd0126a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base">
+      <UniqueIdentifier>{abab4cfd-2c82-468a-9d49-618b53c6325a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SceneManager.h">
-      <Filter>Managers</Filter>
+      <Filter>Managers/Singletons</Filter>
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
-      <Filter>Managers</Filter>
+      <Filter>Managers/Singletons</Filter>
     </ClInclude>
     <ClInclude Include="InputManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Helpers</Filter>
+      <Filter>Managers/Singletons</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="Minigin.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="MiniginPCH.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Core</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="TextComponent.h">
       <Filter>Components</Filter>
@@ -57,14 +45,8 @@
     <ClInclude Include="TransformComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="BaseComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="SpriteComponent.h">
       <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Components.h">
-      <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="FpsCounterComponent.h">
       <Filter>Components</Filter>
@@ -73,7 +55,7 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Logger.h">
-      <Filter>Managers</Filter>
+      <Filter>Managers/Singletons</Filter>
     </ClInclude>
     <ClInclude Include="ColliderComponent.h">
       <Filter>Components</Filter>
@@ -87,23 +69,17 @@
     <ClInclude Include="nanosvg.h">
       <Filter>Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsDebugDrawer.h">
-      <Filter>Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="InputResponse.h">
-      <Filter>UserClasses</Filter>
+      <Filter>ToDeriveClasses</Filter>
     </ClInclude>
     <ClInclude Include="CollisionResponse.h">
-      <Filter>UserClasses</Filter>
+      <Filter>ToDeriveClasses</Filter>
     </ClInclude>
     <ClInclude Include="InputComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Prefab.h">
-      <Filter>UserClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="GridLevel.h">
-      <Filter>Core</Filter>
+      <Filter>ToDeriveClasses</Filter>
     </ClInclude>
     <ClInclude Include="StateMachineComponent.h">
       <Filter>Components</Filter>
@@ -111,16 +87,7 @@
     <ClInclude Include="json.hpp">
       <Filter>Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="GridTile.h">
-      <Filter>ComponentHelperClasses</Filter>
-    </ClInclude>
     <ClInclude Include="InputAction.h">
-      <Filter>ComponentHelperClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="MMCallbacks.h">
-      <Filter>ComponentHelperClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="State.h">
       <Filter>ComponentHelperClasses</Filter>
     </ClInclude>
     <ClInclude Include="StateTransition.h">
@@ -129,55 +96,82 @@
     <ClInclude Include="ScriptComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="Script.h">
-      <Filter>ComponentHelperClasses</Filter>
-    </ClInclude>
     <ClInclude Include="Observer.h">
-      <Filter>Core</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="AnimationResponse.h">
       <Filter>ComponentHelperClasses</Filter>
     </ClInclude>
     <ClInclude Include="Response.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="TileConnection.h">
-      <Filter>ComponentHelperClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="GameInfo.h">
-      <Filter>Managers</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="AiComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Scene/Level</Filter>
+    </ClInclude>
+    <ClInclude Include="GridLevel.h">
+      <Filter>Scene/Level</Filter>
+    </ClInclude>
+    <ClInclude Include="GridTile.h">
+      <Filter>Scene/Level</Filter>
+    </ClInclude>
     <ClInclude Include="HeuristicFunctions.h">
+      <Filter>Scene/Level</Filter>
+    </ClInclude>
+    <ClInclude Include="TileConnection.h">
+      <Filter>Scene/Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Script.h">
+      <Filter>ToDeriveClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>ToDeriveClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsDebugDrawer.h">
+      <Filter>Managers/Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Managers/Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Managers/Singletons</Filter>
+    </ClInclude>
+    <ClInclude Include="GameInfo.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Minigin.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniginPCH.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseComponent.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionCallbacks.h">
+      <Filter>ComponentHelperClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Components.h">
       <Filter>ComponentHelperClasses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
-      <Filter>Managers</Filter>
+      <Filter>Managers/Singletons</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
-      <Filter>Managers</Filter>
+      <Filter>Managers/Singletons</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Helpers</Filter>
+      <Filter>Managers/Singletons</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Minigin.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="MiniginPCH.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Core</Filter>
+      <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="TextComponent.cpp">
       <Filter>Components</Filter>
@@ -195,7 +189,7 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Logger.cpp">
-      <Filter>Managers</Filter>
+      <Filter>Managers/Singletons</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsBodyComponent.cpp">
       <Filter>Components</Filter>
@@ -203,25 +197,13 @@
     <ClCompile Include="ColliderComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsDebugDrawer.cpp">
-      <Filter>Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="InputComponent.cpp">
       <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="GridLevel.cpp">
-      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="StateMachineComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="GridTile.cpp">
-      <Filter>ComponentHelperClasses</Filter>
-    </ClCompile>
     <ClCompile Include="InputAction.cpp">
-      <Filter>ComponentHelperClasses</Filter>
-    </ClCompile>
-    <ClCompile Include="MMCallbacks.cpp">
       <Filter>ComponentHelperClasses</Filter>
     </ClCompile>
     <ClCompile Include="StateTransition.cpp">
@@ -230,20 +212,41 @@
     <ClCompile Include="ScriptComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Script.cpp">
-      <Filter>ComponentHelperClasses</Filter>
-    </ClCompile>
     <ClCompile Include="Response.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="GameInfo.cpp">
-      <Filter>Managers</Filter>
+      <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="AiComponent.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Scene/Level</Filter>
+    </ClCompile>
+    <ClCompile Include="GridLevel.cpp">
+      <Filter>Scene/Level</Filter>
+    </ClCompile>
+    <ClCompile Include="GridTile.cpp">
+      <Filter>Scene/Level</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsDebugDrawer.cpp">
+      <Filter>Managers/Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Managers/Singletons</Filter>
+    </ClCompile>
+    <ClCompile Include="GameInfo.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Minigin.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniginPCH.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionCallbacks.cpp">
+      <Filter>ComponentHelperClasses</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

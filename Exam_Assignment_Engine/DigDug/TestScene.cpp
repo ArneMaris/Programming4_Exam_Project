@@ -67,7 +67,13 @@ void TestScene::Initialize()
 	topCollider->AddComponent(new dae::ColliderComponent(topCollider->GetComponent<dae::PhysicsBodyComponent>()));
 	topCollider->GetComponent<dae::ColliderComponent>()->AddBoxShape(10, 800, dae::ShapeSettings(false, 1, 0, 1));
 	topCollider->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth / 2), float(dae::GameInfo::windowHeight - 116));
+	auto botCollider = new dae::GameObject();
+	botCollider->AddComponent(new dae::PhysicsBodyComponent(b2_staticBody));
+	botCollider->AddComponent(new dae::ColliderComponent(botCollider->GetComponent<dae::PhysicsBodyComponent>()));
+	botCollider->GetComponent<dae::ColliderComponent>()->AddBoxShape(10, 800, dae::ShapeSettings(false, 1, 0, 1));
+	botCollider->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth / 2), float(24));
 	AddGameObject(topCollider);
+	AddGameObject(botCollider);
 
 	AddGameObject(new Pooka());
 	AddGameObject(new Pooka());

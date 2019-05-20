@@ -38,6 +38,9 @@ namespace dae
 		void SetRenderOrder(int order) { m_RenderOrder = order; };
 		int GetRenderOrder() const { return m_RenderOrder; };
 
+		void SetLayer(int newLayer) { m_Layer = newLayer; };
+		int GetLayer() const { return m_Layer; };
+
 		//taken from DAE GP2 2018-2019
 #pragma region 
 		template <class T>
@@ -78,7 +81,8 @@ namespace dae
 
 		bool m_Initialized;
 		std::wstring m_Name;
-		int m_RenderOrder ;
+		int m_RenderOrder;
+		int m_Layer;
 	};
 
 }

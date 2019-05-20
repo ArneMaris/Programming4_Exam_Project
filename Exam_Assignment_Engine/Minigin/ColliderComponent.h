@@ -30,7 +30,7 @@ namespace dae
 
 	class ColliderComponent final: public BaseComponent
 	{
-		friend class MMCallbacks;
+		friend class CollisionCallbacks;
 	public:
 		explicit ColliderComponent(PhysicsBodyComponent* physicsBody);
 		~ColliderComponent();
@@ -38,6 +38,8 @@ namespace dae
 		ColliderComponent(ColliderComponent&& other) = delete;
 		ColliderComponent& operator=(const ColliderComponent& other) = delete;
 		ColliderComponent& operator=(ColliderComponent&& other) = delete;
+
+		//SHAPE ADDING METHODS
 		void AddBoxShape(float height, float width, const ShapeSettings& shapeSettings);
 		void AddBoxShape(float height, float width, const b2Vec2& relativePos, float rot, const ShapeSettings& shapeSettings);
 		void AddCircleShape(const b2Vec2& relativePos, float radius, const ShapeSettings& shapeSettings);
@@ -46,14 +48,15 @@ namespace dae
 		void AddChainShape(const std::vector<b2Vec2>& vertices, bool closedLoop, const ShapeSettings& shapeSettings);
 		void AddSVGCollision(const std::string& svgFilePath, bool closedLoop, const ShapeSettings& shapeSettings);
 
-		bool IsColliding() const {return m_Colliding;};
-
-		std::vector<b2Fixture*> GetFixturesVector() const;
 		void RemoveShape(int creationOrder = 1);
 
+		std::vector<b2Fixture*> GetFixturesVector() const;
+
+		//COLLISIONMETHODS
 		void AddCollisionResponse(CollisionResponse* collResponse);
 		void RemoveCollisionResponse(CollisionResponse* collResponse);
 		std::vector<CollisionResponse*> GetAllCollisionResponses() const;
+		bool IsColliding() const {return m_Colliding;};
 
 	protected:
 		virtual void Update() override;
@@ -64,12 +67,13 @@ namespace dae
 		void EndCollisionWith(GameObject* collisionObj);
 
 	private:
+		void CreateFixture(const b2Shape & shape, const ShapeSettings& shapeSettings);
+
 		bool m_Colliding;
 		int m_Collisions;
 		b2Body* m_pBodyRef;
-		std::vector<b2Fixture*> m_Fixtures;
 		Scene* m_pSceneRef;
-		void CreateFixture(const b2Shape & shape, const ShapeSettings& shapeSettings);
+		std::vector<b2Fixture*> m_Fixtures;
 
 		std::vector<CollisionResponse*> m_pCollisionResponses;
 	};

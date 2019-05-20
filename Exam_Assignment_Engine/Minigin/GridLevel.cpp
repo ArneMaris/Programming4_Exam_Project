@@ -216,6 +216,53 @@ dae::GridTile* dae::GridLevel::GetTileByPos(const b2Vec2 & pos, bool clip)
 	}
 }
 
+dae::GridTile * dae::GridLevel::GetWalkableTileInRadius(const b2Vec2 & center, int minTilesDist, int maxTilesDist)
+{
+	unsigned int tileWidth = m_Width / m_HorTiles;
+	unsigned int tileHeight = m_Height / m_VertTiles;
+	b2Vec2 pos = center;
+	GridTile* foundTile = nullptr;
+
+	//loop makes sure you goe further and further when not finding anything close
+	for (int i = minTilesDist; i < maxTilesDist; i++)
+	{
+		//This switch makes it completely random wich tile you get (to left, to top, to left top, to right bot, ...)
+		switch (rand() % 3)
+		{
+		case 0:
+			if (bool(rand() % 2))
+				pos.x = center.x + tileWidth * i;
+			else
+				pos.x = center.x - tileWidth * i;
+			break;
+		case 1:
+			if (bool(rand() % 2))
+				pos.y = center.y + tileHeight * i;
+			else
+				pos.y = center.y - tileHeight * i;
+			break;
+		case 2:
+			if (bool(rand() % 2))
+				pos.x = center.x + tileWidth * i;
+			else
+				pos.x = center.x - tileWidth * i;
+			if (bool(rand() % 2))
+				pos.y = center.y + tileHeight * i;
+			else
+				pos.y = center.y - tileHeight * i;
+			break;
+		}
+		foundTile = GetTileByPos(pos, false);
+		if (foundTile != nullptr)
+			if (foundTile->GetIsWalkable())
+				return foundTile;
+
+	}
+
+	Logger::GetInstance().LogWarning(L"No Tile around this center found! Returned nullptr!");
+	return nullptr;
+}
+
 void dae::GridLevel::BuildGridLevel()
 {
 	unsigned int tileWidth = m_Width / m_HorTiles;

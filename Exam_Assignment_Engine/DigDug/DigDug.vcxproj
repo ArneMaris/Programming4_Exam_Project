@@ -170,16 +170,18 @@
   <ItemGroup>
     <ClInclude Include="CollisionResponses.h" />
     <ClInclude Include="DigDugCharacter.h" />
+    <ClInclude Include="EnemyStates.h" />
     <ClInclude Include="Prefabs.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InputResponses.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="States.h" />
+    <ClInclude Include="DigDugStates.h" />
     <ClInclude Include="TestScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CollisionResponses.cpp" />
     <ClCompile Include="DigDugCharacter.cpp" />
+    <ClCompile Include="EnemyStates.cpp" />
     <ClCompile Include="Prefabs.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputResponses.cpp" />
@@ -189,7 +191,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="States.cpp" />
+    <ClCompile Include="DigDugStates.cpp" />
     <ClCompile Include="TestScene.cpp" />
   </ItemGroup>
   <ItemGroup>

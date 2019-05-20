@@ -23,7 +23,7 @@ namespace dae
 		void AddToStateTransition( const std::wstring& toName, Response* response, bool onEnterPressed);
 
 		void SetToState(State* state);
-		void TryTransitionToState(State* fromState, State* toState);
+		bool TryTransitionToState(State* fromState, State* toState);
 
 		std::vector<std::shared_ptr<StateTransition>> GetStateTransitions() const {return m_pStateTransitions;};
 		

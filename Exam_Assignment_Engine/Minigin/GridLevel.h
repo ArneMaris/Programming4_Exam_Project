@@ -37,15 +37,8 @@ namespace dae
 			, FourConnectionsTileID{ four }
 		{
 		}
-		TileByNrConnections()
-			:NoConnectionTileID{ 0 }
-			, OneConnectionTileID{ 0 }
-			, TwoConnectionsStraightTileID{ 0 }
-			, TwoConnectionsCornerTileID{ 0 }
-			, ThreeConnectionsTileID{ 0 }
-			, FourConnectionsTileID{0}
-		
-		{};
+		TileByNrConnections() {};
+
 		unsigned int NoConnectionTileID = 0;
 		unsigned int OneConnectionTileID = 0;
 		unsigned int TwoConnectionsStraightTileID = 0;
@@ -95,6 +88,7 @@ namespace dae
 		void AddConnection(const b2Vec2& fromPos, const b2Vec2& toPos);
 
 		GridTile* GetTileByPos(const b2Vec2& pos, bool clip = true);
+		GridTile* GetWalkableTileInRadius(const b2Vec2& center, int minTilesToCenter, int maxTilesDist = 30);
 
 	private:
 		enum ConnectionDirection

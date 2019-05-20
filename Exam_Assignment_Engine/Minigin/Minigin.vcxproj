@@ -221,7 +221,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MiniginPCH.h" />
-    <ClInclude Include="MMCallbacks.h" />
+    <ClInclude Include="CollisionCallbacks.h" />
     <ClInclude Include="nanosvg.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="PhysicsBodyComponent.h" />
@@ -267,14 +267,13 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MiniginPCH.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="MMCallbacks.cpp" />
+    <ClCompile Include="CollisionCallbacks.cpp" />
     <ClCompile Include="PhysicsBodyComponent.cpp" />
     <ClCompile Include="PhysicsDebugDrawer.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="Script.cpp" />
     <ClCompile Include="ScriptComponent.cpp" />
     <ClCompile Include="StateMachineComponent.cpp" />
     <ClCompile Include="StateTransition.cpp" />

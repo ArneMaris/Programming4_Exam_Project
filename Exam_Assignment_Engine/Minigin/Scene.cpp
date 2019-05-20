@@ -1,7 +1,7 @@
 #include "MiniginPCH.h"
 #include "Scene.h"
 #include "GameObject.h"
-#include "MMCallbacks.h"
+#include "CollisionCallbacks.h"
 #include "Prefab.h"
 #include "GridLevel.h"
 
@@ -11,8 +11,8 @@ dae::Scene::Scene(const std::wstring& name, const b2Vec2& gravity)
 	, m_IsActive { true }
 { 
 	m_pPhysicsWorld = new b2World(gravity);
-	m_MMCallbacks = new MMCallbacks();
-	m_pPhysicsWorld->SetContactListener(m_MMCallbacks);
+	m_CollCallbacks = new CollisionCallbacks();
+	m_pPhysicsWorld->SetContactListener(m_CollCallbacks);
 	if (m_pPhysicsWorld != nullptr)
 	{
 		Logger::GetInstance().LogInfo(L"PhysicsWorld created succesfully in scene: " + m_SceneName);
@@ -34,7 +34,7 @@ dae::Scene::~Scene()
 	}
 	m_pLevels.clear();
 	
-	delete m_MMCallbacks;
+	delete m_CollCallbacks;
 	delete m_pPhysicsWorld;
 }
 

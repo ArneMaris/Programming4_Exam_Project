@@ -15,6 +15,7 @@ dae::StateTransition::StateTransition(State * onlyFrom, State * to, Response* re
 	,m_OnExit{!onEnterPressed }
 	,m_pFromState{onlyFrom}
 	,m_pToState{to}
+	,m_ChangedThisFrame{ false }
 {
 	m_pResponses.push_back(response);
 }
@@ -28,6 +29,7 @@ dae::StateTransition::StateTransition(State * onlyFrom, State * to, const std::v
 	, m_OnExit{ !onEnterPressed }
 	, m_pFromState{ onlyFrom }
 	, m_pToState{ to }
+	, m_ChangedThisFrame{false}
 {
 	m_pResponses.assign(responses.begin(), responses.end());
 }
@@ -39,6 +41,11 @@ void dae::StateTransition::OnNotify(const NotifyEvent & notifyEvent, int notifie
 	auto it = std::find_if(m_pResponses.begin(), m_pResponses.end(), [notifierResponseId](Response* resp) {return resp->GetResponseID() == notifierResponseId; });
 	if (it == m_pResponses.end()) return;
 
+	if (m_ChangedThisFrame)
+	{
+		m_ChangedThisFrame = false;
+		return;
+	}
 
 	switch (notifyEvent)
 	{
@@ -47,6 +54,8 @@ void dae::StateTransition::OnNotify(const NotifyEvent & notifyEvent, int notifie
 			m_pStateMachine->SetToState(m_pToState);
 		else
 			m_pStateMachine->TryTransitionToState(m_pFromState, m_pToState);
+
+		m_ChangedThisFrame = true;
 		break;
 	case NotifyEvent::InputPressed:
 		m_pStateMachine->IncreasedPressCount();
@@ -56,7 +65,11 @@ void dae::StateTransition::OnNotify(const NotifyEvent & notifyEvent, int notifie
 			if (m_pFromState == nullptr)
 				m_pStateMachine->SetToState(m_pToState);
 			else
-				m_pStateMachine->TryTransitionToState(m_pFromState, m_pToState);
+			{
+				if (m_pStateMachine->TryTransitionToState(m_pFromState, m_pToState))
+					m_ChangedThisFrame = true;
+			}
+
 		}
 		break;
 	case NotifyEvent::InputReleased:
@@ -68,9 +81,13 @@ void dae::StateTransition::OnNotify(const NotifyEvent & notifyEvent, int notifie
 			if (m_pFromState == nullptr)
 				m_pStateMachine->SetToState(m_pToState);
 			else
-				m_pStateMachine->TryTransitionToState(m_pFromState, m_pToState);
-
-			m_pStateMachine->GetGameObject()->GetComponent<TransformComponent>()->CancelMoveToPos();
+			{
+				if (m_pStateMachine->TryTransitionToState(m_pFromState, m_pToState))
+				{
+					m_ChangedThisFrame = true;
+					m_pStateMachine->GetGameObject()->GetComponent<TransformComponent>()->CancelMoveToPos();
+				}
+			}
 		}
 		break;
 	}

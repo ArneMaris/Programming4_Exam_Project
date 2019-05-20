@@ -55,7 +55,7 @@ namespace dae
 		std::vector<GameObject*> m_pObjects{};
 
 		b2World *m_pPhysicsWorld;
-		b2ContactListener* m_MMCallbacks;
+		b2ContactListener* m_CollCallbacks;
 
 
 	};

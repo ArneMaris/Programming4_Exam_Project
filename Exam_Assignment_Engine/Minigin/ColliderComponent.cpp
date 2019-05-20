@@ -243,7 +243,8 @@ void dae::ColliderComponent::StartCollisionWith(GameObject * collisionObj)
 	for (auto& colR : m_pCollisionResponses)
 	{
 		colR->OnCollisionStart(collisionObj);
-		colR->Notify(NotifyEvent::CollisionStart);
+		if (colR->MayDoTransition())
+			colR->Notify(NotifyEvent::CollisionStart);
 	}
 }
 
@@ -256,7 +257,8 @@ void dae::ColliderComponent::EndCollisionWith(GameObject * collisionObj)
 	for (auto& colR : m_pCollisionResponses)
 	{
 		colR->OnCollisionEnd(collisionObj);
-		colR->Notify(NotifyEvent::CollisionEnd);
+		if (colR->MayDoTransition())
+			colR->Notify(NotifyEvent::CollisionEnd);
 	}
 }
 

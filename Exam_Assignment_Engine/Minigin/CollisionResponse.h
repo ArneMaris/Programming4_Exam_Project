@@ -1,14 +1,19 @@
 #pragma once
-#include "GameObject.h"
 #include "Response.h"
 
 namespace dae
 {
+	class GameObject;
 	class CollisionResponse : public Response
 		{
 		public:
 			explicit CollisionResponse() = default;
 			virtual ~CollisionResponse() = default;
+
+			CollisionResponse(const CollisionResponse& other) = delete;
+			CollisionResponse(CollisionResponse&& other) = delete;
+			CollisionResponse& operator=(const CollisionResponse& other) = delete;
+			CollisionResponse& operator=(CollisionResponse&& other) = delete;
 
 			//may be called multiple times in a single frame
 			virtual void OnCollisionStart(GameObject* otherObj) = 0;

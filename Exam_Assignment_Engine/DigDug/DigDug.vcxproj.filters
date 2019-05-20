@@ -12,6 +12,15 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="YourFiles\States">
+      <UniqueIdentifier>{98d03161-257b-46a4-a2c5-26c4fdc67c92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="YourFiles\Responses">
+      <UniqueIdentifier>{79fa6a89-1627-4213-bc07-32ca4546c7cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="YourFiles\PrefabsScripts">
+      <UniqueIdentifier>{b73a1adb-3458-43a9-9dd9-ec4a47ead5e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -20,49 +29,55 @@
     <ClInclude Include="Game.h">
       <Filter>CORE</Filter>
     </ClInclude>
-    <ClInclude Include="DigDugCharacter.h">
-      <Filter>YourFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="Prefabs.h">
-      <Filter>YourFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="InputResponses.h">
-      <Filter>YourFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="States.h">
-      <Filter>YourFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionResponses.h">
-      <Filter>YourFiles</Filter>
-    </ClInclude>
     <ClInclude Include="TestScene.h">
       <Filter>MainGameFile</Filter>
     </ClInclude>
+    <ClInclude Include="DigDugStates.h">
+      <Filter>YourFiles\States</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyStates.h">
+      <Filter>YourFiles\States</Filter>
+    </ClInclude>
+    <ClInclude Include="InputResponses.h">
+      <Filter>YourFiles\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionResponses.h">
+      <Filter>YourFiles\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="DigDugCharacter.h">
+      <Filter>YourFiles\PrefabsScripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Prefabs.h">
+      <Filter>YourFiles\PrefabsScripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DigDugCharacter.cpp">
-      <Filter>YourFiles</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>CORE</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>MainGameFile</Filter>
     </ClCompile>
-    <ClCompile Include="Prefabs.cpp">
-      <Filter>YourFiles</Filter>
-    </ClCompile>
-    <ClCompile Include="InputResponses.cpp">
-      <Filter>YourFiles</Filter>
-    </ClCompile>
-    <ClCompile Include="States.cpp">
-      <Filter>YourFiles</Filter>
-    </ClCompile>
-    <ClCompile Include="CollisionResponses.cpp">
-      <Filter>YourFiles</Filter>
-    </ClCompile>
     <ClCompile Include="TestScene.cpp">
       <Filter>MainGameFile</Filter>
+    </ClCompile>
+    <ClCompile Include="DigDugStates.cpp">
+      <Filter>YourFiles\States</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyStates.cpp">
+      <Filter>YourFiles\States</Filter>
+    </ClCompile>
+    <ClCompile Include="InputResponses.cpp">
+      <Filter>YourFiles\Responses</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionResponses.cpp">
+      <Filter>YourFiles\Responses</Filter>
+    </ClCompile>
+    <ClCompile Include="DigDugCharacter.cpp">
+      <Filter>YourFiles\PrefabsScripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Prefabs.cpp">
+      <Filter>YourFiles\PrefabsScripts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

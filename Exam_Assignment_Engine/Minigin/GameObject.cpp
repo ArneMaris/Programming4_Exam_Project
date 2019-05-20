@@ -9,6 +9,7 @@ dae::GameObject::GameObject()
 	, m_Initialized{ false }
 	, m_Name{L"GameObject" + std::to_wstring(GameInfo::amountOfGameObjects+1) }
 	, m_RenderOrder{0}
+	, m_Layer{0}
 {
 	m_TransformComp = new TransformComponent();
 	AddComponent(m_TransformComp);

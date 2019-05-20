@@ -28,6 +28,8 @@ namespace dae
 		bool m_OnEnter;
 		bool m_OnExit;
 
+		bool m_ChangedThisFrame;
+
 		State* m_pFromState;
 		State* m_pToState;
 

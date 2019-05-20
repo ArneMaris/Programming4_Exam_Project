@@ -5,8 +5,10 @@
 
 void DigDugCollision::OnCollisionStart(dae::GameObject * otherObj)
 {
+	if (otherObj->GetLayer() != 1)
+		DontDoTransitionNow();
+
 	UNREFERENCED_PARAMETER(otherObj);
-	dae::Logger::GetInstance().LogInfo(L"collision detected!");
 }
 
 void DigDugCollision::OnCollisionEnd(dae::GameObject * otherObj)
@@ -16,14 +18,12 @@ void DigDugCollision::OnCollisionEnd(dae::GameObject * otherObj)
 
 
 
-
-void CollisionResponseExample2::OnCollisionStart(dae::GameObject * otherObj)
+void EnemyCollision::OnCollisionStart(dae::GameObject * otherObj)
 {
 	UNREFERENCED_PARAMETER(otherObj);
-	dae::Logger::GetInstance().LogInfo(L"collision detected2!");
 }
 
-void CollisionResponseExample2::OnCollisionEnd(dae::GameObject * otherObj)
+void EnemyCollision::OnCollisionEnd(dae::GameObject * otherObj)
 {
 	UNREFERENCED_PARAMETER(otherObj);
 }

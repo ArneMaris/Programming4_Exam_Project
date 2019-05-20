@@ -52,14 +52,16 @@ void dae::StateMachineComponent::SetToState(State* state)
 	m_pCurrentState->OnStateEnter();
 }
 
-void dae::StateMachineComponent::TryTransitionToState(State * fromState, State * toState)
+bool dae::StateMachineComponent::TryTransitionToState(State * fromState, State * toState)
 {
 	if (typeid(*m_pCurrentState) == typeid(*fromState)) //only do it when currently in the fromState
 	{
 		m_pCurrentState->OnStateExit();
 		m_pCurrentState = toState;
 		m_pCurrentState->OnStateEnter();
+		return true;
 	}
+	return false;
 }
 
 void dae::StateMachineComponent::Update()
