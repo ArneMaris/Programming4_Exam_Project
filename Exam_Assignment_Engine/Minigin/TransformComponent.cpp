@@ -115,7 +115,7 @@ void dae::TransformComponent::Update()
 	if (!m_Seeking) return;
 
 	float distanceToTarget = float(b2Distance(m_TargetPos, m_Position));
-	if (distanceToTarget > 0.1f + m_TargetSeekSpeed * 0.01f)
+	if (distanceToTarget > 0.1f + m_TargetSeekSpeed * 0.05f)
 	{
 		b2Vec2 moveDir = (m_TargetPos - m_Position);
 		moveDir.Normalize();

@@ -147,6 +147,12 @@
     <ClInclude Include="GameInfo.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="AiComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="HeuristicFunctions.h">
+      <Filter>ComponentHelperClasses</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -235,6 +241,9 @@
     </ClCompile>
     <ClCompile Include="GameInfo.cpp">
       <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="AiComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@
 #include "States.h"
 #include "InputResponses.h"
 #include "DigDugCharacter.h"
+#include "SceneManager.h"
 
 //this examples makes a box at the bottom of the screen and holds the backgroundSprite
 dae::GameObject* DigDug::Setup()
@@ -54,3 +55,31 @@ dae::GameObject* DigDug::Setup()
 	return m_GameObject;
 }
 
+dae::GameObject* Pooka::Setup()
+{
+	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_kinematicBody));
+	m_GameObject->AddComponent(new dae::ColliderComponent(m_GameObject->GetComponent<dae::PhysicsBodyComponent>()));
+	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(25, 25, dae::ShapeSettings(false, 1, 0.5f, 0));
+
+	m_GameObject->AddComponent(new dae::AnimatedSpriteComponent("DD_Movement.png", 4, 2));
+	m_GameObject->GetComponent<dae::AnimatedSpriteComponent>()->SetScale({ 1.6f,1.6f });
+
+	//RUN ANIMATIONS
+	auto animCmp = m_GameObject->GetComponent<dae::AnimatedSpriteComponent>();
+	animCmp->AddAnimation({ L"RunNoWeapon", 1,1,1,2,0.15f });
+	animCmp->AddAnimation({ L"RunWeapon", 1,1,3,4,0.15f }, false);
+
+	m_GameObject->GetComponent<dae::ColliderComponent>()->AddCollisionResponse(new DigDugCollision());
+
+
+	m_GameObject->AddComponent(new dae::StateMachineComponent());
+	auto sm = m_GameObject->GetComponent<dae::StateMachineComponent>();
+	sm->AddState(L"Idle", new StateIdle(), true);
+	sm->AddState(L"Running", new StateRunning(), false);
+
+	m_GameObject->AddComponent(new dae::ScriptComponent(new DigDugCharacter()));
+
+	m_GameObject->AddComponent(new dae::AiComponent(50, dae::SceneManager::GetInstance().GetActiveScene()->GetLevels()[1], L"DigDug"));
+
+	return m_GameObject;
+}

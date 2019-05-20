@@ -27,3 +27,9 @@
 #include <SDL.h>
 
 #include "Utility.h"
+
+/*=============================================================================*/
+// Copyright 2017-2018 Elite Engine
+// Authors: Matthieu Delaere
+/*=============================================================================*/
+typedef float(*Heuristic)(float, float);

@@ -10,3 +10,4 @@
 #include "InputComponent.h"
 #include "StateMachineComponent.h"
 #include "ScriptComponent.h"
+#include "AiComponent.h"

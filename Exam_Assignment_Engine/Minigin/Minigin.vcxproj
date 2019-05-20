@@ -200,6 +200,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AiComponent.h" />
     <ClInclude Include="AnimatedSpriteComponent.h" />
     <ClInclude Include="AnimationResponse.h" />
     <ClInclude Include="BaseComponent.h" />
@@ -207,6 +208,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClInclude Include="CollisionResponse.h" />
     <ClInclude Include="GridLevel.h" />
     <ClInclude Include="GridTile.h" />
+    <ClInclude Include="HeuristicFunctions.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="InputResponse.h" />
     <ClInclude Include="Components.h" />
@@ -244,6 +246,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AiComponent.cpp" />
     <ClCompile Include="AnimatedSpriteComponent.cpp" />
     <ClCompile Include="ColliderComponent.cpp" />
     <ClCompile Include="FpsCounterComponent.cpp" />

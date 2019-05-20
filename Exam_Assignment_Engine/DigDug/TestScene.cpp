@@ -33,7 +33,6 @@ void TestScene::Initialize()
 	//DIGDUG Spawn
 	backGroundLevel->AddTileConfiguration(5, dae::TileSettings(resourceManager.LoadTexture("Tiles/Layer1.png"), false, false, new DigDug()));
 
-
 	dae::TileByNrConnections tileNrConSettings{ 0,2,3,4,5,6 };
 	dae::TileRotationsByConnections tileRotByConSettings{};
 	tileRotByConSettings.Down = 180;
@@ -69,6 +68,8 @@ void TestScene::Initialize()
 	topCollider->GetComponent<dae::ColliderComponent>()->AddBoxShape(10, 800, dae::ShapeSettings(false, 1, 0, 1));
 	topCollider->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth / 2), float(dae::GameInfo::windowHeight - 116));
 	AddGameObject(topCollider);
+
+	AddGameObject(new Pooka());
 
 	EnablePhysicsDebugDrawing();
 

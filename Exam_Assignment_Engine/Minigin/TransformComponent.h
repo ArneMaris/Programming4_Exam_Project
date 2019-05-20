@@ -9,6 +9,7 @@ namespace dae
 		friend class GameObject;
 	public:
 		const b2Vec2& GetPosition() const { return m_Position; }
+		const b2Vec2& GetMoveToPosition() const { return m_TargetPos; }
 		float GetRotationDegrees() const { return m_Rotation; }
 		float GetRotationRadians() const { return DegreesToRad(m_Rotation); }
 		void SetPosition(float x, float y);

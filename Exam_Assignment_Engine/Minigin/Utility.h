@@ -25,7 +25,7 @@ namespace dae
 	//Global function to easily acces GameObjects by their name
 	static GameObject* GetGameObjectByName(const std::wstring& name)
 	{
-		SceneManager::GetInstance().GetActiveScene()->GetGameObject(name);
+		return SceneManager::GetInstance().GetActiveScene()->GetGameObject(name);
 	};
 
 }
