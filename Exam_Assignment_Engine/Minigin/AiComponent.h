@@ -14,7 +14,7 @@ namespace dae
 		{
 			Astar
 		};
-		AiComponent(float speed, GridLevel* pathfindingLevel, const std::wstring& targetName, PathfindingAlgorithm algorithm = PathfindingAlgorithm::Astar, Heuristic heuristic = Euclidean);
+		AiComponent(float speed,  GridLevel* pathfindingLevel, const std::wstring& targetName, long long millisecondsDelay = 100, PathfindingAlgorithm algorithm = PathfindingAlgorithm::Astar, Heuristic heuristic = Euclidean);
 		~AiComponent();
 
 		AiComponent(const AiComponent& other) = delete;
@@ -36,10 +36,9 @@ namespace dae
 	private:
 		void CalculateCosts(TileConnection* pC, GridTile* pStartTile, GridTile* pGoalTile);
 		std::vector<b2Vec2> CalculateAStar(GridTile* pStartTile, GridTile* pGoalTile);
-		void ThreadLoop(bool ended);
-		void NewCalculation();
+		void ThreadLoop();
 
-		int m_CurrentPathProgress;
+		size_t m_CurrentPathProgress;
 		std::vector<b2Vec2> m_CurrPath;
 
 		Heuristic m_CurrentHeuristic;

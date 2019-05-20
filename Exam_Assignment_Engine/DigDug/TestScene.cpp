@@ -70,6 +70,7 @@ void TestScene::Initialize()
 	AddGameObject(topCollider);
 
 	AddGameObject(new Pooka());
+	AddGameObject(new Pooka());
 
 	EnablePhysicsDebugDrawing();
 

@@ -18,3 +18,11 @@ public:
 	dae::GameObject* Setup() override;
 };
 
+class Fygar : public dae::Prefab
+{
+public:
+	Fygar() = default;
+	~Fygar() = default;
+
+	dae::GameObject* Setup() override;
+};

@@ -16,7 +16,7 @@ dae::GameObject* DigDug::Setup()
 	m_GameObject->AddComponent(new dae::ColliderComponent(m_GameObject->GetComponent<dae::PhysicsBodyComponent>()));
 	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(25, 25, dae::ShapeSettings(false, 1, 0.5f, 0));
 
-	m_GameObject->AddComponent(new dae::AnimatedSpriteComponent("DD_Movement.png", 4, 2));
+	m_GameObject->AddComponent(new dae::AnimatedSpriteComponent("DigDugSprites.png", 4, 2));
 	m_GameObject->GetComponent<dae::AnimatedSpriteComponent>()->SetScale({ 1.6f,1.6f });
 	m_GameObject->AddComponent(new dae::InputComponent(0, true));
 
@@ -59,9 +59,9 @@ dae::GameObject* Pooka::Setup()
 {
 	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_kinematicBody));
 	m_GameObject->AddComponent(new dae::ColliderComponent(m_GameObject->GetComponent<dae::PhysicsBodyComponent>()));
-	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(25, 25, dae::ShapeSettings(false, 1, 0.5f, 0));
+	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(20, 20, dae::ShapeSettings(true, 1, 0.5f, 0));
 
-	m_GameObject->AddComponent(new dae::AnimatedSpriteComponent("DD_Movement.png", 4, 2));
+	m_GameObject->AddComponent(new dae::AnimatedSpriteComponent("PookaFygarMovementSquash.png", 4, 2));
 	m_GameObject->GetComponent<dae::AnimatedSpriteComponent>()->SetScale({ 1.6f,1.6f });
 
 	//RUN ANIMATIONS

@@ -24,6 +24,7 @@ dae::Scene::~Scene()
 	for (auto it = m_pObjects.begin(); it != m_pObjects.end(); ++it)
 	{
 		delete (*it);
+		*it = nullptr;
 	}
 	m_pObjects.clear();
 

@@ -16,5 +16,7 @@ namespace dae
 
 		static int amountOfGameObjects;
 		static int amountOfResponses;
+
+		static bool gameEnded;
 	};
 };

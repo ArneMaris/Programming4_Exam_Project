@@ -19,3 +19,5 @@ bool dae::GameInfo::drawPhysicsDebug = false; //this is the default value, can b
 
 int dae::GameInfo::amountOfGameObjects = 0; //just a counter to keep track of gameObject amount
 int dae::GameInfo::amountOfResponses = 0; //just a counter to keep track of Responses amount
+
+bool dae::GameInfo::gameEnded = false;

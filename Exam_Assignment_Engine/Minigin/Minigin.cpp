@@ -88,15 +88,16 @@ void dae::Minigin::Run()
 
 	}
 
+	GameInfo::gameEnded = true;
 	Cleanup();
 }
 
 void dae::Minigin::Cleanup()
 {
 	Renderer::GetInstance().Destroy(); // also destroys ImGuiSDL renderer
-	SceneManager::GetInstance().CleanUp();
 	InputManager::GetInstance().CleanUp();
 	ResourceManager::GetInstance().CleanUp();
+	SceneManager::GetInstance().CleanUp();
 
 	ImGui_ImplSDL2_Shutdown();
 	SDL_DestroyWindow(window);

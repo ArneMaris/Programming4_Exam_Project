@@ -207,7 +207,10 @@ dae::GridTile* dae::GridLevel::GetTileByPos(const b2Vec2 & pos, bool clip)
 	else
 	{
 		if (clip)
+		{
 			Logger::GetInstance().LogWarning(L"Tile on this position not found! Returned nullptr!");
+			return m_pGridTiles[0];
+		}
 
 		return nullptr;
 	}
