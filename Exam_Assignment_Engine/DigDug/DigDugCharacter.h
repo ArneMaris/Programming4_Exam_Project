@@ -20,6 +20,8 @@ public:
 	void StartDigging();
 	void EndDigging();
 
+	void Pump();
+
 	float GetMoveSpeed() const { return m_MoveSpeed; };
 
 private:
@@ -27,7 +29,11 @@ private:
 	float m_MoveSpeed;
 	bool m_Digging;
 	dae::GameObject* m_DigObject;
+	dae::GameObject* m_PumpObject;
 	dae::GridLevel* m_pLevel;
 	dae::GridTile* m_PrevTile;
+
+	float m_DeadTimer;
+	float m_PumpFlySpeed;
 };
 

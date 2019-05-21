@@ -145,6 +145,8 @@ void dae::AnimatedSpriteComponent::PlayAnimation(const std::wstring & name)
 		m_SecPerFrame = it->second.secPerFrame;
 		m_pCurrAnimationResponse = it->second.animResponse;
 		m_AccuSec = 0;
+		m_CurrColumn = m_MinColumn;
+		m_CurrRow = m_MinRow;
 	}
 }
 

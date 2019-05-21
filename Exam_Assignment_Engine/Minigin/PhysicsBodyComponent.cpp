@@ -64,22 +64,22 @@ void dae::PhysicsBodyComponent::Initialize()
 }
 
 
-inline void dae::PhysicsBodyComponent::ApplyForce(const b2Vec2 & force, const b2Vec2 & point)
+ void dae::PhysicsBodyComponent::ApplyForce(const b2Vec2 & force, const b2Vec2 & point)
 {
 	m_Body->ApplyForce(force, point, true);
 }
 
-inline void dae::PhysicsBodyComponent::ApplyTorque(float torque)
+ void dae::PhysicsBodyComponent::ApplyTorque(float torque)
 {
 	m_Body->ApplyTorque(torque, true);
 }
 
-inline void dae::PhysicsBodyComponent::ApplyLinearImpulse(const b2Vec2 & impulse, const b2Vec2 & point)
+ void dae::PhysicsBodyComponent::ApplyLinearImpulse(const b2Vec2 & impulse, const b2Vec2 & point)
 {
 	m_Body->ApplyLinearImpulse(impulse, point, true);
 }
 
-inline void dae::PhysicsBodyComponent::ApplyAngularImpulse(float impulse)
+ void dae::PhysicsBodyComponent::ApplyAngularImpulse(float impulse)
 {
 	m_Body->ApplyAngularImpulse(impulse, true);
 }

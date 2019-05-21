@@ -1,6 +1,18 @@
 #pragma once
 #include "InputResponse.h"
 
+class Pump final : public dae::InputResponse
+{
+public:
+	Pump() = default;
+	~Pump() = default;
+
+	//override these 3 functions to handle the input with your custom actions
+	virtual void ExecuteOnPress() override;
+	virtual void ExecuteOnHold(const b2Vec2 axisValues) override;
+	virtual void ExecuteOnRelease() override;
+};
+
 class MoveController final: public dae::InputResponse
 {
 public:

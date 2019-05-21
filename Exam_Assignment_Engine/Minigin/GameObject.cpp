@@ -50,9 +50,6 @@ dae::Script * dae::GameObject::GetScript() const
 	}
 }
 
-
-
-
 void dae::GameObject::Update()
 {
 	for (auto& comp : m_pComponents)
@@ -85,6 +82,7 @@ void dae::GameObject::Initialize()
 			if (dynamic_cast<ScriptComponent*>(comp))
 			{
 				scriptComps.push_back(comp);
+				m_pComponents.erase(std::remove(m_pComponents.begin(), m_pComponents.end(), comp), m_pComponents.end());
 				continue;
 			}
 			comp->Initialize();
@@ -93,6 +91,8 @@ void dae::GameObject::Initialize()
 		for (auto& scriptCmp : scriptComps)
 		{
 			scriptCmp->Initialize();
+			//puts the scriptComponents in the back (last updated and rendered to make sure you have all updated components in script
+			m_pComponents.push_back(scriptCmp);
 		}
 		m_Initialized = true;
 	}

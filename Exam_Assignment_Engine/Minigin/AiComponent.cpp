@@ -26,7 +26,7 @@ dae::AiComponent::AiComponent(float speed, GridLevel* pathfindingLevel, const st
 
 dae::AiComponent::~AiComponent()
 {
-
+	m_Thread.join();
 }
 
 void dae::AiComponent::ThreadLoop()
@@ -66,7 +66,14 @@ void dae::AiComponent::Initialize()
 	m_pTransformComp = m_pGameObject->GetTransform();
 	m_pTargetObj = GetGameObjectByName(m_TargetName);
 	m_Thread = std::thread(&AiComponent::ThreadLoop, this);
-	m_Thread.detach();
+
+}
+
+void dae::AiComponent::SetActive(bool value)
+{
+	m_Active = value;
+	if (!m_Active)
+		m_pGameObject->GetComponent<TransformComponent>()->CancelMoveToPos(0);
 }
 
 void dae::AiComponent::Update()
@@ -103,7 +110,6 @@ void dae::AiComponent::Render() const
 //From from Gameplay programming 2019 used
 void dae::AiComponent::CalculateCosts(TileConnection* pC, dae::GridTile* pStartTile, dae::GridTile* pGoalTile)
 {
-	if (GameInfo::gameEnded) return;
 	//Calculate the g and h cost (f is calculate when requested)
 	//g = current.g + cost(displacement vector current to this)
 	float currentGCost = 0;
@@ -148,7 +154,6 @@ std::vector<b2Vec2> dae::AiComponent::CalculateAStar(dae::GridTile* pStartTile, 
 	//Start algorithm loop: while our open list is not empty
 	while (!openList.empty())
 	{
-		if (GameInfo::gameEnded) return std::vector<b2Vec2>();
 		//TODO: STEP 2.1 - Get the connection with the lowest F score from the 'openList' and set it as 'pCurrentConnection'
 		float lowestScore = 999999999.0f;
 		for (auto c : openList)
@@ -168,6 +173,7 @@ std::vector<b2Vec2> dae::AiComponent::CalculateAStar(dae::GridTile* pStartTile, 
 		//TODO: STEP 2.3 - Retrieve the 'connections' for the 'pCurrentConnection's 'EndNode'. 
 		//We will use these to check if the goal is present and/or if the need to be added to the openlist later.
 		std::vector<TileConnection*> vpConnections = pCurrentConnection->GetBack()->GetConnections();
+		if (vpConnections.empty()) return vPath;
 
 		//TODO: STEP 2.4 - If any of the retrieved successors ('vpConnections') is the goal (== connection.'EndNode' == 'pEndNode'), call it a day! 
 		//Hint: use std::find_if!
@@ -188,7 +194,6 @@ std::vector<b2Vec2> dae::AiComponent::CalculateAStar(dae::GridTile* pStartTile, 
 		//TODO: STEP 2.5 - Else go over all the retrieved connections
 		for (auto pC : vpConnections)
 		{
-			if (GameInfo::gameEnded) return std::vector<b2Vec2>();
 			//2.5.1: If found in 'closedList', do nothing
 			//2.5.2: Else:
 				//Link the connection by setting the connections its 'HeadConnection' equal to the 'pCurrentConnection' (retrace path).
@@ -203,17 +208,21 @@ std::vector<b2Vec2> dae::AiComponent::CalculateAStar(dae::GridTile* pStartTile, 
 		}
 	}
 
-	if (GameInfo::gameEnded || pCurrentConnection == nullptr) return std::vector<b2Vec2>();
 	//TODO: STEP 3 - Reconstruct path
 	//As long as the 'pCurrentConnection' its 'StartNode' is not equal to the 'pStartNode'
 		//Store the 'pCurrentConnection' its 'EndNode' position in the 'vPath' container
 		//Change the 'pCurrentConnection' to the 'pCurrentConnection' its 'HeadConnection'
 	//To finalize add last retrieved 'EndNode' position and the position of 'pStartNode'
+	if (!pCurrentConnection) return vPath;
+	unsigned int times = 0;
 	while (pCurrentConnection->GetFront() != pStartTile)
 	{
+		if (times > m_pLevel->GetAmountOfTiles() * 2)
+			return vPath;
 
 		vPath.push_back(pCurrentConnection->GetBack()->GetPos());
 		pCurrentConnection = pCurrentConnection->GetHeadConnection();
+		++times;
 	}
 	vPath.push_back(pCurrentConnection->GetBack()->GetPos());
 	vPath.push_back(pStartTile->GetPos());

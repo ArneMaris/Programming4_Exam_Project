@@ -6,6 +6,23 @@
 #include "SceneManager.h"
 #include "GridLevel.h"
 
+
+void Pump::ExecuteOnPress()
+{
+	static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->Pump();
+}
+
+void Pump::ExecuteOnHold(const b2Vec2 axisValues)
+{
+	UNREFERENCED_PARAMETER(axisValues);
+}
+
+void Pump::ExecuteOnRelease()
+{
+
+}
+
+
 void MoveController::ExecuteOnPress()
 {
 }
@@ -170,3 +187,4 @@ void MoveRightKey::ExecuteOnHold(const b2Vec2 axisValues)
 void MoveRightKey::ExecuteOnRelease()
 {
 }
+

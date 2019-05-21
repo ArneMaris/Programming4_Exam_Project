@@ -28,6 +28,9 @@ namespace dae
 		void SetToState(const std::wstring& name);
 		bool TryTransitionToState(const std::wstring& fromName, const std::wstring& toName);
 
+		const std::wstring& GetCurrentStateName() const;
+		State* GetCurrentState() const {return m_pCurrentState;};
+
 		std::vector<std::shared_ptr<StateTransition>> GetStateTransitions() const {return m_pStateTransitions;};
 		
 		inline int GetPressCount() const { return m_PressCount; };
@@ -45,7 +48,7 @@ namespace dae
 
 		State* m_pCurrentState = nullptr;
 
-		std::wstring m_DefaultStateName =L"";
+		std::wstring m_DefaultStateName = L"";
 
 		int m_PressCount = 0;
 	};

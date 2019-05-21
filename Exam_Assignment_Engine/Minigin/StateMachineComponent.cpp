@@ -59,10 +59,10 @@ void dae::StateMachineComponent::SetToState(const std::wstring & name)
 bool dae::StateMachineComponent::TryTransitionToState(const std::wstring & fromName, const std::wstring & toName)
 {
 	auto it = m_pStates.find(fromName);
-	auto it2 = m_pStates.find(toName);
-	if (it != m_pStates.end() && it2 != m_pStates.end())
+	auto it2 = m_pStates.find(toName); 
+	if (it != m_pStates.end() && it2 != m_pStates.end() && fromName != toName)
 	{
-		if (typeid(*m_pCurrentState) == typeid(*it)) //only do it when currently in the fromState
+		if (typeid(*m_pCurrentState) == typeid(*it->second)) //only do it when currently in the fromState
 		{
 			m_pCurrentState->OnStateExit();
 			m_pCurrentState = it2->second;
@@ -73,11 +73,23 @@ bool dae::StateMachineComponent::TryTransitionToState(const std::wstring & fromN
 	return false;
 }
 
+const std::wstring& dae::StateMachineComponent::GetCurrentStateName() const
+{
+	// TODO: insert return statement here
+	for (auto it = m_pStates.begin(); it != m_pStates.end(); ++it)
+		if (typeid(*it->second) == typeid(*m_pCurrentState))
+			return it->first;
+	return m_DefaultStateName;
+}
+
 void dae::StateMachineComponent::SetToState(State* state)
 {
-	m_pCurrentState->OnStateExit();
-	m_pCurrentState = state;
-	m_pCurrentState->OnStateEnter();
+	if (typeid(*m_pCurrentState) != typeid(*state))
+	{
+		m_pCurrentState->OnStateExit();
+		m_pCurrentState = state;
+		m_pCurrentState->OnStateEnter();
+	}
 }
 
 bool dae::StateMachineComponent::TryTransitionToState(State * fromState, State * toState)

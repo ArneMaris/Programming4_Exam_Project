@@ -48,12 +48,10 @@ void dae::Scene::Cleanup()
 	InputManager::GetInstance().CleanUp();
 }
 
-void dae::Scene::ThreadedCleanAndReload()
+void dae::Scene::CleanAndReload()
 {
-	std::thread cleanThread = std::thread(&Scene::Cleanup, this);
-	cleanThread.join();
-	std::thread reloadThread = std::thread(&Scene::Reload, this);
-	reloadThread.join();
+	Cleanup();
+	Reload();
 }
 
 
@@ -166,4 +164,17 @@ dae::GameObject* dae::Scene::GetGameObject(const std::wstring& name)
 		return nullptr;
 	}
 	else return *(it);
+}
+
+std::vector<dae::GameObject*> dae::Scene::GetGameObjectsInLayer(int layer)
+{
+	std::vector<dae::GameObject*> returnVec;
+	for (auto& obj : m_pObjects)
+	{
+		if (obj->GetLayer() == layer)
+		{
+			returnVec.push_back(obj);
+		}
+	}
+	return returnVec;
 }

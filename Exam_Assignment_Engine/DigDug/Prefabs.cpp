@@ -35,18 +35,21 @@ void DigDug::Setup()
 	m_GameObject->GetComponent<dae::InputComponent>()->AddInputAction(moveResponses.back(), SDLK_d);
 
 
+	m_GameObject->GetComponent<dae::InputComponent>()->AddInputAction(new Pump(), SDLK_SPACE);
+
+
+
 	auto animCmp = m_GameObject->GetComponent<dae::AnimatedSpriteComponent>();
-	animCmp->AddAnimation({ L"RunNoWeapon", 1,1,1,2,0.15f }, true);
+	animCmp->AddAnimation({ L"Idle", 3,3,4,4,1 }, true);
 	animCmp->AddAnimation({ L"RunWeapon", 1,1,3,4,0.15f }, false);
-	animCmp->AddAnimation({ L"Idle", 3,3,4,4,1 }, false);
+	animCmp->AddAnimation({ L"RunNoWeapon", 1,1,1,2,0.15f }, false);
 	animCmp->AddAnimation({ L"Pump", 2,2,1,2,0.15f }, false);
 	animCmp->AddAnimation({ L"DieStone", 3,3,1,3,0.15f }, false);
-	animCmp->AddAnimation({ L"DieEnemy", 4,4,1,4,0.15f }, false);
-	animCmp->SetPaused(true);
+	animCmp->AddAnimation({ L"DieEnemy", 4,4,1,4,0.25f }, false);
+	animCmp->AddAnimation({ L"Gone", 2,2,3,4,1 }, false);
 
 	auto collResp = new DigDugCollision();
 	m_GameObject->GetComponent<dae::ColliderComponent>()->AddCollisionResponse(collResp);
-
 
 	m_GameObject->AddComponent(new dae::StateMachineComponent());
 	auto sm = m_GameObject->GetComponent<dae::StateMachineComponent>();

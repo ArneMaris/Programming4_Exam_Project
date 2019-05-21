@@ -24,6 +24,9 @@ namespace dae
 		void AddInputAction(InputResponse* response, ControllerInput controllerInput);
 		void GetInputAction(const std::wstring& responseName);
 
+		void DisableInput() {m_Enabled = false;};
+		void EnableInput() { m_Enabled = true; };
+
 	protected:
 		virtual void Update() override;
 		virtual void Initialize() override;
@@ -35,6 +38,8 @@ namespace dae
 
 		int m_ControllerId;
 		bool m_UsingKeyboardInput;
+
+		bool m_Enabled;
 
 		std::vector<InputAction*> m_pInputActions;
 	};

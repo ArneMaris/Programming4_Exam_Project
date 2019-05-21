@@ -90,6 +90,7 @@ namespace dae
 		GridTile* GetTileByPos(const b2Vec2& pos, bool clip = true);
 		GridTile* GetWalkableTileInRadius(const b2Vec2& center, int minTilesToCenter, int maxTilesDist = 30);
 
+		unsigned int GetAmountOfTiles() const { return m_pGridTiles.size(); };
 	private:
 		enum ConnectionDirection
 		{

@@ -41,9 +41,10 @@ namespace dae
 		void DisablePhysicsDebugDrawing() { GameInfo::drawPhysicsDebug = false; };
 
 		GameObject* GetGameObject(const std::wstring& name);
+		std::vector<GameObject*> GetGameObjectsInLayer(int layer);
 
 		void SortRenderingOrder();
-		void ThreadedCleanAndReload();
+		void CleanAndReload();
 
 	protected:
 		bool m_IsInitialized;

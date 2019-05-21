@@ -16,7 +16,7 @@ void dae::SceneManager::Update()
 	if (GameInfo::gameEnded)
 	{
 		auto activeScene = GetActiveScene();
-		activeScene->ThreadedCleanAndReload();
+		activeScene->CleanAndReload();
 		GameInfo::gameEnded = false;
 		return;
 	}

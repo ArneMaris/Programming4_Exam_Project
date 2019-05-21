@@ -7,6 +7,7 @@
 dae::InputComponent::InputComponent(int controllerId, bool useKeyboardInput)
 	:m_ControllerId{ controllerId }
 	,m_UsingKeyboardInput {useKeyboardInput}
+	, m_Enabled{true}
 {
 	InputManager::GetInstance().RegisterInputComponent(this);
 }
@@ -46,19 +47,25 @@ void dae::InputComponent::Render() const
 
 void dae::InputComponent::HandleControllerInput(XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState)
 {
-	for (auto& action : m_pInputActions)
+	if (m_Enabled)
 	{
-		action->HandleControllerInput(gamePadState, prevGamePadState);
+		for (auto& action : m_pInputActions)
+		{
+			action->HandleControllerInput(gamePadState, prevGamePadState);
+		}
 	}
 }
 
 void dae::InputComponent::HandleKeyboardInput(const UINT8* keyboardState, const UINT8* prevKeyboardState)
 {
-	if (m_UsingKeyboardInput)
+	if (m_Enabled)
 	{
-		for (auto& action : m_pInputActions)
+		if (m_UsingKeyboardInput)
 		{
-			action->HandleKeyBoardInput(keyboardState, prevKeyboardState);
+			for (auto& action : m_pInputActions)
+			{
+				action->HandleKeyBoardInput(keyboardState, prevKeyboardState);
+			}
 		}
 	}
 }

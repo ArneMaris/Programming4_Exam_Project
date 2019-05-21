@@ -29,11 +29,17 @@ namespace dae
 		return SceneManager::GetInstance().GetActiveScene()->GetGameObject(name);
 	};
 
+	static std::vector<GameObject*> GetAllGameObjectsInLayer(int layer)
+	{
+		return SceneManager::GetInstance().GetActiveScene()->GetGameObjectsInLayer(layer);
+	};
+
+
 	static void CallFunctionAfter(std::function<void()> function, long long millisecondsDelay)
 	{
 		std::thread thread = std::thread([millisecondsDelay, function]()
 			{
-				auto wait = std::async(std::launch::async, [&millisecondsDelay]() { std::this_thread::sleep_for(std::chrono::milliseconds(millisecondsDelay)); });
+				auto wait = std::async([&millisecondsDelay]() { std::this_thread::sleep_for(std::chrono::milliseconds(millisecondsDelay)); });
 				wait.get();
 				function();
 			});

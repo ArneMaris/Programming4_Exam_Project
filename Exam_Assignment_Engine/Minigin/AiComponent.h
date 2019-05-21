@@ -26,8 +26,8 @@ namespace dae
 		void SetSpeed(float newSpeed) { m_Speed = newSpeed; };
 		float GetSpeed() const { return m_Speed; };
 
-		void SetActive(bool value) { m_Active = value; };
-		bool GetCanReachGoal() const { return m_CanReachGoal; };
+		void SetActive(bool value);
+		bool GetCanReachGoal() const { return (m_Active == true ? m_CanReachGoal : false); };
 
 	protected:
 		virtual void Update() override;
