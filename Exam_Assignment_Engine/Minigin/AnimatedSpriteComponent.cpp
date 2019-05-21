@@ -144,6 +144,7 @@ void dae::AnimatedSpriteComponent::PlayAnimation(const std::wstring & name)
 		SetColumnLimit(it->second.minColumn, it->second.maxColumn);
 		m_SecPerFrame = it->second.secPerFrame;
 		m_pCurrAnimationResponse = it->second.animResponse;
+		m_AccuSec = 0;
 	}
 }
 

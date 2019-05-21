@@ -51,7 +51,7 @@ void dae::TransformComponent::Translate(const b2Vec2& displacement)
 {
 	if (m_pPhysicsBody != nullptr && m_pGameObject->m_Initialized)
 	{
-		if (m_pPhysicsBody->GetType() == b2_dynamicBody && !m_Seeking)
+		if (m_pPhysicsBody->GetType() == b2_dynamicBody)
 		{
 			Logger::GetInstance().LogWarning(L"Translating a dynamic body (this will teleport it = NO COLLISIONS)! use Addforce on PhysicsBodyComponent instead, or call MoveToPos with UseAddForce = true!");
 		}
@@ -63,7 +63,7 @@ void dae::TransformComponent::Translate(const b2Vec2& displacement)
 	}
 }
 
-bool dae::TransformComponent::MoveToPosition(const b2Vec2 & pos, float speed, bool useAddForce, bool forceNewTarget)
+bool dae::TransformComponent::MoveToPosition(const b2Vec2 & pos, float speed, bool useAddForce, bool forceNewTarget, bool stayOnGrid)
 {
 	//if lenght is very short (reached destination)
 	if (forceNewTarget || !m_Seeking)
@@ -72,6 +72,7 @@ bool dae::TransformComponent::MoveToPosition(const b2Vec2 & pos, float speed, bo
 		m_TargetSeekSpeed = speed;
 		m_Seeking = true;
 		m_UsingAddForce = useAddForce;
+		m_MoveToOnGrid = stayOnGrid;
 		return true;
 	}
 	return false;
@@ -114,21 +115,32 @@ void dae::TransformComponent::Update()
 
 	if (!m_Seeking) return;
 
+
 	float distanceToTarget = float(b2Distance(m_TargetPos, m_Position));
 	if (distanceToTarget > 0.1f + m_TargetSeekSpeed * 0.05f)
 	{
 		b2Vec2 moveDir = (m_TargetPos - m_Position);
 		moveDir.Normalize();
-		if (abs(moveDir.x - moveDir.y) > (abs(moveDir.x) < abs(moveDir.y) ? moveDir.x : moveDir.y))
-			(abs(moveDir.x) < abs(moveDir.y) ? moveDir.x : moveDir.y) *= m_TargetSeekSpeed * 0.1f;
+		if (m_MoveToOnGrid)
+		{
+			if (abs(moveDir.x - moveDir.y) > (abs(moveDir.x) < abs(moveDir.y) ? moveDir.x : moveDir.y))
+				(abs(moveDir.x) < abs(moveDir.y) ? moveDir.x : moveDir.y) *= m_TargetSeekSpeed * 0.1f;
+		}
 
-		moveDir *= m_TargetSeekSpeed * GameInfo::deltaTime * 100;
-
-		m_pPhysicsBody->SetLinearVelocity(moveDir);
+		if (m_pPhysicsBody != nullptr)
+		{
+			moveDir *= m_TargetSeekSpeed * GameInfo::deltaTime * 100;
+			m_pPhysicsBody->SetLinearVelocity(moveDir);
+		}
+		else
+		{
+			moveDir *= m_TargetSeekSpeed * GameInfo::deltaTime;
+			Translate(moveDir);
+		}
 	}
 	else
 	{
-		if (m_Seeking)
+		if (m_Seeking && m_pPhysicsBody != nullptr)
 			m_pPhysicsBody->SetLinearVelocity({ 0,0 });
 		m_Seeking = false;
 	}

@@ -15,6 +15,8 @@ namespace dae
 		void BaseRender() const; // renders all gameObjects in this scene
 		void FixedUpdate();
 
+		void Reload();
+		void Cleanup();
 		virtual void Initialize() = 0;
 		void ActivateGameObjects();
 
@@ -41,6 +43,7 @@ namespace dae
 		GameObject* GetGameObject(const std::wstring& name);
 
 		void SortRenderingOrder();
+		void ThreadedCleanAndReload();
 
 	protected:
 		bool m_IsInitialized;
@@ -49,6 +52,7 @@ namespace dae
 	private: 
 		virtual void Update() = 0; // different Update for every scene, called in BaseUpdate
 		virtual void Render() const = 0; // different Render for every scene, called in BaseRender
+
 
 		bool m_IsActive;
 		std::wstring m_SceneName{};

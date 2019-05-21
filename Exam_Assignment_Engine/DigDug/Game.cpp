@@ -5,8 +5,8 @@
 
 Game::Game()
 {
-	dae::GameInfo::windowWidth = 480;
-	dae::GameInfo::windowHeight = 780;
+	dae::GameInfo::windowWidth = 1080;
+	dae::GameInfo::windowHeight = 720;
 }
 
 // MAKE YOUR GAME HERE!

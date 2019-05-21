@@ -24,7 +24,7 @@ void dae::CollisionCallbacks::HandleContact(b2Contact * contact, bool begin)
 	if (bodyUserData2)
 		obj2 = static_cast<GameObject*>(bodyUserData2);
 
-		if (obj1 != nullptr && obj2 != nullptr)
+		if (obj1 != nullptr && obj2 != nullptr && obj1->GetComponent<ColliderComponent>() && obj2->GetComponent<ColliderComponent>())
 		{
 			if (begin)
 			{

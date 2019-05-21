@@ -4,6 +4,8 @@
 #include "GameObject.h"
 #include "Renderer.h"
 #include "TileConnection.h"
+#include "PhysicsDebugDrawer.h"
+
 
 dae::GridTile::GridTile(unsigned int id, const b2Vec2& pos, const b2Vec2& size, std::shared_ptr<SDL_Texture> texture, bool isWalkable, bool isChangable, Prefab* spawnOnThisTile)
 	:m_Pos{pos}
@@ -17,8 +19,7 @@ dae::GridTile::GridTile(unsigned int id, const b2Vec2& pos, const b2Vec2& size, 
 
 	if (spawnOnThisTile != nullptr)
 	{
-		GameObject* obj = spawnOnThisTile->Setup();
-		delete spawnOnThisTile;
+		GameObject* obj = spawnOnThisTile->RootSetup();
 		obj->GetTransform()->SetPosition(m_Pos);
 		SceneManager::GetInstance().GetActiveScene()->AddGameObject(obj);
 	}
@@ -38,6 +39,8 @@ void dae::GridTile::Render()
 	b2Vec2 renderPos = m_Pos;
 	renderPos.x -= m_Size.x / 2;
 	renderPos.y += m_Size.y / 2;
+
+	PhysicsDebugDrawer::GetInstance().DrawPoint(m_Pos);
 	if (m_Rotation != 0)
 	{
 		Renderer::GetInstance().RenderTexture(m_pTexture, renderPos.x, renderPos.y, m_Size.x, m_Size.y, float(m_Rotation));

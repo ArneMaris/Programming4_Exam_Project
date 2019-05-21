@@ -26,7 +26,8 @@ namespace dae
 		void SetSpeed(float newSpeed) { m_Speed = newSpeed; };
 		float GetSpeed() const { return m_Speed; };
 
-		void SetCalculationsDelay(long long delay) { m_DelayMilliseconds = delay; };
+		void SetActive(bool value) { m_Active = value; };
+		bool GetCanReachGoal() const { return m_CanReachGoal; };
 
 	protected:
 		virtual void Update() override;
@@ -48,11 +49,16 @@ namespace dae
 		GameObject* m_pTargetObj;
 		std::wstring m_TargetName;
 
+		b2Vec2 m_TargetPos;
+
 		float m_Speed;
 		long long m_DelayMilliseconds;
 
 		std::thread m_Thread;
 		bool m_End;
+
+		bool m_Active;
+		bool m_CanReachGoal;
 	};
 }
 

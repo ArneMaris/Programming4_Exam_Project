@@ -3,7 +3,7 @@
 #include "GameObject.h"
 #include "Components.h"
 #include "DigDugCharacter.h"
-
+#include "SceneManager.h"
 
 void DigDugStates::Idle::OnStateEnter()
 {
@@ -37,7 +37,9 @@ void DigDugStates::Run::InState()
 
 void DigDugStates::Dead::OnStateEnter()
 {
-
+	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"DieEnemy");
+	std::function<void()> func = std::bind(&dae::SceneManager::ReloadActiveScene, &dae::SceneManager::GetInstance());
+	dae::CallFunctionAfter(func, 1000);
 }
 
 void DigDugStates::Dead::OnStateExit()

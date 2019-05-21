@@ -3,7 +3,7 @@
 #include "GameObject.h"
 #include "SceneManager.h"
 
-dae::PhysicsBodyComponent::PhysicsBodyComponent(b2BodyType bodyType)
+dae::PhysicsBodyComponent::PhysicsBodyComponent(b2BodyType bodyType, bool enableRotation)
 	:m_Body{nullptr}
 	,m_pPhysicsWorldRef{nullptr}
 {
@@ -16,9 +16,10 @@ dae::PhysicsBodyComponent::PhysicsBodyComponent(b2BodyType bodyType)
 	b2BodyDef def{};
 	def.type = bodyType;
 	m_Body = m_pPhysicsWorldRef->CreateBody(&def);
+	m_Body->SetFixedRotation(!enableRotation);
 }
 
-dae::PhysicsBodyComponent::PhysicsBodyComponent(b2BodyType bodyType, const b2Vec2 & pos, const float rotRadians, float linearDamping, float angularDamping, bool startActive, bool isFastTraveling)
+dae::PhysicsBodyComponent::PhysicsBodyComponent(b2BodyType bodyType, bool enableRotation, const b2Vec2 & pos, const float rotRadians, float linearDamping, float angularDamping, bool startActive, bool isFastTraveling)
 	:m_Body{ nullptr }
 	, m_pPhysicsWorldRef{ nullptr }
 {
@@ -38,6 +39,7 @@ dae::PhysicsBodyComponent::PhysicsBodyComponent(b2BodyType bodyType, const b2Vec
 	def.active = startActive;
 	def.bullet = isFastTraveling;
 	m_Body = m_pPhysicsWorldRef->CreateBody(&def);
+	m_Body->SetFixedRotation(!enableRotation);
 }
 
 b2Body* dae::PhysicsBodyComponent::GetPhysicsBody() const

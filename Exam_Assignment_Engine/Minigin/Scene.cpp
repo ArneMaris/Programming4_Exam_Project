@@ -4,6 +4,8 @@
 #include "CollisionCallbacks.h"
 #include "Prefab.h"
 #include "GridLevel.h"
+#include <thread>
+#include "InputManager.h"
 
 dae::Scene::Scene(const std::wstring& name, const b2Vec2& gravity) 
 	:m_SceneName(name)
@@ -21,22 +23,39 @@ dae::Scene::Scene(const std::wstring& name, const b2Vec2& gravity)
 
 dae::Scene::~Scene()
 {
+	Cleanup();
+	delete m_CollCallbacks;
+	delete m_pPhysicsWorld;
+}
+
+void dae::Scene::Cleanup()
+{
 	for (auto it = m_pObjects.begin(); it != m_pObjects.end(); ++it)
 	{
 		delete (*it);
 		*it = nullptr;
 	}
 	m_pObjects.clear();
+	m_pObjects.shrink_to_fit();
 
 	for (auto it = m_pLevels.begin(); it != m_pLevels.end(); ++it)
 	{
 		delete (*it);
 	}
 	m_pLevels.clear();
-	
-	delete m_CollCallbacks;
-	delete m_pPhysicsWorld;
+	m_pLevels.shrink_to_fit();
+
+	InputManager::GetInstance().CleanUp();
 }
+
+void dae::Scene::ThreadedCleanAndReload()
+{
+	std::thread cleanThread = std::thread(&Scene::Cleanup, this);
+	cleanThread.join();
+	std::thread reloadThread = std::thread(&Scene::Reload, this);
+	reloadThread.join();
+}
+
 
 void dae::Scene::AddGameObject(GameObject* object)
 {
@@ -46,7 +65,7 @@ void dae::Scene::AddGameObject(GameObject* object)
 
 void dae::Scene::AddGameObject(Prefab* object)
 {
-	GameObject* obj = object->Setup();
+	GameObject* obj = object->RootSetup();
 	delete object; //delete prefab after
 	obj->SetPhysicsWorld(m_pPhysicsWorld);
 	m_pObjects.push_back(obj);
@@ -95,6 +114,14 @@ void dae::Scene::FixedUpdate()
 	}
 }
 
+void dae::Scene::Reload()
+{
+	m_IsInitialized = false;
+	Initialize();
+	ActivateGameObjects();
+}
+
+
 bool dae::Scene::GetIsActive() const
 {
 	return m_IsActive;
@@ -121,12 +148,14 @@ void dae::Scene::ActivateGameObjects()
 		gameObject->Initialize();
 	}
 	SortRenderingOrder();
+	GameInfo::gameEnded = false;
 }
 
 void dae::Scene::SortRenderingOrder()
 {
 	std::sort(m_pObjects.begin(), m_pObjects.end(), [](GameObject* obj1, GameObject* obj2) { return obj1->GetRenderOrder() > obj2->GetRenderOrder(); });
 }
+
 
 dae::GameObject* dae::Scene::GetGameObject(const std::wstring& name)
 {

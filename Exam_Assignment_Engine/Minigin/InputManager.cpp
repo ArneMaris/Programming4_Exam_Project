@@ -17,11 +17,12 @@ dae::InputManager::InputManager()
 
 void dae::InputManager::CleanUp()
 {
-
+	m_pInputComponents.clear();
 }
 
 bool dae::InputManager::ProcessInput()
 {
+	if (GameInfo::gameEnded) return true;
 
 	SDL_Event ev;
 	SDL_PollEvent(&ev);
@@ -51,8 +52,9 @@ bool dae::InputManager::ProcessInput()
 	for (auto& inputComp : m_pInputComponents)
 	{
 		int id = inputComp->m_ControllerId;
-		if (m_GamepadConnected[id])
-			inputComp->HandleControllerInput(m_CurrentGpState[id], m_PreviousGpState[id]);
+		if (id >= 0)
+			if (m_GamepadConnected[id])
+				inputComp->HandleControllerInput(m_CurrentGpState[id], m_PreviousGpState[id]);
 	}
 	return true;
 }

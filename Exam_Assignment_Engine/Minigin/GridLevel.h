@@ -68,10 +68,10 @@ namespace dae
 	class GridLevel final
 	{
 	public:
-		GridLevel(const std::string& levelFilePath, bool usePathfinding, const b2Vec2& offsetFromCenter = { 0,0 });
-		GridLevel(const std::string& levelFilePath, bool usePathfinding, const TileByNrConnections& tileNrByCon, const b2Vec2& offsetFromCenter = { 0,0 });
-		GridLevel(const std::string& levelFilePath, bool usePathfinding, const TileRotationsByConnections& tileRotByCon, const b2Vec2& offsetFromCenter = { 0,0 });
-		GridLevel(const std::string& levelFilePath, bool usePathfinding, const TileRotationsByConnections& tileRotByCon, const TileByNrConnections& tileNrByCon, const b2Vec2& offsetFromCenter = { 0,0 });
+		GridLevel(const std::string& levelFilePath, bool usePathfinding, const b2Vec2& offsetFromCenter);
+		GridLevel(const std::string& levelFilePath, bool usePathfinding, const TileByNrConnections& tileNrByCon, const b2Vec2& offsetFromCenter);
+		GridLevel(const std::string& levelFilePath, bool usePathfinding, const TileRotationsByConnections& tileRotByCon, const b2Vec2& offsetFromCenter);
+		GridLevel(const std::string& levelFilePath, bool usePathfinding, const TileRotationsByConnections& tileRotByCon, const TileByNrConnections& tileNrByCon, const b2Vec2& offsetFromCenter);
 		virtual ~GridLevel();
 
 		void Render();

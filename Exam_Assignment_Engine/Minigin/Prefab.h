@@ -1,7 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
-//class that holds a GameObject and all its component (sort of premade GameObjects)
+//Derive this class and override Setup() function.
+//add all your components on the m_GameObject variable in the Setup function!
 //this can be used to easily reproduce multiple instances of the same GameObject (enemies, projectiles, etc...)
 
 namespace dae
@@ -9,14 +10,21 @@ namespace dae
 	class Prefab
 	{
 	public:
-		explicit Prefab() { Logger::GetInstance().LogInfo(L"PREFAB MADE"); m_GameObject = new GameObject();};
+		Prefab() = default;
 		virtual ~Prefab() = default;
 		Prefab(const Prefab& InputAction) = delete;
 		Prefab(Prefab&& InputAction) = delete;
 		Prefab& operator=(const Prefab& other) = delete;
 		Prefab& operator=(Prefab&& other) = delete;
 
-		virtual GameObject* Setup() = 0;
+		GameObject* RootSetup()
+		{
+			Logger::GetInstance().LogInfo(L"PREFAB MADE");
+			m_GameObject = new GameObject();
+			Setup();
+			return m_GameObject;
+		};
+		virtual void Setup() = 0;
 	protected:
 		GameObject* m_GameObject;
 	};

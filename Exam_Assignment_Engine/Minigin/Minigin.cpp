@@ -33,6 +33,8 @@ void dae::Minigin::Initialize()
 	Renderer::GetInstance().Init(window);
 	ImGuiSDL::Initialize(Renderer::GetInstance().GetSDLRenderer(), GameInfo::windowWidth, GameInfo::windowHeight);
 	ImGui_ImplSDL2_InitForVulkan(window);
+
+	srand(unsigned int(time(0)));
 }
 
 

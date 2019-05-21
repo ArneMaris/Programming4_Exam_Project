@@ -21,11 +21,16 @@ namespace dae
 		void Render();
 		void FixedUpdate();
 
+		void SetReloaded() { m_Reloading = false; };
+
+		void ReloadActiveScene();
+
 		b2World* GetPhysicsWorld();
 
 		void CleanUp();
 
 	private:
+		bool m_Reloading = false;
 		std::vector<Scene*> m_pScenes;
 	};
 

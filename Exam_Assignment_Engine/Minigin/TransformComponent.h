@@ -19,11 +19,13 @@ namespace dae
 		void Translate(float x, float y);
 		void Translate(const b2Vec2& displacement);
 
-		bool MoveToPosition(const b2Vec2& pos, float speed, bool useAddForce = false, bool forceNewTarget = false);
+		bool MoveToPosition(const b2Vec2& pos, float speed, bool useAddForce = false, bool forceNewTarget = false, bool stayOnGrid = true);
 
 		void Rotate(float rotInDegrees);
 
 		void CancelMoveToPos(int NoCancelDistance = 10);
+
+		bool GetIsMovingToAPos() const {return m_Seeking;}
 	protected:
 		virtual void Update() override;
 		virtual void Initialize() override;
@@ -41,5 +43,6 @@ namespace dae
 		float m_TargetSeekSpeed;
 		bool m_Seeking;
 		bool m_UsingAddForce;
+		bool m_MoveToOnGrid;
 	};
 }

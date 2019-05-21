@@ -24,7 +24,9 @@ namespace dae
 		bool MayDoTransition()
 		{
 			if (m_MayTranstion)
+			{
 				return true;
+			}
 			else
 			{
 				m_MayTranstion = true;

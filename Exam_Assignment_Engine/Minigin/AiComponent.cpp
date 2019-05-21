@@ -16,7 +16,11 @@ dae::AiComponent::AiComponent(float speed, GridLevel* pathfindingLevel, const st
 	,m_DelayMilliseconds{ millisecondsDelay }
 	,m_pLevel{ pathfindingLevel }
 	,m_pTargetObj{nullptr}
-	, m_TargetName{targetName}
+	,m_TargetName{targetName}
+	,m_CurrPath{std::vector<b2Vec2>()}
+	,m_Active{false}
+	,m_CanReachGoal{false}
+	, m_TargetPos{0,0}
 {
 }
 
@@ -27,22 +31,31 @@ dae::AiComponent::~AiComponent()
 
 void dae::AiComponent::ThreadLoop()
 {
+	std::this_thread::sleep_for(std::chrono::seconds(1));
+	m_Active = true;
 	while (!GameInfo::gameEnded)
 	{
-		dae::GridTile* targetTile = m_pLevel->GetTileByPos(m_pTargetObj->GetTransform()->GetPosition());
+		m_TargetPos = (m_pTargetObj->GetTransform()->GetPosition());
+		dae::GridTile* targetTile = m_pLevel->GetTileByPos(m_TargetPos);
 		dae::GridTile* startTile = m_pLevel->GetTileByPos(m_pGameObject->GetTransform()->GetPosition());
+		long long delay = 0;
+		if (targetTile != nullptr && startTile != nullptr)
+		{
+			std::future<std::vector<b2Vec2>> newPath = std::async(std::launch::async, &AiComponent::CalculateAStar, this, startTile, targetTile);
 
-		std::future<std::vector<b2Vec2>> newPath = std::async(std::launch::async, &AiComponent::CalculateAStar, this, startTile, targetTile);
+			std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
+			//wait for the newPath, update it, run loop again
+			m_CurrPath = newPath.get();
 
-		std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
-		//wait for the newPath, update it, run loop again
-		m_CurrPath = newPath.get();
-
-		m_CurrentPathProgress = 0;
-		auto end = std::chrono::system_clock::now();
-		auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-		long long delay = m_DelayMilliseconds - diff;
-
+			m_CurrentPathProgress = 0;
+			auto end = std::chrono::system_clock::now();
+			auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+			delay = m_DelayMilliseconds - diff;
+		}
+		else
+		{
+			delay = m_DelayMilliseconds;
+		}
 		if (delay > 0)
 			std::this_thread::sleep_for(std::chrono::milliseconds(delay));
 	}
@@ -58,6 +71,13 @@ void dae::AiComponent::Initialize()
 
 void dae::AiComponent::Update()
 {
+	if (!m_Active || m_CurrPath.empty()) return;
+
+	if (b2Distance(m_CurrPath.back(), m_TargetPos) < m_pLevel->GetTileHeight() * 2)
+		m_CanReachGoal = true;
+	else
+		m_CanReachGoal = false;
+
 	if (m_CurrentPathProgress < m_CurrPath.size())
 	{
 		if (m_pLevel->GetTileByPos(m_CurrPath[m_CurrentPathProgress]) == m_pLevel->GetTileByPos(m_pTransformComp->GetMoveToPosition()))
@@ -183,6 +203,7 @@ std::vector<b2Vec2> dae::AiComponent::CalculateAStar(dae::GridTile* pStartTile, 
 		}
 	}
 
+	if (GameInfo::gameEnded || pCurrentConnection == nullptr) return std::vector<b2Vec2>();
 	//TODO: STEP 3 - Reconstruct path
 	//As long as the 'pCurrentConnection' its 'StartNode' is not equal to the 'pStartNode'
 		//Store the 'pCurrentConnection' its 'EndNode' position in the 'vPath' container
@@ -190,7 +211,6 @@ std::vector<b2Vec2> dae::AiComponent::CalculateAStar(dae::GridTile* pStartTile, 
 	//To finalize add last retrieved 'EndNode' position and the position of 'pStartNode'
 	while (pCurrentConnection->GetFront() != pStartTile)
 	{
-		if (GameInfo::gameEnded) return std::vector<b2Vec2>();
 
 		vPath.push_back(pCurrentConnection->GetBack()->GetPos());
 		pCurrentConnection = pCurrentConnection->GetHeadConnection();

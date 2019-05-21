@@ -2,7 +2,6 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-
 void dae::SceneManager::Initialize()
 {
 	for (auto scene : m_pScenes)
@@ -14,6 +13,13 @@ void dae::SceneManager::Initialize()
 
 void dae::SceneManager::Update()
 {
+	if (GameInfo::gameEnded)
+	{
+		auto activeScene = GetActiveScene();
+		activeScene->ThreadedCleanAndReload();
+		GameInfo::gameEnded = false;
+		return;
+	}
 	for(auto scene : m_pScenes)
 	{
 		if (scene->GetIsActive())
@@ -37,6 +43,11 @@ void dae::SceneManager::FixedUpdate()
 		if (scene->GetIsActive())
 			scene->FixedUpdate();
 	}
+}
+
+void dae::SceneManager::ReloadActiveScene()
+{
+	GameInfo::gameEnded = true;
 }
 
 b2World* dae::SceneManager::GetPhysicsWorld()

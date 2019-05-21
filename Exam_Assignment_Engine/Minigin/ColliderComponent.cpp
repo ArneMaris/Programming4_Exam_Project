@@ -28,6 +28,10 @@ dae::ColliderComponent::~ColliderComponent()
 	{
 		delete resp;
 	}
+	for (auto& fixture : m_Fixtures)
+	{
+		fixture->SetUserData(nullptr);
+	}
 	m_pCollisionResponses.clear();
 }
 

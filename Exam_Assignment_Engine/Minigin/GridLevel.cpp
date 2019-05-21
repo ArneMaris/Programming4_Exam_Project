@@ -5,6 +5,7 @@
 #include <fstream>
 #include <streambuf>
 #include "TileConnection.h"
+#include "Prefab.h"
 
 
 using nlohmann::json;
@@ -61,6 +62,10 @@ dae::GridLevel::~GridLevel()
 	{
 		delete (*it);
 	}
+	for (auto& tileConfig : m_TilesMap)
+	{
+		delete tileConfig.second.spawnThisOnTile;
+	}
 	m_pGridTiles.clear();
 }
 
@@ -93,6 +98,7 @@ void dae::GridLevel::Initialize()
 	catch (std::exception&)
 	{
 		Logger::GetInstance().LogError(L"Something wrong with level file");
+		return;
 	}
 	m_Width = m_Nrs[0];
 	m_Height = m_Nrs[1];
@@ -120,7 +126,7 @@ void dae::GridLevel::Initialize()
 	m_Initialized = true;
 }
 
-void dae::GridLevel::AddTileConfiguration(unsigned int id, const TileSettings & tileSettings)
+void dae::GridLevel::AddTileConfiguration(unsigned int id, const TileSettings& tileSettings)
 {
 	m_TilesMap.insert(std::make_pair(id, tileSettings));
 }
@@ -167,26 +173,30 @@ dae::GridTile* dae::GridLevel::GetTileByPos(const b2Vec2 & pos, bool clip)
 	//first check hor pos;
 	unsigned int columnWidth = m_Width / m_HorTiles;
 	unsigned int rowHeight = m_Height / m_VertTiles;
-	 int row = -1;
-	 int column = -1;
+	b2Vec2 diff{ 0,0 };
+	diff.x = (float(GameInfo::windowWidth - m_Width) / 2) + m_CenterOffset.x;
+	diff.y = (float(GameInfo::windowHeight - m_Height) / 2) + m_CenterOffset.y;
+	int row = -1;
+	int column = -1;
+
 	for ( int i = 0; i < int(m_HorTiles); i++)
 	{
-		if (pos.x > (i * columnWidth) && pos.x < ((i + 1) * columnWidth))
+		if (pos.x - diff.x > (i * columnWidth) && pos.x - diff.x < ((i + 1) * columnWidth))
 		{
 			column = i;
 			break;
 		}
 		else if (clip)
 		{
-			if (pos.x >= GameInfo::windowWidth / 2 + m_Width / 2 + m_CenterOffset.x)
+			if (pos.x - diff.x >= (GameInfo::windowWidth / 2) - (m_Width / 2) + m_CenterOffset.x)
 				column = m_HorTiles-1;
-			else if (pos.x <= GameInfo::windowWidth / 2 - m_Width / 2 + m_CenterOffset.x)
+			else if (pos.x - diff.x <= (GameInfo::windowWidth / 2) + (m_Width / 2) + m_CenterOffset.x)
 				column = 0;
 		}
 	}
 	for ( int i = 0; i < int(m_VertTiles); i++)
 	{
-		if (pos.y > (i * rowHeight) && pos.y < ((i + 1) * rowHeight))
+		if (pos.y - diff.y > (i * rowHeight) && pos.y - diff.y < ((i + 1) * rowHeight))
 		{
 			//level is made from leftTop to rightBot
 			row = m_VertTiles - 1 - i;
@@ -194,9 +204,9 @@ dae::GridTile* dae::GridLevel::GetTileByPos(const b2Vec2 & pos, bool clip)
 		}
 		else if (clip)
 		{
-			if (pos.y >= GameInfo::windowHeight / 2 + m_Height / 2 + m_CenterOffset.y)
+			if (pos.y - diff.y >= GameInfo::windowHeight / 2 + m_Height / 2 + m_CenterOffset.y)
 				row = 0;
-			else if (pos.y <= GameInfo::windowHeight / 2 - m_Height / 2 + m_CenterOffset.y)
+			else if (pos.y - diff.y <= GameInfo::windowHeight / 2 - m_Height / 2 + m_CenterOffset.y)
 				row = m_VertTiles-1;
 		}
 	}
@@ -218,45 +228,50 @@ dae::GridTile* dae::GridLevel::GetTileByPos(const b2Vec2 & pos, bool clip)
 
 dae::GridTile * dae::GridLevel::GetWalkableTileInRadius(const b2Vec2 & center, int minTilesDist, int maxTilesDist)
 {
-	unsigned int tileWidth = m_Width / m_HorTiles;
-	unsigned int tileHeight = m_Height / m_VertTiles;
-	b2Vec2 pos = center;
-	GridTile* foundTile = nullptr;
-
+	auto startId = GetTileByPos(center)->m_Id;
 	//loop makes sure you goe further and further when not finding anything close
 	for (int i = minTilesDist; i < maxTilesDist; i++)
 	{
-		//This switch makes it completely random wich tile you get (to left, to top, to left top, to right bot, ...)
-		switch (rand() % 3)
+		int id = startId;
+		int incrementer;
+		switch (rand() % 8)
 		{
 		case 0:
-			if (bool(rand() % 2))
-				pos.x = center.x + tileWidth * i;
-			else
-				pos.x = center.x - tileWidth * i;
+			incrementer = 1;
 			break;
 		case 1:
-			if (bool(rand() % 2))
-				pos.y = center.y + tileHeight * i;
-			else
-				pos.y = center.y - tileHeight * i;
+			incrementer = -1;
 			break;
 		case 2:
-			if (bool(rand() % 2))
-				pos.x = center.x + tileWidth * i;
-			else
-				pos.x = center.x - tileWidth * i;
-			if (bool(rand() % 2))
-				pos.y = center.y + tileHeight * i;
-			else
-				pos.y = center.y - tileHeight * i;
+			incrementer = int(m_HorTiles);
+			break;
+		case 3:
+			incrementer = -int(m_HorTiles);
+			break;
+		case 4:
+			incrementer = int(m_HorTiles) + 1;
+			break;
+		case 5:
+			incrementer = int(m_HorTiles) - 1;
+			break;
+		case 6:
+			incrementer = -int(m_HorTiles) + 1;
+			break;
+		case 7:
+			incrementer = -int(m_HorTiles) - 1;
+			break;
+		default:
+			incrementer = 0;
 			break;
 		}
-		foundTile = GetTileByPos(pos, false);
-		if (foundTile != nullptr)
-			if (foundTile->GetIsWalkable())
-				return foundTile;
-
+		id += incrementer * i;
+		if (id >= 0 && id < int(m_pGridTiles.size()))
+		{
+			if (m_pGridTiles[id]->GetIsWalkable())
+			{
+				return m_pGridTiles[id];
+			}
+		}
 	}
 
 	Logger::GetInstance().LogWarning(L"No Tile around this center found! Returned nullptr!");

@@ -21,7 +21,7 @@ void dae::PhysicsDebugDrawer::DrawPolygon(GameObject* objectRef, b2Vec2* vertice
 
 void dae::PhysicsDebugDrawer::DrawCircle(GameObject* objectRef, const b2Vec2 & center, float radius)
 {
-	SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), 0, 0, 255, 1);
+	SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), 255, 155, 255, 1);
 	int sides = int(10 * radius);
 	float d_a = float(PI) / sides;
 	float angle = d_a;
@@ -45,7 +45,7 @@ void dae::PhysicsDebugDrawer::DrawCircle(GameObject* objectRef, const b2Vec2 & c
 
 void dae::PhysicsDebugDrawer::DrawSegment(GameObject* objectRef, const b2Vec2 & p1, const b2Vec2 & p2)
 {
-	SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), 0, 255, 255, 1);
+	SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), 255, 155, 255, 1);
 	SDL_RenderDrawLine(Renderer::GetInstance().GetSDLRenderer(), 
 		int(p1.x + objectRef->GetTransform()->GetPosition().x), int(GameInfo::windowHeight - (p1.y + objectRef->GetTransform()->GetPosition().y)),
 		int(p2.x + objectRef->GetTransform()->GetPosition().x), int(GameInfo::windowHeight - (p2.y + objectRef->GetTransform()->GetPosition().y)));
@@ -53,7 +53,7 @@ void dae::PhysicsDebugDrawer::DrawSegment(GameObject* objectRef, const b2Vec2 & 
 
 void dae::PhysicsDebugDrawer::DrawPoint(const b2Vec2 & p)
 {
-	SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), 255, 0, 0, 1);
+	SDL_SetRenderDrawColor(Renderer::GetInstance().GetSDLRenderer(), 255, 155, 255, 1);
 	SDL_RenderDrawPoint(Renderer::GetInstance().GetSDLRenderer(), 
 		int(p.x), int(GameInfo::windowHeight - p.y));
 }

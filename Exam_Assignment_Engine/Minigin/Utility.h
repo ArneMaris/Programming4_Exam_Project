@@ -4,6 +4,7 @@
 #include "SDL_ttf.h"
 #include "SceneManager.h"
 #include "Scene.h"
+#include <future>
 
 namespace dae
 {
@@ -28,6 +29,16 @@ namespace dae
 		return SceneManager::GetInstance().GetActiveScene()->GetGameObject(name);
 	};
 
+	static void CallFunctionAfter(std::function<void()> function, long long millisecondsDelay)
+	{
+		std::thread thread = std::thread([millisecondsDelay, function]()
+			{
+				auto wait = std::async(std::launch::async, [&millisecondsDelay]() { std::this_thread::sleep_for(std::chrono::milliseconds(millisecondsDelay)); });
+				wait.get();
+				function();
+			});
+		thread.detach();
+	}
 }
 	static float RadToDegrees(float angleInRad)
 	{
