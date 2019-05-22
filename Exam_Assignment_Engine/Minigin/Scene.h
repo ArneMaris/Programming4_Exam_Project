@@ -14,6 +14,7 @@ namespace dae
 		void BaseUpdate(); // updates all gameObjects in this scene
 		void BaseRender() const; // renders all gameObjects in this scene
 		void FixedUpdate();
+		void CheckDeleteMarkings();
 
 		void Reload();
 		void Cleanup();
@@ -25,6 +26,7 @@ namespace dae
 		b2World* GetPhysicsWorld() const;
 		void AddGameObject(GameObject* object);
 		void AddGameObject(Prefab* object);
+		void AddGameObjectRuntime(Prefab* object, const b2Vec2& pos);
 
 		void AddLevel(GridLevel* level);
 		std::vector<GridLevel*> GetLevels() const { return m_pLevels; };
@@ -46,6 +48,8 @@ namespace dae
 		void SortRenderingOrder();
 		void CleanAndReload();
 
+		bool IsInitialized() const { return m_IsInitialized; };
+
 	protected:
 		bool m_IsInitialized;
 		std::vector<GridLevel*> m_pLevels;
@@ -58,11 +62,12 @@ namespace dae
 		bool m_IsActive;
 		std::wstring m_SceneName{};
 		std::vector<GameObject*> m_pObjects{};
+		std::vector<GameObject*> m_pAddedObjects{};
 
 		b2World *m_pPhysicsWorld;
 		b2ContactListener* m_CollCallbacks;
 
-
+		bool m_ObjectAddedRuntime;
 	};
 
 }

@@ -7,7 +7,7 @@ namespace dae
 	{
 		friend class GridLevel;
 	public:
-		GridTile(unsigned int id, const b2Vec2& pos, const b2Vec2& size, std::shared_ptr<SDL_Texture> texture, bool isWalkable, bool isChangable = false, Prefab* spawnOnThisTile = nullptr);
+		GridTile(Scene* scene, unsigned int id, const b2Vec2& pos, const b2Vec2& size, std::shared_ptr<SDL_Texture> texture, bool isWalkable, bool isChangable = false, Prefab* spawnOnThisTile = nullptr);
 
 		~GridTile();
 
@@ -16,6 +16,7 @@ namespace dae
 		bool GetIsWalkable() const { return m_IsWalkable; };
 		bool HasConnectionToTile(unsigned int toTileId);
 		std::vector<TileConnection*> GetConnections() const { return m_pConnections;};
+		const std::string GetTextureName();
 
 	private:
 		void AddConnection(GridTile* toTile);

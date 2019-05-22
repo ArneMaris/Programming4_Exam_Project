@@ -5,9 +5,10 @@
 #include "Renderer.h"
 #include "TileConnection.h"
 #include "PhysicsDebugDrawer.h"
+#include "ResourceManager.h"
 
 
-dae::GridTile::GridTile(unsigned int id, const b2Vec2& pos, const b2Vec2& size, std::shared_ptr<SDL_Texture> texture, bool isWalkable, bool isChangable, Prefab* spawnOnThisTile)
+dae::GridTile::GridTile(Scene* scene, unsigned int id, const b2Vec2& pos, const b2Vec2& size, std::shared_ptr<SDL_Texture> texture, bool isWalkable, bool isChangable, Prefab* spawnOnThisTile)
 	:m_Pos{pos}
 	,m_Size{size}
 	,m_IsWalkable{isWalkable}
@@ -21,7 +22,7 @@ dae::GridTile::GridTile(unsigned int id, const b2Vec2& pos, const b2Vec2& size, 
 	{
 		GameObject* obj = spawnOnThisTile->RootSetup();
 		obj->GetTransform()->SetPosition(m_Pos);
-		SceneManager::GetInstance().GetActiveScene()->AddGameObject(obj);
+		scene->AddGameObject(obj);
 	}
 }
 
@@ -59,6 +60,11 @@ bool dae::GridTile::HasConnectionToTile(unsigned int toTileId)
 			return true;
 	}
 	return false;
+}
+
+const std::string dae::GridTile::GetTextureName()
+{
+	return ResourceManager::GetInstance().GetTextureName(m_pTexture);
 }
 
 void dae::GridTile::AddConnection(GridTile * toTile)

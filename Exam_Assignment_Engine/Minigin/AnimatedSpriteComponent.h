@@ -47,7 +47,7 @@ namespace dae
 		void SetSecondsPerFrame(float newSecPerFrame);
 
 		void AddAnimation(const Animation& animation, bool autoPlay = true);
-		void PlayAnimation(const std::wstring& name);
+		bool PlayAnimation(const std::wstring& name);
 		void ResetAnimationEventTriggers();
 
 		const SDL_RendererFlip& GetFlipDirection() const { return m_FlipDirection; };

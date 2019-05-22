@@ -101,7 +101,19 @@ void dae::AnimatedSpriteComponent::Render() const
 		unsigned int frameHeight{ m_TextureHeight / m_Rows };
 		pos.x -= (frameWidth * m_Scale.x) / 2;
 		pos.y += (frameHeight * m_Scale.y) / 2;
-		SDL_Rect destRect{ int(pos.x + m_Offset.x), int(pos.y + m_Offset.y), int(frameWidth * m_Scale.x), int(frameHeight * m_Scale.y) };
+
+		auto offset = m_Offset;
+		float angle = DegreesToRad(m_Angle);
+		float cs = cos(angle);
+		float sn = sin(angle);
+		offset.x = m_Offset.x * cs - m_Offset.y * sn;
+		offset.y = m_Offset.x * sn + m_Offset.y * cs;
+		if (m_FlipDirection == SDL_FLIP_HORIZONTAL)
+			offset.x *= -1;
+		else if (m_FlipDirection == SDL_FLIP_VERTICAL)
+			offset.y *= -1;
+
+		SDL_Rect destRect{ int(pos.x + offset.x), int(pos.y + offset.y), int(frameWidth * m_Scale.x), int(frameHeight * m_Scale.y) };
 		SDL_Rect srcRect{ int(frameWidth * (m_CurrColumn-1)), int(frameHeight * (m_CurrRow-1)), int(frameWidth), int(frameHeight) };
 
 		Renderer::GetInstance().RenderTexture(m_pTexture, destRect, srcRect, rot + m_Angle, { m_RotationCenter.x, m_RotationCenter.y }, m_FlipDirection);
@@ -135,10 +147,11 @@ void dae::AnimatedSpriteComponent::AddAnimation(const Animation& animation, bool
 		PlayAnimation(animation.animationName);
 }
 
-void dae::AnimatedSpriteComponent::PlayAnimation(const std::wstring & name)
+bool dae::AnimatedSpriteComponent::PlayAnimation(const std::wstring & name)
 {
 	auto it = m_Animations.find(name);
-	if (it != m_Animations.end())
+	if (it != m_Animations.end() && !(int(m_MinRow) == it->second.minRow && int(m_MinColumn) == it->second.minColumn
+		&& int(m_MaxRow) == it->second.maxColumn && int(m_MaxColumn) == it->second.maxColumn))
 	{
 		SetRowLimit(it->second.minRow, it->second.maxRow);
 		SetColumnLimit(it->second.minColumn, it->second.maxColumn);
@@ -147,7 +160,9 @@ void dae::AnimatedSpriteComponent::PlayAnimation(const std::wstring & name)
 		m_AccuSec = 0;
 		m_CurrColumn = m_MinColumn;
 		m_CurrRow = m_MinRow;
+		return true;
 	}
+	return false;
 }
 
 void dae::AnimatedSpriteComponent::ResetAnimationEventTriggers()

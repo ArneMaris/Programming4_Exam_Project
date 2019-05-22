@@ -38,6 +38,14 @@ void dae::Scene::Cleanup()
 	m_pObjects.clear();
 	m_pObjects.shrink_to_fit();
 
+	for (auto it = m_pAddedObjects.begin(); it != m_pAddedObjects.end(); ++it)
+	{
+		delete (*it);
+		*it = nullptr;
+	}
+	m_pAddedObjects.clear();
+	m_pAddedObjects.shrink_to_fit();
+
 	for (auto it = m_pLevels.begin(); it != m_pLevels.end(); ++it)
 	{
 		delete (*it);
@@ -69,10 +77,25 @@ void dae::Scene::AddGameObject(Prefab* object)
 	m_pObjects.push_back(obj);
 }
 
+void dae::Scene::AddGameObjectRuntime(Prefab * object, const b2Vec2& pos)
+{
+	GameObject* obj = object->RootSetup();
+	delete object; //delete prefab after
+	obj->SetPhysicsWorld(m_pPhysicsWorld);
+	obj->GetTransform()->SetPosition(pos);
+	obj->Initialize();
+	m_pAddedObjects.push_back(obj);
+	m_ObjectAddedRuntime = true;
+}
+
 void dae::Scene::AddLevel(GridLevel* level)
 {
 	if (std::find(m_pLevels.begin(), m_pLevels.end(), level) == m_pLevels.end())
+	{
 		m_pLevels.push_back(level);
+		level->SetScene(this);
+	}
+
 }
 
 const std::wstring & dae::Scene::GetSceneName() const
@@ -93,6 +116,12 @@ void dae::Scene::BaseRender() const
 {
 	Render();
 
+	for (const auto& gameObject : m_pObjects)
+	{
+		if (gameObject->GetRenderOrder() < 0)
+			gameObject->Render();
+	}
+
 	for (auto& lvl : m_pLevels)
 	{
 		lvl->Render();
@@ -100,7 +129,8 @@ void dae::Scene::BaseRender() const
 
 	for (const auto& gameObject : m_pObjects)
 	{
-		gameObject->Render();
+		if (gameObject->GetRenderOrder() >= 0)
+			gameObject->Render();
 	}
 }
 
@@ -177,4 +207,28 @@ std::vector<dae::GameObject*> dae::Scene::GetGameObjectsInLayer(int layer)
 		}
 	}
 	return returnVec;
+}
+
+void dae::Scene::CheckDeleteMarkings()
+{
+	for (auto& obj : m_pObjects)
+	{
+		if (obj->GetDeleteMark())
+		{
+			delete obj;
+			obj = nullptr;
+			m_pObjects.erase(std::remove(m_pObjects.begin(), m_pObjects.end(), nullptr), m_pObjects.end());
+		}
+	}
+	if (m_ObjectAddedRuntime)
+	{
+		for (auto& add : m_pAddedObjects)
+		{
+			m_pObjects.push_back(add);
+		}
+		m_pAddedObjects.clear();
+
+		SortRenderingOrder();
+		m_ObjectAddedRuntime = false;
+	}
 }

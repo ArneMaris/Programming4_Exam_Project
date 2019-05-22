@@ -95,3 +95,12 @@ std::vector<b2Vec2> dae::ResourceManager::GetVerticesFromSVG(const std::string &
 
 	return vertices;
 }
+
+const std::string dae::ResourceManager::GetTextureName(std::shared_ptr<SDL_Texture> tex)
+{
+	std::string empty{ "" };
+	for (auto it = m_TexturesMap.begin(); it != m_TexturesMap.end(); ++it)
+		if (it->second == tex)
+			return it->first;
+	return empty;
+}

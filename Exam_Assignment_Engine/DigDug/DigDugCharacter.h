@@ -33,7 +33,11 @@ private:
 	dae::GridLevel* m_pLevel;
 	dae::GridTile* m_PrevTile;
 
+	b2Vec2 m_StartPos;
+
 	float m_DeadTimer;
 	float m_PumpFlySpeed;
+	b2Vec2 m_PumpForce;
+	bool m_Pumping;
 };
 

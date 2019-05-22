@@ -1,12 +1,13 @@
 #include "pch.h"
 #include "Game.h"
 #include "SceneManager.h"
-#include "TestScene.h"
+#include "DigDugLevel.h"
+#include "GlobalScene.h"
 
 Game::Game()
 {
-	dae::GameInfo::windowWidth = 1080;
-	dae::GameInfo::windowHeight = 720;
+	dae::GameInfo::windowWidth = 920;
+	dae::GameInfo::windowHeight = 920;
 }
 
 // MAKE YOUR GAME HERE!
@@ -15,5 +16,9 @@ Game::Game()
 void Game::SetupGame()
 {
 	dae::SceneManager& sceneManager = dae::SceneManager::GetInstance();
-	sceneManager.AddScene(new TestScene(), true);
+	sceneManager.AddGlobalScene(new GlobalScene());
+	sceneManager.AddScene(new DigDugLevel("Level1"), true);
+	//sceneManager.AddScene(new DigDugLevel("Level2"), false);
+	//sceneManager.AddScene(new DigDugLevel("Level3"), false);
+	//sceneManager.AddScene(new DigDugLevel("Level4"), false);
 }

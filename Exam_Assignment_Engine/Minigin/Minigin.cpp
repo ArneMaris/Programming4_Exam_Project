@@ -88,6 +88,9 @@ void dae::Minigin::Run()
 		//render everything
 		renderer.Render(); //also ImGui
 
+		//check if any objects need to be deleted after everything is done (so that you dont render or update a deleted object => exception)
+		sceneManager.CheckDeleteMarkings();
+
 	}
 
 	GameInfo::gameEnded = true;

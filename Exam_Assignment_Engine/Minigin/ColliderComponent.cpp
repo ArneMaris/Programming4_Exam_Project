@@ -13,6 +13,7 @@ dae::ColliderComponent::ColliderComponent(PhysicsBodyComponent* physicsBody)
 	:m_pBodyRef{ physicsBody->GetPhysicsBody() }
 	, m_Colliding{false}
 	, m_Collisions{0}
+	, m_Active{true}
 {
 	Logger::GetInstance().LogInfo(L"ColliderComponent created, you can add Collision/trigger(shapes) by doing Add...()");
 	m_pSceneRef = SceneManager::GetInstance().GetActiveScene();
@@ -241,6 +242,8 @@ std::vector<dae::CollisionResponse*> dae::ColliderComponent::GetAllCollisionResp
 
 void dae::ColliderComponent::StartCollisionWith(GameObject * collisionObj)
 {
+	if (!m_Active) return;
+
 	++m_Collisions;
 	m_Colliding = true;
 	m_pGameObject->GetComponent<TransformComponent>()->CancelMoveToPos();
@@ -254,6 +257,8 @@ void dae::ColliderComponent::StartCollisionWith(GameObject * collisionObj)
 
 void dae::ColliderComponent::EndCollisionWith(GameObject * collisionObj)
 {
+	if (!m_Active) return;
+
 	--m_Collisions;
 	if (m_Collisions == 0)
 		m_Colliding = false;

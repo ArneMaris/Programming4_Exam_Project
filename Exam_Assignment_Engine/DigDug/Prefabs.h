@@ -30,3 +30,23 @@ public:
 
 	void Setup() override;
 };
+
+class FygarFlame : public dae::Prefab
+{
+public:
+	FygarFlame(SDL_RendererFlip flipDir) : m_Flip{ flipDir } {};
+	~FygarFlame() = default;
+
+	void Setup() override;
+private:
+	SDL_RendererFlip m_Flip;
+};
+
+class Stone : public dae::Prefab
+{
+public:
+	Stone() = default;
+	~Stone() = default;
+
+	void Setup() override;
+};

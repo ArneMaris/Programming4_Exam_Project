@@ -4,10 +4,18 @@
 
 void dae::SceneManager::Initialize()
 {
-	for (auto scene : m_pScenes)
+	for (const auto& scene : m_pScenes)
 	{
-		scene->Initialize();
-		scene->ActivateGameObjects();
+		if (!scene->IsInitialized())
+		{
+			scene->Initialize();
+			scene->ActivateGameObjects();
+		}
+	}
+	if (m_GlobalScene != nullptr)
+	{
+		m_GlobalScene->Initialize();
+		m_GlobalScene->ActivateGameObjects();
 	}
 }
 
@@ -20,16 +28,24 @@ void dae::SceneManager::Update()
 		GameInfo::gameEnded = false;
 		return;
 	}
-	for(auto scene : m_pScenes)
+	for(const auto& scene : m_pScenes)
 	{
 		if (scene->GetIsActive())
 			scene->BaseUpdate();
+	}
+	if (m_GlobalScene != nullptr)
+	{
+		m_GlobalScene->BaseUpdate();
 	}
 }
 
 void dae::SceneManager::Render()
 {
-	for (const auto scene : m_pScenes)
+	if (m_GlobalScene != nullptr && m_RenderGlobalScene)
+	{
+		m_GlobalScene->BaseRender();
+	}
+	for (const auto& scene : m_pScenes)
 	{
 		if (scene->GetIsActive())
 			scene->BaseRender();
@@ -38,10 +54,23 @@ void dae::SceneManager::Render()
 
 void dae::SceneManager::FixedUpdate()
 {
-	for (const auto scene : m_pScenes)
+	for (const auto& scene : m_pScenes)
 	{
 		if (scene->GetIsActive())
 			scene->FixedUpdate();
+	}
+}
+
+void dae::SceneManager::CheckDeleteMarkings()
+{
+	for (const auto& scene : m_pScenes)
+	{
+		if (scene->GetIsActive())
+			scene->CheckDeleteMarkings();
+	}
+	if (m_GlobalScene != nullptr)
+	{
+		m_GlobalScene->CheckDeleteMarkings();
 	}
 }
 
@@ -66,6 +95,8 @@ void dae::SceneManager::CleanUp()
 	{
 		delete (*it);
 	}
+	delete m_GlobalScene;
+
 	m_pScenes.clear();
 }
 
@@ -102,6 +133,7 @@ void dae::SceneManager::SetActiveScene(const std::wstring & sceneName)
 	{
 		if (m_pScenes[i]->GetSceneName() == sceneName)
 		{
+			GetActiveScene()->CleanAndReload();
 			m_pScenes[i]->SetIsActive(true);
 			return;
 		}
@@ -116,6 +148,7 @@ void dae::SceneManager::SetNextSceneActive()
 		if (m_pScenes[i]->GetIsActive() == true)
 		{
 			m_pScenes[i]->SetIsActive(false);
+			m_pScenes[i]->CleanAndReload();
 			if (i + 1 < m_pScenes.size())
 				m_pScenes[i + 1]->SetIsActive(true);
 			else
@@ -133,6 +166,7 @@ void dae::SceneManager::SetPreviousSceneActive()
 		if (m_pScenes[i]->GetIsActive() == true)
 		{
 			m_pScenes[i]->SetIsActive(false);
+			m_pScenes[i]->CleanAndReload();
 			if (i - 1 > 0)
 				m_pScenes[i - 1]->SetIsActive(true);
 			else 

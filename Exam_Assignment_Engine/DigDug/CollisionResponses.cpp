@@ -4,7 +4,6 @@
 #include "StateMachineComponent.h"
 #include "AnimatedSpriteComponent.h"
 
-dae::GameObject* digDug = nullptr;
 
 void DigDugCollision::OnCollisionStart(dae::GameObject * otherObj)
 {
@@ -20,7 +19,6 @@ void DigDugCollision::OnCollisionEnd(dae::GameObject * otherObj)
 }
 
 
-
 void EnemyCollision::OnCollisionStart(dae::GameObject * otherObj)
 {
 	//layer 2 is pump's layer
@@ -29,14 +27,6 @@ void EnemyCollision::OnCollisionStart(dae::GameObject * otherObj)
 		DontDoTransitionNow();
 		return;
 	}
-	if (digDug == nullptr)
-		digDug = dae::GetGameObjectByName(L"DigDugPump");
-
-	if (otherObj == digDug)
-	{
-		dae::Logger::GetInstance().LogInfo(L"HIT Pump");
-	}
-
 	UNREFERENCED_PARAMETER(otherObj);
 }
 

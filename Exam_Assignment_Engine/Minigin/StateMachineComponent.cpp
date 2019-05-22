@@ -45,14 +45,17 @@ void dae::StateMachineComponent::AddToStateTransition(const std::wstring & toNam
 	}
 }
 
-void dae::StateMachineComponent::SetToState(const std::wstring & name)
+void dae::StateMachineComponent::SetToState(const std::wstring& name)
 {
 	auto it = m_pStates.find(name);
 	if (it != m_pStates.end())
 	{
-		m_pCurrentState->OnStateExit();
-		m_pCurrentState = it->second;
-		m_pCurrentState->OnStateEnter();
+		if (typeid(*it->second) != typeid(*m_pCurrentState))
+		{
+			m_pCurrentState->OnStateExit();
+			m_pCurrentState = it->second;
+			m_pCurrentState->OnStateEnter();
+		}
 	}
 }
 
@@ -75,10 +78,15 @@ bool dae::StateMachineComponent::TryTransitionToState(const std::wstring & fromN
 
 const std::wstring& dae::StateMachineComponent::GetCurrentStateName() const
 {
+	if (m_pStates.empty()) return m_DefaultStateName;
 	// TODO: insert return statement here
 	for (auto it = m_pStates.begin(); it != m_pStates.end(); ++it)
+	{
+		if (it == m_pStates.end()) return m_DefaultStateName;
+
 		if (typeid(*it->second) == typeid(*m_pCurrentState))
 			return it->first;
+	}
 	return m_DefaultStateName;
 }
 

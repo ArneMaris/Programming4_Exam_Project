@@ -84,7 +84,19 @@ void dae::PhysicsBodyComponent::Initialize()
 	m_Body->ApplyAngularImpulse(impulse, true);
 }
 
+ void dae::PhysicsBodyComponent::SetLinearVelocity(const b2Vec2& vel)
+ {
+	 m_Body->SetLinearVelocity(vel);
+ }
+
+ void dae::PhysicsBodyComponent::SetAngularVelocity(float angularVel)
+ {
+	 m_Body->SetAngularVelocity(angularVel);
+ }
+
 void dae::PhysicsBodyComponent::Render() const
 {
 
 }
+
+

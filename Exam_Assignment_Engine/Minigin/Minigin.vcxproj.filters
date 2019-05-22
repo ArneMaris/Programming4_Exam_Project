@@ -84,9 +84,6 @@
     <ClInclude Include="StateMachineComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="json.hpp">
-      <Filter>Helpers</Filter>
-    </ClInclude>
     <ClInclude Include="InputAction.h">
       <Filter>ComponentHelperClasses</Filter>
     </ClInclude>

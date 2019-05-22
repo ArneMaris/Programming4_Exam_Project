@@ -24,16 +24,25 @@ namespace dae
 	//Global functions for easier acces to some stuff	!SLOW, don't use in UPDATE()!
 
 	//Global function to easily acces GameObjects by their name
-	static GameObject* GetGameObjectByName(const std::wstring& name)
+	static GameObject* GetObjByNameActiveScene(const std::wstring& name)
 	{
 		return SceneManager::GetInstance().GetActiveScene()->GetGameObject(name);
 	};
 
-	static std::vector<GameObject*> GetAllGameObjectsInLayer(int layer)
+	static GameObject* GetObjByNameGlobalScene(const std::wstring& name)
+	{
+		return SceneManager::GetInstance().GetGlobalScene()->GetGameObject(name);
+	};
+
+	static std::vector<GameObject*> GetAllObjsInLayerActiveScene(int layer)
 	{
 		return SceneManager::GetInstance().GetActiveScene()->GetGameObjectsInLayer(layer);
 	};
 
+	static std::vector<GameObject*> GetAllObjsInLayerGlobalScene(int layer)
+	{
+		return SceneManager::GetInstance().GetGlobalScene()->GetGameObjectsInLayer(layer);
+	};
 
 	static void CallFunctionAfter(std::function<void()> function, long long millisecondsDelay)
 	{

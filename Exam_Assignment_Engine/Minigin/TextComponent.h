@@ -35,6 +35,9 @@ namespace dae
 		SDL_Color m_TextColor;
 		std::shared_ptr<SDL_Texture> m_pTexture;
 		b2Vec2 m_Offset{};
+
+		int m_TextureWidth;
+		int m_TextureHeight;
 	};
 
 }

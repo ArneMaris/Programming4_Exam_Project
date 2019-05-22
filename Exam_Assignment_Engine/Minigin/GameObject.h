@@ -41,6 +41,12 @@ namespace dae
 		void SetLayer(int newLayer) { m_Layer = newLayer; };
 		int GetLayer() const { return m_Layer; };
 
+		void MarkForDelete() { m_NeedsDelete = true; };
+		bool GetDeleteMark() { return m_NeedsDelete; };
+
+		//leave LifeTime on zero for infinite
+		void SetLifeTime(float time) { m_LifeTime = time; };
+
 		//taken from DAE GP2 2018-2019
 #pragma region 
 		template <class T>
@@ -83,6 +89,11 @@ namespace dae
 		std::wstring m_Name;
 		int m_RenderOrder;
 		int m_Layer;
+
+		bool m_NeedsDelete;
+
+		float m_LifeTime;
+		float m_LifeTimer;
 	};
 
 }

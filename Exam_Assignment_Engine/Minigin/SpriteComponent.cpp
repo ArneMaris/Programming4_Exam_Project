@@ -37,7 +37,19 @@ void dae::SpriteComponent::Render() const
 		float rot = m_pGameObject->GetTransform()->GetRotationDegrees() + m_Angle;
 		pos.x -= (GetTextureWidth() * m_Scale.x) / 2;
 		pos.y += (GetTextureHeight() * m_Scale.y) / 2;
-		Renderer::GetInstance().RenderTexture(m_pTexture, pos.x + m_Offset.x, pos.y - m_Offset.y, GetTextureWidth() * m_Scale.x, GetTextureHeight() * m_Scale.y, rot, m_RotationCenter, m_FlipDirection);
+
+		auto offset = m_Offset;
+		float angle = DegreesToRad(m_Angle);
+		float cs = cos(angle);
+		float sn = sin(angle);
+		offset.x = m_Offset.x * cs - m_Offset.y * sn;
+		offset.y = m_Offset.x * sn + m_Offset.y * cs;
+		if (m_FlipDirection == SDL_FLIP_HORIZONTAL)
+			offset.x *= -1;
+		else if (m_FlipDirection == SDL_FLIP_VERTICAL)
+			offset.y *= -1;
+
+		Renderer::GetInstance().RenderTexture(m_pTexture, pos.x + offset.x, pos.y - offset.y, GetTextureWidth() * m_Scale.x, GetTextureHeight() * m_Scale.y, rot, m_RotationCenter, m_FlipDirection);
 	}
 }
 

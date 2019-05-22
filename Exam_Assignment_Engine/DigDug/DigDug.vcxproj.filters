@@ -29,9 +29,6 @@
     <ClInclude Include="Game.h">
       <Filter>CORE</Filter>
     </ClInclude>
-    <ClInclude Include="TestScene.h">
-      <Filter>MainGameFile</Filter>
-    </ClInclude>
     <ClInclude Include="DigDugStates.h">
       <Filter>YourFiles\States</Filter>
     </ClInclude>
@@ -50,15 +47,21 @@
     <ClInclude Include="Prefabs.h">
       <Filter>YourFiles\PrefabsScripts</Filter>
     </ClInclude>
+    <ClInclude Include="DigDugLevel.h">
+      <Filter>MainGameFile</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuAndHud.h">
+      <Filter>YourFiles\PrefabsScripts</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalScene.h">
+      <Filter>MainGameFile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>CORE</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
-      <Filter>MainGameFile</Filter>
-    </ClCompile>
-    <ClCompile Include="TestScene.cpp">
       <Filter>MainGameFile</Filter>
     </ClCompile>
     <ClCompile Include="DigDugStates.cpp">
@@ -78,6 +81,15 @@
     </ClCompile>
     <ClCompile Include="Prefabs.cpp">
       <Filter>YourFiles\PrefabsScripts</Filter>
+    </ClCompile>
+    <ClCompile Include="DigDugLevel.cpp">
+      <Filter>MainGameFile</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuAndHud.cpp">
+      <Filter>YourFiles\PrefabsScripts</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalScene.cpp">
+      <Filter>MainGameFile</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

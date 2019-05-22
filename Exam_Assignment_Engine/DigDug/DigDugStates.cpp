@@ -39,14 +39,6 @@ void DigDugStates::Dead::OnStateEnter()
 {
 	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"DieEnemy");
 	m_pOwnerObject->GetComponent<dae::InputComponent>()->DisableInput();
-	
-	for (auto& enemy : dae::GetAllGameObjectsInLayer(1))
-	{
-		enemy->GetComponent<dae::AiComponent>()->SetActive(false);
-	}
-
-	std::function<void()> func = std::bind(&dae::SceneManager::ReloadActiveScene, &dae::SceneManager::GetInstance());
-	dae::CallFunctionAfter(func, 5000);
 }
 
 void DigDugStates::Dead::OnStateExit()

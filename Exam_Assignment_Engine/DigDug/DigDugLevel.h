@@ -1,14 +1,17 @@
 #pragma once
 #include "Scene.h"
 
-class TestScene final: public dae::Scene
+class DigDugLevel final: public dae::Scene
 {
 public:
-	TestScene();
+	DigDugLevel(const std::string& levelPath);
 	virtual void Update() override;
 	virtual void Render() const override;
 	virtual void Initialize() override;
 
-	~TestScene() = default;
+	~DigDugLevel() = default;
+
+private:
+	std::string m_LevelPath;
 };
 

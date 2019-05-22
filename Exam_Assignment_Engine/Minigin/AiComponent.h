@@ -27,6 +27,7 @@ namespace dae
 		float GetSpeed() const { return m_Speed; };
 
 		void SetActive(bool value);
+		bool IsActive() const { return m_Active; };
 		bool GetCanReachGoal() const { return (m_Active == true ? m_CanReachGoal : false); };
 
 	protected:

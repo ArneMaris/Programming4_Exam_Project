@@ -58,6 +58,8 @@ namespace dae
 		std::vector<CollisionResponse*> GetAllCollisionResponses() const;
 		bool IsColliding() const {return m_Colliding;};
 
+		void SetActive(bool value) { m_Active = value; m_Collisions = 0; };
+
 	protected:
 		virtual void Update() override;
 		virtual void Initialize() override;
@@ -76,6 +78,8 @@ namespace dae
 		std::vector<b2Fixture*> m_Fixtures;
 
 		std::vector<CollisionResponse*> m_pCollisionResponses;
+
+		bool m_Active;
 	};
 
 }

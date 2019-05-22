@@ -23,6 +23,8 @@ namespace dae
 		void ApplyTorque(float torque);
 		void ApplyLinearImpulse(const b2Vec2& impulse, const b2Vec2& point);
 		void ApplyAngularImpulse(float impulse);
+		void SetLinearVelocity(const b2Vec2& vel);
+		void SetAngularVelocity(float angularVel);
 
 	protected:
 		virtual void Update() override;

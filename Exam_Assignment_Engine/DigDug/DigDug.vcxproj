@@ -171,17 +171,21 @@
     <ClInclude Include="CollisionResponses.h" />
     <ClInclude Include="DigDugCharacter.h" />
     <ClInclude Include="EnemyStates.h" />
+    <ClInclude Include="GlobalScene.h" />
+    <ClInclude Include="MenuAndHud.h" />
     <ClInclude Include="Prefabs.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InputResponses.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="DigDugStates.h" />
-    <ClInclude Include="TestScene.h" />
+    <ClInclude Include="DigDugLevel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CollisionResponses.cpp" />
     <ClCompile Include="DigDugCharacter.cpp" />
     <ClCompile Include="EnemyStates.cpp" />
+    <ClCompile Include="GlobalScene.cpp" />
+    <ClCompile Include="MenuAndHud.cpp" />
     <ClCompile Include="Prefabs.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputResponses.cpp" />
@@ -192,7 +196,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="DigDugStates.cpp" />
-    <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="DigDugLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Minigin\Minigin.vcxproj">

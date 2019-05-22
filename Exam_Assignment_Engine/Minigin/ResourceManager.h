@@ -24,6 +24,8 @@ namespace dae
 		std::shared_ptr<SDL_Texture> LoadTexture(const std::string& fileName);
 		std::vector<b2Vec2> GetVerticesFromSVG(const std::string& fileName);
 
+		const std::string GetTextureName(std::shared_ptr<SDL_Texture> tex);
+
 	private:
 		std::string m_ResourcesPath;
 		std::unordered_map<std::string, std::shared_ptr<TTF_Font>> m_FontMap{};

@@ -90,7 +90,9 @@ namespace dae
 		GridTile* GetTileByPos(const b2Vec2& pos, bool clip = true);
 		GridTile* GetWalkableTileInRadius(const b2Vec2& center, int minTilesToCenter, int maxTilesDist = 30);
 
-		unsigned int GetAmountOfTiles() const { return m_pGridTiles.size(); };
+		size_t GetAmountOfTiles() const { return m_pGridTiles.size(); };
+
+		void SetScene(Scene* scene) { m_pScene = scene; };
 	private:
 		enum ConnectionDirection
 		{
@@ -114,6 +116,7 @@ namespace dae
 		std::map<const unsigned  int, const TileSettings> m_TilesMap; //this map you link a number from the file to a GridTile class you made
 		std::unordered_map<unsigned int, std::pair<unsigned int, unsigned int>> m_DirectionCodesForTiles;
 
+		Scene* m_pScene;
 
 		std::vector<GridTile*> m_pGridTiles;
 

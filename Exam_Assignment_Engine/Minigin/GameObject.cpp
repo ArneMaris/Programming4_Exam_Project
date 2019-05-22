@@ -8,8 +8,11 @@ dae::GameObject::GameObject()
 	:m_pPhysicsWorldRef{ nullptr }
 	, m_Initialized{ false }
 	, m_Name{L"GameObject" + std::to_wstring(GameInfo::amountOfGameObjects+1) }
-	, m_RenderOrder{0}
+	, m_RenderOrder{1}
 	, m_Layer{0}
+	, m_LifeTime{-1}
+	, m_LifeTimer{0}
+	, m_NeedsDelete{false}
 {
 	m_TransformComp = new TransformComponent();
 	AddComponent(m_TransformComp);
@@ -52,6 +55,15 @@ dae::Script * dae::GameObject::GetScript() const
 
 void dae::GameObject::Update()
 {
+	if (m_LifeTime > 0)
+	{
+		m_LifeTimer += GameInfo::deltaTime;
+		if (m_LifeTimer > m_LifeTime)
+		{
+			m_NeedsDelete = true;
+			return;
+		}
+	}
 	for (auto& comp : m_pComponents)
 	{
 		comp->Update();
@@ -76,7 +88,6 @@ void dae::GameObject::Initialize()
 	if (!m_Initialized)
 	{
 		std::vector<BaseComponent*> scriptComps;
-		scriptComps.reserve(3);
 		for (auto& comp : m_pComponents)
 		{
 			if (dynamic_cast<ScriptComponent*>(comp))

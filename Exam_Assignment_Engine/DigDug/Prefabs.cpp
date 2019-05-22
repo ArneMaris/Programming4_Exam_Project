@@ -7,6 +7,7 @@
 #include "DigDugCharacter.h"
 #include "SceneManager.h"
 #include "EnemyStates.h"
+#include "AnimationResponse.h"
 
 //this examples makes a box at the bottom of the screen and holds the backgroundSprite
 void DigDug::Setup()
@@ -15,7 +16,7 @@ void DigDug::Setup()
 
 	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_dynamicBody));
 	m_GameObject->AddComponent(new dae::ColliderComponent(m_GameObject->GetComponent<dae::PhysicsBodyComponent>()));
-	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(25, 25, dae::ShapeSettings(false, 1, 0.5f, 0));
+	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(20, 20, dae::ShapeSettings(false, 1, 0.5f, 0));
 
 	m_GameObject->AddComponent(new dae::AnimatedSpriteComponent("DigDugSprites.png", 4, 4));
 	m_GameObject->GetComponent<dae::AnimatedSpriteComponent>()->SetScale({ 1.6f,1.6f });
@@ -73,15 +74,16 @@ void Pooka::Setup()
 
 	//put all enemies in layer 1 for easier collision checks ;D
 	m_GameObject->SetLayer(1);
+	m_GameObject->SetName(L"Pooka");
 
 	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_kinematicBody));
 	m_GameObject->AddComponent(new dae::ColliderComponent(m_GameObject->GetComponent<dae::PhysicsBodyComponent>()));
-	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(20, 20, dae::ShapeSettings(true, 1, 0.5f, 0));
+	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(16, 16, dae::ShapeSettings(true, 0.5f, 0.5f, 0));
 
 	auto colResponse = new EnemyCollision();
 	m_GameObject->GetComponent<dae::ColliderComponent>()->AddCollisionResponse(colResponse);
 
-	m_GameObject->AddComponent(new dae::AnimatedSpriteComponent("PookaFygarMovementSquash.png", 5, 2));
+	m_GameObject->AddComponent(new dae::AnimatedSpriteComponent("PookaFygar.png", 5, 5));
 	m_GameObject->GetComponent<dae::AnimatedSpriteComponent>()->SetScale({ 1.6f,1.6f });
 
 
@@ -90,7 +92,10 @@ void Pooka::Setup()
 	animCmp->AddAnimation({ L"Ghost", 1,1,3,4,0.15f }, false);
 	animCmp->AddAnimation({ L"DieStone", 1,1,5,5,1 }, false);
 
-	animCmp->AddAnimation({ L"BlowUp", 1,1,1,4,0.5f }, false);
+	animCmp->AddAnimation({ L"BlowUpOne", 3,3,1,1,5}, false);
+	animCmp->AddAnimation({ L"BlowUpTwo", 3,3,2,2,5 }, false);
+	animCmp->AddAnimation({ L"BlowUpThree", 3,3,3,3,5 }, false);
+	animCmp->AddAnimation({ L"Pop", 3,3,4,5,1 }, false);
 
 
 	m_GameObject->AddComponent(new dae::StateMachineComponent());
@@ -117,15 +122,16 @@ void Fygar::Setup()
 
 	//put all enemies in layer 1 for easier collision checks ;D
 	m_GameObject->SetLayer(1);
+	m_GameObject->SetName(L"Fygar");
 
 	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_kinematicBody));
 	m_GameObject->AddComponent(new dae::ColliderComponent(m_GameObject->GetComponent<dae::PhysicsBodyComponent>()));
-	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(20, 20, dae::ShapeSettings(true, 1, 0.5f, 0));
+	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(18, 18, dae::ShapeSettings(true, 0.5f, 0.5f, 0));
 
 	auto colResponse = new EnemyCollision();
 	m_GameObject->GetComponent<dae::ColliderComponent>()->AddCollisionResponse(colResponse);
 
-	m_GameObject->AddComponent(new dae::AnimatedSpriteComponent("PookaFygarMovementSquash.png", 5, 2));
+	m_GameObject->AddComponent(new dae::AnimatedSpriteComponent("PookaFygar.png", 5, 5));
 	m_GameObject->GetComponent<dae::AnimatedSpriteComponent>()->SetScale({ 1.6f,1.6f });
 
 
@@ -134,8 +140,14 @@ void Fygar::Setup()
 	animCmp->AddAnimation({ L"Ghost", 2,2,3,4,0.15f }, false);
 	animCmp->AddAnimation({ L"DieStone", 2,2,5,5,1 }, false);
 
-	animCmp->AddAnimation({ L"BlowUp", 2,2,1,4,0.5f }, false);
+	animCmp->AddAnimation({ L"BlowUpOne", 4,4,1,1,5 }, false);
+	animCmp->AddAnimation({ L"BlowUpTwo", 4,4,2,2,5 }, false);
+	animCmp->AddAnimation({ L"BlowUpThree", 4,4,3,3,5 }, false);
+	animCmp->AddAnimation({ L"Pop", 4,4,4,5,1 }, false);
 
+	dae::AnimationResponse* flameResponse = new dae::AnimationResponse( 5,5,true );
+	dae::Animation fygarAttack{ L"FygarAttack", 5,5,1,5,0.2f, flameResponse };
+	animCmp->AddAnimation(fygarAttack, false);
 
 	m_GameObject->AddComponent(new dae::StateMachineComponent());
 	auto sm = m_GameObject->GetComponent<dae::StateMachineComponent>();
@@ -145,12 +157,48 @@ void Fygar::Setup()
 	sm->AddState(L"BlowUpTwo", new EnemyStates::BlowUpTwo(), false);
 	sm->AddState(L"BlowUpThree", new EnemyStates::BlowUpThree(), false);
 	sm->AddState(L"Pop", new EnemyStates::Pop(), false);
+	sm->AddState(L"Attacking", new EnemyStates::Attacking(), false);
 
 	sm->AddStateToStateTransition(L"Run", L"BlowUpOne", colResponse, true);
 	sm->AddStateToStateTransition(L"BlowUpOne", L"BlowUpTwo", colResponse, true);
 	sm->AddStateToStateTransition(L"BlowUpTwo", L"BlowUpThree", colResponse, true);
 	sm->AddStateToStateTransition(L"BlowUpThree", L"Pop", colResponse, true);
 
+	sm->AddToStateTransition(L"Attacking", flameResponse, true);
+	sm->AddStateToStateTransition(L"Attacking", L"Run", flameResponse, true);
 	m_GameObject->AddComponent(new dae::AiComponent(moveSpeed, dae::SceneManager::GetInstance().GetActiveScene()->GetLevels()[1], L"DigDug"));
 
+}
+
+void FygarFlame::Setup()
+{
+	m_GameObject->SetLayer(1);
+	m_GameObject->SetLifeTime(0.44f);
+	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_staticBody));
+	m_GameObject->AddComponent(new dae::ColliderComponent(m_GameObject->GetComponent<dae::PhysicsBodyComponent>()));
+	if (m_Flip != SDL_FLIP_HORIZONTAL)
+		m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(20, 50, { 45,0 }, 0, dae::ShapeSettings(true, 0.1f, 0.5f, 0));
+	else
+		m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(20, 50, { -45,0 },0, dae::ShapeSettings(true, 0.1f, 0.5f, 0));
+
+	m_GameObject->AddComponent(new dae::AnimatedSpriteComponent("FygarFlame.png", 3, 1, 0.15f));
+	m_GameObject->GetComponent<dae::AnimatedSpriteComponent>()->SetScale({ 1.6f,1.6f });
+	m_GameObject->GetComponent<dae::AnimatedSpriteComponent>()->SetSpriteOffset({ 45,0 });
+	m_GameObject->GetComponent<dae::AnimatedSpriteComponent>()->SetFlipDirection(m_Flip);
+}
+
+void Stone::Setup()
+{
+	m_GameObject->SetLayer(3);
+	//m_GameObject->SetLifeTime(0.44f);
+	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_staticBody));
+	m_GameObject->AddComponent(new dae::ColliderComponent(m_GameObject->GetComponent<dae::PhysicsBodyComponent>()));
+	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(26, 26, dae::ShapeSettings(false, 1, 0.8f, 0.2f));
+
+	m_GameObject->AddComponent(new dae::AnimatedSpriteComponent("Stone.png", 2, 2, 0.15f));
+	auto animComp = m_GameObject->GetComponent<dae::AnimatedSpriteComponent>();
+	animComp->SetScale({ 1.6f,1.6f });
+	animComp->SetPaused(true);
+	animComp->AddAnimation({ L"Losen",1,1,1,2,0.15f });
+	animComp->AddAnimation({ L"Break",2,2,1,2,0.15f }, false);
 }

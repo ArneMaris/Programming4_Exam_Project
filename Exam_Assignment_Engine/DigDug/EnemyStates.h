@@ -12,6 +12,9 @@ namespace EnemyStates
 		virtual void OnStateEnter() override;
 		virtual void OnStateExit() override;
 		virtual void InState() override;
+
+	private:
+		float m_PrevXPos = -999;
 	};
 
 	class Ghost : public dae::State
@@ -63,6 +66,17 @@ namespace EnemyStates
 	public:
 		Pop() = default;
 		~Pop() = default;
+
+		virtual void OnStateEnter() override;
+		virtual void OnStateExit() override;
+		virtual void InState() override;
+	};
+
+	class Attacking : public dae::State
+	{
+	public:
+		Attacking() = default;
+		~Attacking() = default;
 
 		virtual void OnStateEnter() override;
 		virtual void OnStateExit() override;
