@@ -39,7 +39,6 @@ void dae::StateTransition::OnNotify(const NotifyEvent & notifyEvent, int notifie
 	auto it = std::find_if(m_pResponses.begin(), m_pResponses.end(), [notifierResponseId](Response* resp) {return resp->GetResponseID() == notifierResponseId; });
 	if (it == m_pResponses.end()) return;
 
-
 	switch (notifyEvent)
 	{
 	case NotifyEvent::AnimationResponseTriggered:

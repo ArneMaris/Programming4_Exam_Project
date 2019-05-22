@@ -37,6 +37,8 @@ namespace EnemyStates
 		virtual void OnStateEnter() override;
 		virtual void OnStateExit() override;
 		virtual void InState() override;
+	private:
+		float m_DeflateTimer = 0;
 	};
 
 	class BlowUpTwo : public dae::State
@@ -48,6 +50,8 @@ namespace EnemyStates
 		virtual void OnStateEnter() override;
 		virtual void OnStateExit() override;
 		virtual void InState() override;
+	private:
+		float m_DeflateTimer = 0;
 	};
 
 	class BlowUpThree : public dae::State
@@ -59,6 +63,9 @@ namespace EnemyStates
 		virtual void OnStateEnter() override;
 		virtual void OnStateExit() override;
 		virtual void InState() override;
+
+	private:
+		float m_DeflateTimer = 0;
 	};
 
 	class Pop : public dae::State

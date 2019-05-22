@@ -59,7 +59,17 @@ void DigDugLevel::Initialize()
 	AddLevel(backGroundLevel);
 	AddLevel(overlayLevel);
 
-	EnablePhysicsDebugDrawing();
+	//EnablePhysicsDebugDrawing();
+}
+
+void DigDugLevel::RemoveEnemy()
+{
+	--m_EnemiesLeft;
+	if (m_EnemiesLeft == 0)
+	{
+		//DIGDUG WINS, load next scene
+		dae::SceneManager::GetInstance().SetNextSceneActive();
+	}
 }
 
 void DigDugLevel::Update()

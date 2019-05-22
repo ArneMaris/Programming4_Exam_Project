@@ -13,7 +13,7 @@ namespace dae
 		//Global scene = scene that is always active and stays during the whole duration of the application (example: menu)
 		void AddGlobalScene(Scene* scene) { m_GlobalScene = scene; };
 		Scene* GetGlobalScene() const {return m_GlobalScene; };
-		void SetGlobabSceneRendering(bool value) { m_RenderGlobalScene = value; };
+		void SetGlobalSceneRenderFront(bool value) { m_RenderGlobalSceneFront = value; }
 
 		Scene* GetActiveScene();
 		void SetActiveScene(const std::wstring& sceneName);
@@ -39,7 +39,9 @@ namespace dae
 		bool m_Reloading = false;
 		std::vector<Scene*> m_pScenes;
 		Scene* m_GlobalScene = nullptr;
-		bool m_RenderGlobalScene = true;
+		bool m_RenderGlobalSceneFront = false;
+
+		Scene* m_InitializingScene = nullptr;
 	};
 
 }

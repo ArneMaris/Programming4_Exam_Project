@@ -56,6 +56,9 @@
     <ClInclude Include="GlobalScene.h">
       <Filter>MainGameFile</Filter>
     </ClInclude>
+    <ClInclude Include="MenuInputResponses.h">
+      <Filter>YourFiles\Responses</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -90,6 +93,9 @@
     </ClCompile>
     <ClCompile Include="GlobalScene.cpp">
       <Filter>MainGameFile</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuInputResponses.cpp">
+      <Filter>YourFiles\Responses</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -41,7 +41,6 @@ void dae::GridTile::Render()
 	renderPos.x -= m_Size.x / 2;
 	renderPos.y += m_Size.y / 2;
 
-	PhysicsDebugDrawer::GetInstance().DrawPoint(m_Pos);
 	if (m_Rotation != 0)
 	{
 		Renderer::GetInstance().RenderTexture(m_pTexture, renderPos.x, renderPos.y, m_Size.x, m_Size.y, float(m_Rotation));

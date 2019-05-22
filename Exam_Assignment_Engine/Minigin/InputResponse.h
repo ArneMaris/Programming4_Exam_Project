@@ -16,7 +16,7 @@ namespace dae
 		InputResponse& operator=(InputResponse&& other) = delete;
 
 		virtual void ExecuteOnPress() = 0;
-		virtual void ExecuteOnHold(const b2Vec2 axisValues) = 0;
+		virtual void ExecuteOnHold(const b2Vec2 axisValues) { UNREFERENCED_PARAMETER(axisValues); };
 		virtual void ExecuteOnRelease() = 0;
 
 		// you dont have to do this, it will be automatically done when you add it on a component (gameobject of that component)

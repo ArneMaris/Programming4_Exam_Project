@@ -8,15 +8,19 @@ void dae::SceneManager::Initialize()
 	{
 		if (!scene->IsInitialized())
 		{
+			m_InitializingScene = scene;
+			scene->PreparePhysics();
 			scene->Initialize();
 			scene->ActivateGameObjects();
 		}
 	}
 	if (m_GlobalScene != nullptr)
 	{
+		m_InitializingScene = m_GlobalScene;
 		m_GlobalScene->Initialize();
 		m_GlobalScene->ActivateGameObjects();
 	}
+	m_InitializingScene = nullptr;
 }
 
 void dae::SceneManager::Update()
@@ -41,14 +45,29 @@ void dae::SceneManager::Update()
 
 void dae::SceneManager::Render()
 {
-	if (m_GlobalScene != nullptr && m_RenderGlobalScene)
+	if (!m_RenderGlobalSceneFront)
 	{
-		m_GlobalScene->BaseRender();
+		if (m_GlobalScene != nullptr)
+		{
+			m_GlobalScene->BaseRender();
+		}
+		for (const auto& scene : m_pScenes)
+		{
+			if (scene->GetIsActive())
+				scene->BaseRender();
+		}
 	}
-	for (const auto& scene : m_pScenes)
+	else
 	{
-		if (scene->GetIsActive())
-			scene->BaseRender();
+		for (const auto& scene : m_pScenes)
+		{
+			if (scene->GetIsActive())
+				scene->BaseRender();
+		}
+		if (m_GlobalScene != nullptr)
+		{
+			m_GlobalScene->BaseRender();
+		}
 	}
 }
 
@@ -81,12 +100,7 @@ void dae::SceneManager::ReloadActiveScene()
 
 b2World* dae::SceneManager::GetPhysicsWorld()
 {
-	auto scene = GetActiveScene();
-	if (scene != nullptr)
-	{
-		return scene->GetPhysicsWorld();
-	}
-	return nullptr;
+	return GetActiveScene()->GetPhysicsWorld();
 }
 
 void dae::SceneManager::CleanUp()
@@ -116,14 +130,19 @@ void dae::SceneManager::RemoveScene(Scene* scene)
 
 dae::Scene* dae::SceneManager::GetActiveScene()
 {
-	for (size_t i = 0; i < m_pScenes.size(); i++)
+	if (m_InitializingScene != nullptr)
+		return m_InitializingScene;
+	else
 	{
-		if (m_pScenes[i]->GetIsActive() == true)
+		for (size_t i = 0; i < m_pScenes.size(); i++)
 		{
-			return m_pScenes[i];
+			if (m_pScenes[i]->GetIsActive() == true)
+			{
+				return m_pScenes[i];
+			}
 		}
 	}
-	Logger::GetInstance().LogWarning(L"No active scenes found!");
+	//Logger::GetInstance().LogWarning(L"No active scenes found!");
 	return nullptr;
 }
 

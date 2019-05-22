@@ -34,12 +34,13 @@ public:
 class FygarFlame : public dae::Prefab
 {
 public:
-	FygarFlame(SDL_RendererFlip flipDir) : m_Flip{ flipDir } {};
+	FygarFlame(SDL_RendererFlip flipDir, const b2Vec2& pos) : m_Flip{ flipDir }, m_Pos{ pos } {};
 	~FygarFlame() = default;
 
 	void Setup() override;
 private:
 	SDL_RendererFlip m_Flip;
+	b2Vec2 m_Pos;
 };
 
 class Stone : public dae::Prefab

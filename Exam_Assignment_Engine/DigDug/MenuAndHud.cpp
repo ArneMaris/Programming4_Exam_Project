@@ -6,19 +6,26 @@
 MenuAndHud::MenuAndHud()
 	:m_Score{0}
 	,m_Lifes{3}
+	,m_LifesPlayer2{3}
 {
+
+	if (dae::GetObjByNameActiveScene(L"DigDug2") != nullptr)
+		m_TwoPlayers = true;
+	else
+		m_TwoPlayers = false;
+
 	auto font = dae::ResourceManager::GetInstance().LoadFont("ConnectionSerif.otf", 35);
 
 	auto texObj = new dae::GameObject();
 	texObj->AddComponent(new dae::TextComponent(font, "SCORE", { 255,0,0 }));
-	texObj->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth / 2), float(dae::GameInfo::windowHeight - 45));
+	texObj->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth / 2), float(dae::GameInfo::windowHeight - 56));
 	dae::SceneManager::GetInstance().GetActiveScene()->AddGameObject(texObj);
 
 	//actuall score text (this one will be updated)
 	texObj = new dae::GameObject();
 	texObj->AddComponent(new dae::TextComponent(font, "0", { 240,240,240 }));
 	texObj->GetComponent<dae::TextComponent>()->SetTextOffset({ 0,45 });
-	texObj->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth / 2), float(dae::GameInfo::windowHeight - 80));
+	texObj->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth / 2), float(dae::GameInfo::windowHeight - 88));
 	dae::SceneManager::GetInstance().GetActiveScene()->AddGameObject(texObj);
 	m_pTextComp = texObj->GetComponent<dae::TextComponent>();
 
@@ -26,9 +33,20 @@ MenuAndHud::MenuAndHud()
 	lifeObj->AddComponent(new dae::SpriteComponent("LifeIcon.png"));
 	lifeObj->AddComponent(new dae::SpriteComponent("LifeIcon.png"));
 	lifeObj->AddComponent(new dae::SpriteComponent("LifeIcon.png"));
-	lifeObj->GetTransform()->SetPosition(240, 50);
+	lifeObj->GetTransform()->SetPosition(240, 60);
 	dae::SceneManager::GetInstance().GetActiveScene()->AddGameObject(lifeObj);
 	m_pLifeSprites = lifeObj->GetComponents<dae::SpriteComponent>();
+
+	if (m_TwoPlayers)
+	{
+		lifeObj = new dae::GameObject();
+		lifeObj->AddComponent(new dae::SpriteComponent("LifeIcon.png"));
+		lifeObj->AddComponent(new dae::SpriteComponent("LifeIcon.png"));
+		lifeObj->AddComponent(new dae::SpriteComponent("LifeIcon.png"));
+		lifeObj->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth - 240), 60);
+		dae::SceneManager::GetInstance().GetActiveScene()->AddGameObject(lifeObj);
+		m_pLifeSpritesPlayer2 = lifeObj->GetComponents<dae::SpriteComponent>();
+	}
 }
 
 
@@ -66,15 +84,60 @@ void MenuAndHud::AddScore(int score)
 	m_pTextComp->SetText(std::to_string(m_Score));
 }
 
-void MenuAndHud::RemoveLife()
+void MenuAndHud::RemoveLife(bool playerOne)
 {
-	if (m_Lifes == 1)
+	if (playerOne)
 	{
-		//UR GAME OVER BITCH
+		--m_Lifes;
+		if (m_Lifes == 0)
+		{
+			if (m_TwoPlayers)
+			{
+				if (m_LifesPlayer2 == 0)
+				{
+					//UR GAME OVER BITCH
+				}
+				else if (dae::GetObjByNameActiveScene(L"DigDug2") != nullptr)
+				{
+					dae::GetObjByNameActiveScene(L"DigDug2")->MarkForDelete();
+				}
+			}
+			else
+			{
+
+				//UR GAME OVER BITCH
+			}
+		}
+		else if (m_Lifes > -1)
+		{
+			m_pLifeSprites[m_Lifes]->SetDoRender(false);
+		}
 	}
 	else
 	{
-		m_pLifeSprites[m_Lifes - 1]->SetDoRender(false);
-		--m_Lifes;
+		--m_LifesPlayer2;
+		if (m_LifesPlayer2 == 0)
+		{
+			if (m_TwoPlayers)
+			{
+				if (m_Lifes == 0)
+				{
+					//UR GAME OVER BITCH
+				}
+				else
+				{
+					dae::GetObjByNameActiveScene(L"DigDug")->MarkForDelete();
+				}
+			}
+			else 
+			{
+
+				//UR GAME OVER BITCH
+			}
+		}
+		else if(m_LifesPlayer2 > -1)
+		{
+			m_pLifeSpritesPlayer2[m_LifesPlayer2]->SetDoRender(false);
+		}
 	}
 }

@@ -8,6 +8,8 @@
 #include "SceneManager.h"
 #include "EnemyStates.h"
 #include "AnimationResponse.h"
+#include "GridLevel.h"
+#include "DigDugLevel.h"
 
 //this examples makes a box at the bottom of the screen and holds the backgroundSprite
 void DigDug::Setup()
@@ -37,8 +39,6 @@ void DigDug::Setup()
 
 
 	m_GameObject->GetComponent<dae::InputComponent>()->AddInputAction(new Pump(), SDLK_SPACE);
-
-
 
 	auto animCmp = m_GameObject->GetComponent<dae::AnimatedSpriteComponent>();
 	animCmp->AddAnimation({ L"Idle", 3,3,4,4,1 }, true);
@@ -71,6 +71,8 @@ void DigDug::Setup()
 void Pooka::Setup()
 {
 	float moveSpeed{ 50 };
+
+	static_cast<DigDugLevel*>(dae::SceneManager::GetInstance().GetActiveScene())->AddEnemy();
 
 	//put all enemies in layer 1 for easier collision checks ;D
 	m_GameObject->SetLayer(1);
@@ -107,10 +109,10 @@ void Pooka::Setup()
 	sm->AddState(L"BlowUpThree", new EnemyStates::BlowUpThree(), false);
 	sm->AddState(L"Pop", new EnemyStates::Pop(), false);
 
-	sm->AddStateToStateTransition(L"Run", L"BlowUpOne", colResponse, true);
-	sm->AddStateToStateTransition(L"BlowUpOne", L"BlowUpTwo", colResponse, true);
-	sm->AddStateToStateTransition(L"BlowUpTwo", L"BlowUpThree", colResponse, true);
 	sm->AddStateToStateTransition(L"BlowUpThree", L"Pop", colResponse, true);
+	sm->AddStateToStateTransition(L"BlowUpTwo", L"BlowUpThree", colResponse, true);
+	sm->AddStateToStateTransition(L"BlowUpOne", L"BlowUpTwo", colResponse, true);
+	sm->AddStateToStateTransition(L"Run", L"BlowUpOne", colResponse, true);
 
 	m_GameObject->AddComponent(new dae::AiComponent(moveSpeed, dae::SceneManager::GetInstance().GetActiveScene()->GetLevels()[1], L"DigDug"));
 
@@ -159,10 +161,10 @@ void Fygar::Setup()
 	sm->AddState(L"Pop", new EnemyStates::Pop(), false);
 	sm->AddState(L"Attacking", new EnemyStates::Attacking(), false);
 
-	sm->AddStateToStateTransition(L"Run", L"BlowUpOne", colResponse, true);
-	sm->AddStateToStateTransition(L"BlowUpOne", L"BlowUpTwo", colResponse, true);
-	sm->AddStateToStateTransition(L"BlowUpTwo", L"BlowUpThree", colResponse, true);
 	sm->AddStateToStateTransition(L"BlowUpThree", L"Pop", colResponse, true);
+	sm->AddStateToStateTransition(L"BlowUpTwo", L"BlowUpThree", colResponse, true);
+	sm->AddStateToStateTransition(L"BlowUpOne", L"BlowUpTwo", colResponse, true);
+	sm->AddStateToStateTransition(L"Run", L"BlowUpOne", colResponse, true);
 
 	sm->AddToStateTransition(L"Attacking", flameResponse, true);
 	sm->AddStateToStateTransition(L"Attacking", L"Run", flameResponse, true);
@@ -172,14 +174,39 @@ void Fygar::Setup()
 
 void FygarFlame::Setup()
 {
+	auto level = dae::SceneManager::GetInstance().GetActiveScene()->GetLevels()[1];
 	m_GameObject->SetLayer(1);
-	m_GameObject->SetLifeTime(0.44f);
+	m_GameObject->GetTransform()->SetPosition(m_Pos);
 	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_staticBody));
 	m_GameObject->AddComponent(new dae::ColliderComponent(m_GameObject->GetComponent<dae::PhysicsBodyComponent>()));
 	if (m_Flip != SDL_FLIP_HORIZONTAL)
-		m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(20, 50, { 45,0 }, 0, dae::ShapeSettings(true, 0.1f, 0.5f, 0));
+	{
+		m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(20, 40, { 40,0 }, 0, dae::ShapeSettings(true, 0.1f, 0.5f, 0));
+		if (level->GetTileByPos({ m_Pos.x + level->GetTileWidth(), m_Pos.y })->GetIsWalkable()
+			&& level->GetTileByPos({ m_Pos.x + level->GetTileWidth() * 2, m_Pos.y })->GetIsWalkable())
+		{
+			m_GameObject->SetLifeTime(0.45f);
+		}
+		else
+		{
+			m_GameObject->MarkForDelete();
+			return;
+		}
+	}
 	else
-		m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(20, 50, { -45,0 },0, dae::ShapeSettings(true, 0.1f, 0.5f, 0));
+	{
+		m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(20, 40, { -40,0 },0, dae::ShapeSettings(true, 0.1f, 0.5f, 0));
+		if (level->GetTileByPos({ m_Pos.x - level->GetTileWidth(), m_Pos.y })->GetIsWalkable()
+			&& level->GetTileByPos({ m_Pos.x - level->GetTileWidth() * 2, m_Pos.y })->GetIsWalkable())
+		{
+			m_GameObject->SetLifeTime(0.45f);
+		}
+		else
+		{
+			m_GameObject->MarkForDelete();
+			return;
+		}
+	}
 
 	m_GameObject->AddComponent(new dae::AnimatedSpriteComponent("FygarFlame.png", 3, 1, 0.15f));
 	m_GameObject->GetComponent<dae::AnimatedSpriteComponent>()->SetScale({ 1.6f,1.6f });

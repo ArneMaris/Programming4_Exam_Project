@@ -38,7 +38,7 @@ void EnemyStates::Run::InState()
 		m_pOwnerObject->GetComponent<dae::StateMachineComponent>()->SetToState(L"Ghost");
 	}
 
-	if (rand() % 400 == 0 && m_pOwnerObject->GetComponent<dae::StateMachineComponent>()->GetCurrentStateName() == L"Run")
+	if (rand() % 250 == 0 && m_pOwnerObject->GetComponent<dae::StateMachineComponent>()->GetCurrentStateName() == L"Run")
 	{
 		//this will only work on the fygars (intented)
 		if (m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"FygarAttack"))
@@ -76,6 +76,8 @@ void EnemyStates::Ghost::InState()
 void EnemyStates::BlowUpOne::OnStateEnter()
 {
 	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"BlowUpOne");
+	m_pOwnerObject->GetComponent<dae::AiComponent>()->SetActive(false);
+	m_DeflateTimer = 2;
 }
 
 void EnemyStates::BlowUpOne::OnStateExit()
@@ -85,12 +87,17 @@ void EnemyStates::BlowUpOne::OnStateExit()
 
 void EnemyStates::BlowUpOne::InState()
 {
-
+	m_DeflateTimer -= dae::GameInfo::deltaTime;
+	if (m_DeflateTimer <= 0)
+	{
+		m_pOwnerObject->GetComponent<dae::StateMachineComponent>()->SetToState(L"Run");
+	}
 }
 
 void EnemyStates::BlowUpTwo::OnStateEnter()
 {
 	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"BlowUpTwo");
+	m_DeflateTimer = 1.7f;
 }
 
 void EnemyStates::BlowUpTwo::OnStateExit()
@@ -100,12 +107,17 @@ void EnemyStates::BlowUpTwo::OnStateExit()
 
 void EnemyStates::BlowUpTwo::InState()
 {
-
+	m_DeflateTimer -= dae::GameInfo::deltaTime;
+	if (m_DeflateTimer <= 0)
+	{
+		m_pOwnerObject->GetComponent<dae::StateMachineComponent>()->SetToState(L"BlowUpOne");
+	}
 }
 
 void EnemyStates::BlowUpThree::OnStateEnter()
 {
 	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"BlowUpThree");
+	m_DeflateTimer = 1.4f;
 }
 
 void EnemyStates::BlowUpThree::OnStateExit()
@@ -115,12 +127,17 @@ void EnemyStates::BlowUpThree::OnStateExit()
 
 void EnemyStates::BlowUpThree::InState()
 {
-
+	m_DeflateTimer -= dae::GameInfo::deltaTime;
+	if (m_DeflateTimer <= 0)
+	{
+		m_pOwnerObject->GetComponent<dae::StateMachineComponent>()->SetToState(L"BlowUpTwo");
+	}
 }
 
 void EnemyStates::Pop::OnStateEnter()
 {
 	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"Pop");
+	m_pOwnerObject->GetComponent<dae::ColliderComponent>()->SetActive(false);
 	auto tile = dae::SceneManager::GetInstance().GetActiveScene()->GetLevels()[0]->GetTileByPos(m_pOwnerObject->GetTransform()->GetPosition());
 	auto texName = tile->GetTextureName();
 	//determine layer by textureName
@@ -207,7 +224,7 @@ void EnemyStates::Pop::InState()
 void EnemyStates::Attacking::OnStateEnter()
 {
 	dae::SceneManager::GetInstance().GetActiveScene()->AddGameObjectRuntime(
-		new FygarFlame(m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->GetFlipDirection()), m_pOwnerObject->GetTransform()->GetPosition());
+		new FygarFlame(m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->GetFlipDirection(), m_pOwnerObject->GetTransform()->GetPosition()));
 	m_pOwnerObject->GetComponent<dae::AiComponent>()->SetActive(false);
 }
 

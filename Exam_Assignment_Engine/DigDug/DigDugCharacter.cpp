@@ -5,6 +5,7 @@
 #include "SceneManager.h"
 #include "GridLevel.h"
 #include "MenuAndHud.h"
+#include "CollisionResponses.h"
 
 
 DigDugCharacter::DigDugCharacter()
@@ -12,7 +13,11 @@ DigDugCharacter::DigDugCharacter()
 	,m_Digging{false}
 	,m_PrevTile{nullptr}
 	, m_DeadTimer{0}
-	, m_PumpFlySpeed{2000}
+	, m_PumpFlySpeed{2500}
+	, m_PumpingSpeed{1} //per sec how many stages (1 stage per sec (when holding))
+	, m_PumpCooldown{0}
+	, m_PumpFlyDuration{0.4f}
+	, m_PumpFlyTimer{0}
 {
 	m_DigObject = new dae::GameObject();
 	m_DigObject->AddComponent(new dae::SpriteComponent("Tiles/DiggingTunnel.png"));
@@ -27,17 +32,12 @@ DigDugCharacter::DigDugCharacter()
 	m_PumpObject->AddComponent(new dae::SpriteComponent("DigDugPumpShoot.png"));
 	m_PumpObject->AddComponent(new dae::PhysicsBodyComponent(b2_dynamicBody));
 	m_PumpObject->AddComponent(new dae::ColliderComponent(m_PumpObject->GetComponent<dae::PhysicsBodyComponent>()));
-	m_PumpObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(8, 8, dae::ShapeSettings(true, 0.5f, 0, 0));
-	m_PumpObject->GetComponent<dae::SpriteComponent>()->SetDoRender(false);;
-	m_PumpObject->GetComponent<dae::SpriteComponent>()->SetSpriteOffset({ -10,0 });
+	m_PumpObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(10, 10, dae::ShapeSettings(true, 0.1f, 0, 0));
+	m_PumpObject->GetComponent<dae::ColliderComponent>()->AddCollisionResponse(new PumpCollision());
+	m_PumpObject->GetComponent<dae::SpriteComponent>()->SetDoRender(false);
+	m_PumpObject->GetComponent<dae::SpriteComponent>()->SetSpriteOffset({ 0,5 });
 
 	dae::SceneManager::GetInstance().GetActiveScene()->AddGameObject(m_PumpObject);
-}
-
-
-DigDugCharacter::~DigDugCharacter()
-{
-
 }
 
 void DigDugCharacter::Initialize()
@@ -45,7 +45,6 @@ void DigDugCharacter::Initialize()
 	m_StartPos = m_pOwnerObject->GetTransform()->GetPosition();
 	m_pStateMachineComp = m_pOwnerObject->GetComponent<dae::StateMachineComponent>();
 	m_pLevel = dae::SceneManager::GetInstance().GetActiveScene()->GetLevels()[1];
-	//m_PrevTile = m_pLevel->GetTileByPos(m_pOwnerObject->GetTransform()->GetPosition());
 }
 
 void DigDugCharacter::Update()
@@ -53,6 +52,17 @@ void DigDugCharacter::Update()
 	if (m_Pumping)
 	{
 		m_PumpObject->GetComponent<dae::PhysicsBodyComponent>()->ApplyLinearImpulse(m_PumpForce, m_PumpObject->GetTransform()->GetPosition());
+
+		if (m_pLevel->GetTileByPos(m_PumpObject->GetTransform()->GetPosition())->GetIsWalkable() == false)
+			m_PumpFlyTimer = -1;
+
+		m_PumpFlyTimer -= dae::GameInfo::deltaTime;
+		if (m_PumpFlyTimer <= 0)
+		{
+			m_PumpObject->GetComponent<dae::ColliderComponent>()->SetActive(false);
+			m_PumpObject->GetComponent<dae::SpriteComponent>()->SetDoRender(false);
+			m_Pumping = false;
+		}
 	}
 	if (m_Digging)
 	{
@@ -95,10 +105,14 @@ void DigDugCharacter::StartDigging()
 void DigDugCharacter::EndDigging()
 {
 	m_Digging = false;
+	m_DigObject->GetComponent<dae::SpriteComponent>()->SetDoRender(false);
 }
 
-void DigDugCharacter::Pump()
+void DigDugCharacter::Pump(bool fromHold)
 {
+	if (fromHold && m_PumpFlyTimer > 0) return;
+	if (!fromHold && m_PumpObject->GetComponent<dae::ColliderComponent>()->GetIsActive()) return;
+
 	auto spriteComp = m_PumpObject->GetComponent<dae::SpriteComponent>();
 	spriteComp->SetDoRender(true);
 	auto rot = m_pOwnerObject->GetComponent<dae::TransformComponent>()->GetRotationDegrees();
@@ -122,6 +136,8 @@ void DigDugCharacter::Pump()
 		m_PumpForce.x = m_PumpFlySpeed;
 
 	m_Pumping = true;
+ 	m_PumpObject->GetComponent<dae::ColliderComponent>()->SetActive(true);
+	m_PumpFlyTimer = m_PumpFlyDuration;
 }
 
 void DigDugCharacter::Render() const

@@ -9,12 +9,13 @@
 
 void Pump::ExecuteOnPress()
 {
-	static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->Pump();
+	static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->Pump(false);
 }
 
 void Pump::ExecuteOnHold(const b2Vec2 axisValues)
 {
 	UNREFERENCED_PARAMETER(axisValues);
+	static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->Pump(true);
 }
 
 void Pump::ExecuteOnRelease()

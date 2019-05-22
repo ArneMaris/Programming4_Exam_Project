@@ -23,3 +23,13 @@ public:
 	virtual void OnCollisionEnd(dae::GameObject* otherObj) override;
 };
 
+class PumpCollision :public dae::CollisionResponse
+{
+public:
+	PumpCollision() = default;
+	~PumpCollision() = default;
+
+	virtual void OnCollisionStart(dae::GameObject* otherObj) override;
+	virtual void OnCollisionEnd(dae::GameObject* otherObj) override;
+};
+

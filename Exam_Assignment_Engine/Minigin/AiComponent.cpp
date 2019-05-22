@@ -33,7 +33,7 @@ void dae::AiComponent::ThreadLoop()
 {
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 	m_Active = true;
-	while (!GameInfo::gameEnded && !m_pGameObject->GetDeleteMark())
+	while (!GameInfo::gameEnded && !m_pGameObject->GetDeleteMark() && m_pScene->GetIsActive())
 	{
 		m_TargetPos = (m_pTargetObj->GetTransform()->GetPosition());
 		dae::GridTile* targetTile = m_pLevel->GetTileByPos(m_TargetPos);
@@ -46,10 +46,11 @@ void dae::AiComponent::ThreadLoop()
 
 			std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
 			//wait for the newPath, update it, run loop again
+			m_CurrentPathProgress = 0;
 			newPath.wait();
 			m_CurrPath = newPath.get();
-
 			m_CurrentPathProgress = 0;
+
 			auto end = std::chrono::system_clock::now();
 			auto diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 			delay = m_DelayMilliseconds - diff;
@@ -68,14 +69,13 @@ void dae::AiComponent::Initialize()
 	m_pTransformComp = m_pGameObject->GetTransform();
 	m_pTargetObj = GetObjByNameActiveScene(m_TargetName);
 	m_Thread = std::thread(&AiComponent::ThreadLoop, this);
-
 }
 
 void dae::AiComponent::SetActive(bool value)
 {
 	m_Active = value;
 	if (!m_Active)
-		m_pGameObject->GetComponent<TransformComponent>()->CancelMoveToPos(1);
+		m_pGameObject->GetComponent<TransformComponent>()->CancelMoveToPos(0);
 }
 
 void dae::AiComponent::Update()
@@ -215,7 +215,7 @@ std::vector<b2Vec2> dae::AiComponent::CalculateAStar(dae::GridTile* pStartTile, 
 		//Store the 'pCurrentConnection' its 'EndNode' position in the 'vPath' container
 		//Change the 'pCurrentConnection' to the 'pCurrentConnection' its 'HeadConnection'
 	//To finalize add last retrieved 'EndNode' position and the position of 'pStartNode'
-	int maxCount = m_pLevel->GetAmountOfTiles() * 3;
+	int maxCount = int(m_pLevel->GetAmountOfTiles() * 3);
 	int count = 0;
 	while (pCurrentConnection->GetFront() != pStartTile)
 	{

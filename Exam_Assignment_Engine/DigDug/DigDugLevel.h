@@ -11,7 +11,11 @@ public:
 
 	~DigDugLevel() = default;
 
+	void AddEnemy() {++m_EnemiesLeft;};
+	void RemoveEnemy();
+
 private:
 	std::string m_LevelPath;
+	int m_EnemiesLeft = 0;
 };
 

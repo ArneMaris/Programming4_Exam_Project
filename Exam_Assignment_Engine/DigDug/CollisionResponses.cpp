@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "CollisionResponses.h"
 #include "Logger.h"
-#include "StateMachineComponent.h"
-#include "AnimatedSpriteComponent.h"
+#include "Components.h"
+#include "DigDugCharacter.h"
 
 
 void DigDugCollision::OnCollisionStart(dae::GameObject * otherObj)
@@ -27,10 +27,23 @@ void EnemyCollision::OnCollisionStart(dae::GameObject * otherObj)
 		DontDoTransitionNow();
 		return;
 	}
+	
 	UNREFERENCED_PARAMETER(otherObj);
 }
 
 void EnemyCollision::OnCollisionEnd(dae::GameObject * otherObj)
+{
+	UNREFERENCED_PARAMETER(otherObj);
+}
+
+void PumpCollision::OnCollisionStart(dae::GameObject * otherObj)
+{
+	UNREFERENCED_PARAMETER(otherObj);
+	if (otherObj->GetLayer() == 1)
+		m_pOwnerObject->GetComponent<dae::ColliderComponent>()->SetActive(false);
+}
+
+void PumpCollision::OnCollisionEnd(dae::GameObject * otherObj)
 {
 	UNREFERENCED_PARAMETER(otherObj);
 }

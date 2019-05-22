@@ -285,6 +285,8 @@ void dae::GridLevel::BuildGridLevel()
 	startPos.y += tileHeight * ((m_VertTiles - 1) / 2.0f);
 	float xStart = startPos.x;
 
+	auto scene = SceneManager::GetInstance().GetActiveScene();
+
 	std::shared_ptr<SDL_Texture> pErrorTex = ResourceManager::GetInstance().LoadTexture("ErrorTile.png");
 
 	m_pGridTiles.reserve(m_HorTiles * m_VertTiles);
@@ -297,13 +299,13 @@ void dae::GridLevel::BuildGridLevel()
 			auto it = m_TilesMap.find(m_Nrs[index]);
 			if (it != m_TilesMap.end())
 			{
-				m_pGridTiles.push_back(new GridTile(m_pScene, index, { startPos.x - it->second.textureSizeOffset.x, startPos.y + it->second.textureSizeOffset.x },
+				m_pGridTiles.push_back(new GridTile(scene, index, { startPos.x - it->second.textureSizeOffset.x, startPos.y + it->second.textureSizeOffset.x },
 					{ float(tileWidth + it->second.textureSizeOffset.x * 2), float(tileHeight + it->second.textureSizeOffset.y * 2) },
 					it->second.texture, it->second.isWalkable, it->second.isChangable, it->second.spawnThisOnTile));
 			}
 			else
 			{
-				m_pGridTiles.push_back(new GridTile(m_pScene, index, startPos, { float(tileWidth),float(tileHeight) }, pErrorTex, false, false, nullptr));
+				m_pGridTiles.push_back(new GridTile(scene, index, startPos, { float(tileWidth),float(tileHeight) }, pErrorTex, false, false, nullptr));
 			}
 			startPos.x += float(tileWidth);
 		}

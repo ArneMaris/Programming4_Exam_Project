@@ -7,7 +7,7 @@
 GlobalScene::GlobalScene()
 	:dae::Scene(L"GlobalScene", { 0,0 })
 {
-	dae::SceneManager::GetInstance().SetGlobabSceneRendering(true);
+	dae::SceneManager::GetInstance().SetGlobalSceneRenderFront(false);
 }
 
 void GlobalScene::Initialize()

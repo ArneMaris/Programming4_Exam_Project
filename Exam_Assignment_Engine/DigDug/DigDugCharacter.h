@@ -5,12 +5,13 @@
 
 class GameObject;
 class GridLevel;
+class Scene;
 
 class DigDugCharacter : public dae::Script
 {
 public:
 	DigDugCharacter();
-	~DigDugCharacter();
+	~DigDugCharacter() = default;
 
 	virtual void Initialize() override;
 	virtual void Update() override;
@@ -20,7 +21,7 @@ public:
 	void StartDigging();
 	void EndDigging();
 
-	void Pump();
+	void Pump(bool fromHold);
 
 	float GetMoveSpeed() const { return m_MoveSpeed; };
 
@@ -39,5 +40,9 @@ private:
 	float m_PumpFlySpeed;
 	b2Vec2 m_PumpForce;
 	bool m_Pumping;
+	float m_PumpingSpeed;
+	float m_PumpCooldown;
+	float m_PumpFlyDuration;
+	float m_PumpFlyTimer;
 };
 

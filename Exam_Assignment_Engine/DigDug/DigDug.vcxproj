@@ -173,6 +173,7 @@
     <ClInclude Include="EnemyStates.h" />
     <ClInclude Include="GlobalScene.h" />
     <ClInclude Include="MenuAndHud.h" />
+    <ClInclude Include="MenuInputResponses.h" />
     <ClInclude Include="Prefabs.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InputResponses.h" />
@@ -186,6 +187,7 @@
     <ClCompile Include="EnemyStates.cpp" />
     <ClCompile Include="GlobalScene.cpp" />
     <ClCompile Include="MenuAndHud.cpp" />
+    <ClCompile Include="MenuInputResponses.cpp" />
     <ClCompile Include="Prefabs.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputResponses.cpp" />

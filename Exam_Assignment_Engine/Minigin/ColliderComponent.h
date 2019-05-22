@@ -59,6 +59,7 @@ namespace dae
 		bool IsColliding() const {return m_Colliding;};
 
 		void SetActive(bool value) { m_Active = value; m_Collisions = 0; };
+		bool GetIsActive() const { return m_Active; };
 
 	protected:
 		virtual void Update() override;
@@ -74,7 +75,6 @@ namespace dae
 		bool m_Colliding;
 		int m_Collisions;
 		b2Body* m_pBodyRef;
-		Scene* m_pSceneRef;
 		std::vector<b2Fixture*> m_Fixtures;
 
 		std::vector<CollisionResponse*> m_pCollisionResponses;

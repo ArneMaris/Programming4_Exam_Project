@@ -30,6 +30,8 @@ namespace dae
 		bool IsActive() const { return m_Active; };
 		bool GetCanReachGoal() const { return (m_Active == true ? m_CanReachGoal : false); };
 
+		void SetScene(Scene* scene) { m_pScene = scene; };
+
 	protected:
 		virtual void Update() override;
 		virtual void Initialize() override;
@@ -43,12 +45,15 @@ namespace dae
 		size_t m_CurrentPathProgress;
 		std::vector<b2Vec2> m_CurrPath;
 
+
 		Heuristic m_CurrentHeuristic;
 		PathfindingAlgorithm m_CurrentPathfinding;
 		TransformComponent* m_pTransformComp;
 		GridLevel* m_pLevel;
 		GameObject* m_pTargetObj;
 		std::wstring m_TargetName;
+
+		Scene* m_pScene;
 
 		b2Vec2 m_TargetPos;
 

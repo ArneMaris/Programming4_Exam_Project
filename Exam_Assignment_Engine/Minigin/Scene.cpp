@@ -6,13 +6,19 @@
 #include "GridLevel.h"
 #include <thread>
 #include "InputManager.h"
+#include "AiComponent.h"
 
 dae::Scene::Scene(const std::wstring& name, const b2Vec2& gravity) 
 	:m_SceneName(name)
 	, m_IsInitialized{false}
 	, m_IsActive { true }
+	, m_Gravity{gravity}
 { 
-	m_pPhysicsWorld = new b2World(gravity);
+}
+
+void dae::Scene::PreparePhysics()
+{
+	m_pPhysicsWorld = new b2World(m_Gravity);
 	m_CollCallbacks = new CollisionCallbacks();
 	m_pPhysicsWorld->SetContactListener(m_CollCallbacks);
 	if (m_pPhysicsWorld != nullptr)
@@ -77,12 +83,11 @@ void dae::Scene::AddGameObject(Prefab* object)
 	m_pObjects.push_back(obj);
 }
 
-void dae::Scene::AddGameObjectRuntime(Prefab * object, const b2Vec2& pos)
+void dae::Scene::AddGameObjectRuntime(Prefab * object)
 {
 	GameObject* obj = object->RootSetup();
 	delete object; //delete prefab after
 	obj->SetPhysicsWorld(m_pPhysicsWorld);
-	obj->GetTransform()->SetPosition(pos);
 	obj->Initialize();
 	m_pAddedObjects.push_back(obj);
 	m_ObjectAddedRuntime = true;
@@ -93,7 +98,6 @@ void dae::Scene::AddLevel(GridLevel* level)
 	if (std::find(m_pLevels.begin(), m_pLevels.end(), level) == m_pLevels.end())
 	{
 		m_pLevels.push_back(level);
-		level->SetScene(this);
 	}
 
 }
@@ -173,6 +177,8 @@ void dae::Scene::ActivateGameObjects()
 	}
 	for (auto& gameObject : m_pObjects)
 	{
+		if (gameObject->GetComponent<AiComponent>() != nullptr)
+			gameObject->GetComponent<AiComponent>()->SetScene(this);
 		gameObject->Initialize();
 	}
 	SortRenderingOrder();
@@ -232,3 +238,5 @@ void dae::Scene::CheckDeleteMarkings()
 		m_ObjectAddedRuntime = false;
 	}
 }
+
+
