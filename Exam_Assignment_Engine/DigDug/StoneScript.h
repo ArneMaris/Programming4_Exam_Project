@@ -13,7 +13,10 @@ public:
 	virtual void PostRender() const override;
 
 	bool GetIsFalling() const { return m_IsFalling; };
+
+	void AddEnemyHit() {++m_EnemiesHit;};
 private:
+	int m_EnemiesHit;
 	bool m_IsFalling;
 	bool m_Losening;
 	float m_LosenDuration;
@@ -21,5 +24,10 @@ private:
 	float m_FallingSpeed;
 	dae::GridTile* m_TileUnder;
 	dae::GridLevel* m_Level;
+
+	dae::GameObject* m_pDigDug1;
+	dae::GameObject* m_pDigDug2;
+
+	bool m_ScoreGiven;
 };
 

@@ -10,7 +10,7 @@ class Scene;
 class DigDugCharacter : public dae::Script
 {
 public:
-	DigDugCharacter();
+	DigDugCharacter(bool playerOne);
 	~DigDugCharacter() = default;
 
 	virtual void Initialize() override;
@@ -33,6 +33,8 @@ private:
 	dae::GameObject* m_PumpObject;
 	dae::GridLevel* m_pLevel;
 	dae::GridTile* m_PrevTile;
+
+	bool m_IsPlayerOne;
 
 	b2Vec2 m_StartPos;
 

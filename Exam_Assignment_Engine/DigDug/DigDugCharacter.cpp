@@ -8,8 +8,8 @@
 #include "CollisionResponses.h"
 
 
-DigDugCharacter::DigDugCharacter()
-	:m_MoveSpeed{70}
+DigDugCharacter::DigDugCharacter(bool playerOne)
+	:m_MoveSpeed{65}
 	,m_Digging{false}
 	,m_PrevTile{nullptr}
 	, m_DeadTimer{0}
@@ -18,6 +18,7 @@ DigDugCharacter::DigDugCharacter()
 	, m_PumpCooldown{0}
 	, m_PumpFlyDuration{0.4f}
 	, m_PumpFlyTimer{0}
+	,m_IsPlayerOne{ playerOne }
 {
 	m_DigObject = new dae::GameObject();
 	m_DigObject->AddComponent(new dae::SpriteComponent("Tiles/DiggingTunnel.png"));
@@ -45,6 +46,7 @@ void DigDugCharacter::Initialize()
 	m_StartPos = m_pOwnerObject->GetTransform()->GetPosition();
 	m_pStateMachineComp = m_pOwnerObject->GetComponent<dae::StateMachineComponent>();
 	m_pLevel = dae::SceneManager::GetInstance().GetActiveScene()->GetLevels()[1];
+
 }
 
 void DigDugCharacter::Update()
@@ -83,8 +85,9 @@ void DigDugCharacter::Update()
 		if (m_DeadTimer > 0.96f)
 		{
 			m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"Gone");
-			static_cast<MenuAndHud*>(dae::GetObjByNameGlobalScene(L"MenuHud")->GetComponent<dae::ScriptComponent>()->GetScript())->RemoveLife();
+			static_cast<MenuAndHud*>(dae::GetObjByNameGlobalScene(L"MenuHud")->GetComponent<dae::ScriptComponent>()->GetScript())->RemoveLife(m_IsPlayerOne);
 			m_DeadTimer = -99999;
+			m_pOwnerObject->MarkForDelete();
 		}
 
 	}

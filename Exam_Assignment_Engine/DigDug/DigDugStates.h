@@ -58,5 +58,7 @@ namespace DigDugStates
 		virtual void OnStateEnter() override;
 		virtual void OnStateExit() override;
 		virtual void InState() override;
+	private:
+		float m_Timer;
 	};
 }

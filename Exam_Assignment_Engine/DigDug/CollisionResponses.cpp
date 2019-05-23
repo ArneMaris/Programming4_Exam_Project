@@ -34,8 +34,9 @@ void DigDugCollision::OnCollisionEnd(dae::GameObject * otherObj)
 
 void EnemyCollision::OnCollisionStart(dae::GameObject * otherObj)
 {
+
 	//layer 2 is pump's layer
-	if (otherObj->GetLayer() != 2)
+ 	if (otherObj->GetLayer() != 2)
 	{
 		DontDoTransitionNow();	
 	}
@@ -44,7 +45,10 @@ void EnemyCollision::OnCollisionStart(dae::GameObject * otherObj)
 		if (static_cast<StoneScript*>(otherObj->GetComponent<dae::ScriptComponent>()->GetScript())->GetIsFalling())
 		{
 			if (m_pOwnerObject->GetTransform()->GetPosition().y < otherObj->GetTransform()->GetPosition().y)
+			{
 				m_pOwnerObject->GetComponent<dae::StateMachineComponent>()->SetToState(L"Dragged");
+				static_cast<StoneScript*>(otherObj->GetComponent<dae::ScriptComponent>()->GetScript())->AddEnemyHit();
+			}
 		}
 	}
 	

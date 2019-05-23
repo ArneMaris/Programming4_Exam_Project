@@ -259,14 +259,18 @@ void EnemyStates::Dragged::OnStateExit()
 void EnemyStates::Dragged::InState()
 {
 	auto newHeight = m_pOwnerObject->GetTransform()->GetPosition().y;
-	if (!(newHeight < m_Height))
+	if (newHeight < m_Height)
 	{
-		m_pOwnerObject->GetComponent<dae::StateMachineComponent>()->SetToState(L"Squashed");
+		m_Height = newHeight;
 	}
+	else
+		m_pOwnerObject->GetComponent<dae::StateMachineComponent>()->SetToState(L"Squashed");
+
 }
 
 void EnemyStates::Squashed::OnStateEnter()
 {
+	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->SetPaused(false);
 	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"DieStone");
 }
 
@@ -276,4 +280,7 @@ void EnemyStates::Squashed::OnStateExit()
 
 void EnemyStates::Squashed::InState()
 {
+	m_Timer += dae::GameInfo::deltaTime;
+	if (m_Timer > 0.38f)
+		m_pOwnerObject->MarkForDelete();
 }

@@ -7,10 +7,13 @@
 class DigDug : public dae::Prefab
 {
 public:
-	DigDug() = default;
+	DigDug(bool playerOne = true) :m_PlayerOne{ playerOne } {};
 	~DigDug() = default;
 
 	void Setup() override;
+
+private:
+	bool m_PlayerOne;
 };
 
 class Pooka : public dae::Prefab

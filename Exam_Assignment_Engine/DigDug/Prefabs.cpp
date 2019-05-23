@@ -15,29 +15,29 @@
 #include "PlayerFygarStates.h"
 #include "StoneScript.h"
 
+
 //this examples makes a box at the bottom of the screen and holds the backgroundSprite
 void DigDug::Setup()
 {
 	int controllerId = 0;
-	if (dae::GetObjByNameActiveScene(L"DigDug") != nullptr)
-	{
-		controllerId = 1;
-		m_GameObject->SetName(L"DigDug2");
-		m_GameObject->GetTransform()->Translate({ 30,0 });
-	}
-	else
+	if (m_PlayerOne)
 	{
 		m_GameObject->SetName(L"DigDug");
 	}
+	else
+	{
+		controllerId = 1;
+		m_GameObject->SetName(L"DigDug2");
+	}
 
-	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_dynamicBody));
+	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_dynamicBody, false, { 0,0 }, 0, 10, 1));
 	m_GameObject->AddComponent(new dae::ColliderComponent(m_GameObject->GetComponent<dae::PhysicsBodyComponent>()));
-	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(20, 20, dae::ShapeSettings(false, 1, 0.5f, 0));
+	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(18, 18, dae::ShapeSettings(false, 1, 0.5f, 0));
 
 	m_GameObject->AddComponent(new dae::AnimatedSpriteComponent("DigDugSprites.png", 4, 4));
 	m_GameObject->GetComponent<dae::AnimatedSpriteComponent>()->SetScale({ 1.6f,1.6f });
-	//m_GameObject->AddComponent(new dae::InputComponent(controllerId, !bool(controllerId)));
-	m_GameObject->AddComponent(new dae::InputComponent(-1,true));
+	m_GameObject->AddComponent(new dae::InputComponent(controllerId, (controllerId == 1 ? false : true)));
+	//m_GameObject->AddComponent(new dae::InputComponent(-1,true));
 
 	//INPUT ACTIONS
 	std::vector<dae::InputResponse*> moveResponses;
@@ -65,7 +65,7 @@ void DigDug::Setup()
 	animCmp->AddAnimation({ L"RunWeapon", 1,1,3,4,0.15f }, false);
 	animCmp->AddAnimation({ L"RunNoWeapon", 1,1,1,2,0.15f }, false);
 	animCmp->AddAnimation({ L"Pump", 2,2,1,2,0.15f }, false);
-	animCmp->AddAnimation({ L"DieStone", 3,3,2,3,0.15f }, false);
+	animCmp->AddAnimation({ L"DieStone", 3,3,2,3,0.25f }, false);
 	animCmp->AddAnimation({ L"DieEnemy", 4,4,1,4,0.25f }, false);
 	animCmp->AddAnimation({ L"Gone", 2,2,3,4,1 }, false);
 	animCmp->AddAnimation({ L"Dragged", 3,3,1,1,1 }, false);
@@ -87,13 +87,13 @@ void DigDug::Setup()
 	}
 	sm->AddToStateTransition(L"Dead", collResp, true);
 
-	m_GameObject->AddComponent(new dae::ScriptComponent(new DigDugCharacter()));
+	m_GameObject->AddComponent(new dae::ScriptComponent(new DigDugCharacter(m_PlayerOne)));
 
 }
 
 void Pooka::Setup()
 {
-	float moveSpeed{ 85 };
+	float moveSpeed{ 75 };
 
 	static_cast<DigDugLevel*>(dae::SceneManager::GetInstance().GetActiveScene())->AddEnemy();
 
@@ -101,9 +101,9 @@ void Pooka::Setup()
 	m_GameObject->SetLayer(1);
 	m_GameObject->SetName(L"Pooka");
 
-	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_kinematicBody));
+	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_dynamicBody, false, { 0,0 }, 0, 10, 1));
 	m_GameObject->AddComponent(new dae::ColliderComponent(m_GameObject->GetComponent<dae::PhysicsBodyComponent>()));
-	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(16, 16, dae::ShapeSettings(false, 0.5f, 0, 0));
+	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(16, 16, dae::ShapeSettings(false, 0.5f, 0, 0, -1));
 
 	auto colResponse = new EnemyCollision();
 	m_GameObject->GetComponent<dae::ColliderComponent>()->AddCollisionResponse(colResponse);
@@ -146,7 +146,7 @@ void Pooka::Setup()
 
 void Fygar::Setup()
 {
-	if (static_cast<MenuAndHud*>(dae::GetObjByNameGlobalScene(L"MenuHud")->GetComponent<dae::ScriptComponent>()->GetScript())->GetIsTwoPlayers())
+	if (static_cast<MenuAndHud*>(dae::GetObjByNameGlobalScene(L"MenuHud")->GetComponent<dae::ScriptComponent>()->GetScript())->GetIsVersus())
 	{
 		if (dae::GetObjByNameActiveScene(L"PlayerFygar") == nullptr)
 			BuildPlayerFygar();
@@ -167,7 +167,7 @@ void Fygar::BuildPlayerFygar()
 	m_GameObject->SetLayer(1);
 	m_GameObject->SetName(L"PlayerFygar");
 
-	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_dynamicBody));
+	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_dynamicBody, false, { 0,0 }, 0, 10, 1));
 	m_GameObject->AddComponent(new dae::ColliderComponent(m_GameObject->GetComponent<dae::PhysicsBodyComponent>()));
 	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(18, 18, dae::ShapeSettings(false, 0.5f, 0, 0));
 
@@ -175,7 +175,7 @@ void Fygar::BuildPlayerFygar()
 	m_GameObject->GetComponent<dae::ColliderComponent>()->AddCollisionResponse(colResponse);
 
 	//PLAYER FYGAR ALWAYS SECOND CONTROLLER
-	m_GameObject->AddComponent(new dae::InputComponent(0, false));
+	m_GameObject->AddComponent(new dae::InputComponent(1, false));
 	m_GameObject->GetComponent<dae::InputComponent>()->AddInputAction(new PlayerFygarMove(), dae::ControllerInput::JoyStickLeft);
 	m_GameObject->GetComponent<dae::InputComponent>()->AddInputAction(new PlayerFygarAttack(), dae::ControllerInput::ButtonA);
 
@@ -230,9 +230,9 @@ void Fygar::BuildEnemyFygar()
 	m_GameObject->SetLayer(1);
 	m_GameObject->SetName(L"Fygar");
 
-	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_kinematicBody));
+	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_dynamicBody, false, { 0,0 }, 0, 10, 1));
 	m_GameObject->AddComponent(new dae::ColliderComponent(m_GameObject->GetComponent<dae::PhysicsBodyComponent>()));
-	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(18, 18, dae::ShapeSettings(false, 0.5f, 0, 0));
+	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(18, 18, dae::ShapeSettings(false, 0.5f, 0, 0,-1));
 
 	auto colResponse = new EnemyCollision();
 	m_GameObject->GetComponent<dae::ColliderComponent>()->AddCollisionResponse(colResponse);
@@ -317,7 +317,7 @@ void Stone::Setup()
 	m_GameObject->SetLayer(3);
 	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_kinematicBody));
 	m_GameObject->AddComponent(new dae::ColliderComponent(m_GameObject->GetComponent<dae::PhysicsBodyComponent>()));
-	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(10, 10, dae::ShapeSettings(false, 1, 0.8f, 0.2f));
+	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(20, 10, dae::ShapeSettings(false, 20, 0.5f, 0));
 
 	m_GameObject->AddComponent(new dae::AnimatedSpriteComponent("Stone.png", 2, 3, 0.15f));
 	auto animComp = m_GameObject->GetComponent<dae::AnimatedSpriteComponent>();

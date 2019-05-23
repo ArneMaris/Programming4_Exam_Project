@@ -10,8 +10,7 @@ public:
 		single,
 		coop,
 		versus,
-		retry,
-		exit
+		back
 	};
 
 	MenuAndHud();
@@ -28,6 +27,7 @@ public:
 	void MoveUp();
 	void Confirm();
 
+	bool GetIsVersus() const { return m_Versus; };
 	bool GetIsTwoPlayers() const { return m_TwoPlayers; };
 
 private:
@@ -35,8 +35,12 @@ private:
 	int m_Lifes;
 	int m_LifesPlayer2;
 	bool m_TwoPlayers;
+	bool m_Versus;
 
 	bool m_Ingame;
+
+	bool m_PlayerOneDead;
+	bool m_PlayerTwoDead;
 
 	dae::TextComponent* m_pTextComp;
 	std::vector<dae::SpriteComponent*> m_pLifeSprites;

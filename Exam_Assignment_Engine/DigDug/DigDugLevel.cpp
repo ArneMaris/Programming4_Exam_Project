@@ -6,6 +6,7 @@
 #include "GameInfo.h"
 #include "Prefabs.h"
 #include "GridLevel.h"
+#include "MenuAndHud.h"
 
 DigDugLevel::DigDugLevel(const std::string& levelPath)
 	:dae::Scene(L"DigDug" + std::wstring(levelPath.begin(), levelPath.end()), { 0,0 })
@@ -51,6 +52,15 @@ void DigDugLevel::Initialize()
 	overlayLevel->AddTileConfiguration(6, dae::TileSettings(resourceManager.LoadTexture("Tiles/TunnelOpen.png"), true,true));
 
 	//Spawns
+
+	if (static_cast<MenuAndHud*>(dae::GetObjByNameGlobalScene(L"MenuHud")->GetComponent<dae::ScriptComponent>()->GetScript())->GetIsTwoPlayers())
+	{
+		overlayLevel->AddTileConfiguration(10, dae::TileSettings(resourceManager.LoadTexture("Tiles/TunnelOpen.png"), true, true, new DigDug(false)));
+	}
+	else
+	{
+		overlayLevel->AddTileConfiguration(10, dae::TileSettings(resourceManager.LoadTexture("Tiles/TunnelOpen.png"), true, true));
+	}
 	overlayLevel->AddTileConfiguration(1, dae::TileSettings(resourceManager.LoadTexture("Tiles/TunnelOpen.png"), true, true, new DigDug()));
 	overlayLevel->AddTileConfiguration(7, dae::TileSettings(resourceManager.LoadTexture("Tiles/TunnelOpen.png"), true, true, new Pooka()));
 	overlayLevel->AddTileConfiguration(8, dae::TileSettings(resourceManager.LoadTexture("Tiles/TunnelOpen.png"), true, true, new Fygar()));
@@ -74,7 +84,6 @@ void DigDugLevel::RemoveEnemy()
 
 void DigDugLevel::Update()
 {
-
 }
 
 void DigDugLevel::Render() const

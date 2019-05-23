@@ -78,4 +78,14 @@ void dae::InputManager::RegisterInputComponent(InputComponent * inputComp)
 	m_pInputComponents.push_back(inputComp);
 }
 
+int dae::InputManager::GetAmountOfConnectedControllers()
+{
+	int count = 0;
+	for (int i = 0; i < MAX_CONTROLLERS; i++)
+		if (m_GamepadConnected[i])
+			++count;
+
+	return count;
+}
+
 

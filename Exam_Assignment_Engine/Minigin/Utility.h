@@ -43,17 +43,6 @@ namespace dae
 	{
 		return SceneManager::GetInstance().GetGlobalScene()->GetGameObjectsInLayer(layer);
 	};
-
-	static void CallFunctionAfter(std::function<void()> function, long long millisecondsDelay)
-	{
-		std::thread thread = std::thread([millisecondsDelay, function]()
-			{
-				auto wait = std::async([&millisecondsDelay]() { std::this_thread::sleep_for(std::chrono::milliseconds(millisecondsDelay)); });
-				wait.get();
-				function();
-			});
-		thread.detach();
-	}
 }
 	static float RadToDegrees(float angleInRad)
 	{

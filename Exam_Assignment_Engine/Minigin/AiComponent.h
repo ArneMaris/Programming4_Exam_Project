@@ -14,7 +14,7 @@ namespace dae
 		{
 			Astar
 		};
-		AiComponent(float speed,  GridLevel* pathfindingLevel, const std::wstring& targetName, long long millisecondsDelay = 100, PathfindingAlgorithm algorithm = PathfindingAlgorithm::Astar, Heuristic heuristic = Euclidean);
+		AiComponent(float speed,  GridLevel* pathfindingLevel, const std::wstring& targetName, long long millisecondsDelay = 300, PathfindingAlgorithm algorithm = PathfindingAlgorithm::Astar, Heuristic heuristic = Euclidean);
 		~AiComponent();
 
 		AiComponent(const AiComponent& other) = delete;
@@ -30,6 +30,8 @@ namespace dae
 		bool IsActive() const { return m_Active; };
 		bool GetCanReachGoal() const { return (m_Active == true ? m_CanReachGoal : false); };
 
+		void SetNewTarget(GameObject* newTargetObj);
+
 	protected:
 		virtual void Update() override;
 		virtual void Initialize() override;
@@ -42,7 +44,6 @@ namespace dae
 
 		size_t m_CurrentPathProgress;
 		std::vector<b2Vec2> m_CurrPath;
-
 
 		Heuristic m_CurrentHeuristic;
 		PathfindingAlgorithm m_CurrentPathfinding;

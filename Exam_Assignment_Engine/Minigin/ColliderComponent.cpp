@@ -274,6 +274,7 @@ void dae::ColliderComponent::CreateFixture(const b2Shape& shape, const ShapeSett
 	fixDef.friction = shapeSettings.friction;
 	fixDef.restitution = shapeSettings.restitution;
 	fixDef.isSensor = shapeSettings.isTrigger;
+	fixDef.filter.groupIndex = int16(shapeSettings.groupIndex);
 	m_Fixtures.push_back(m_pBodyRef->CreateFixture(&fixDef));
 	m_Fixtures.back()->SetUserData(this); //set the user data to the ColliderComponent so that in the callbacks you can acces it
 }

@@ -9,18 +9,18 @@
 
 
 dae::AiComponent::AiComponent(float speed, GridLevel* pathfindingLevel, const std::wstring& targetName, long long millisecondsDelay, PathfindingAlgorithm algorithm, Heuristic heuristic)
-	:m_CurrentHeuristic{heuristic}
-	,m_CurrentPathfinding{algorithm}
-	,m_CurrentPathProgress{0}
-	,m_Speed{speed}
-	,m_DelayMilliseconds{ millisecondsDelay }
-	,m_pLevel{ pathfindingLevel }
-	,m_pTargetObj{nullptr}
-	,m_TargetName{targetName}
-	,m_CurrPath{std::vector<b2Vec2>()}
-	,m_Active{false}
-	,m_CanReachGoal{false}
-	, m_TargetPos{0,0}
+	:m_CurrentHeuristic{ heuristic }
+	, m_CurrentPathfinding{ algorithm }
+	, m_CurrentPathProgress{ 0 }
+	, m_Speed{ speed }
+	, m_DelayMilliseconds{ millisecondsDelay }
+	, m_pLevel{ pathfindingLevel }
+	, m_pTargetObj{ nullptr }
+	, m_TargetName{ targetName }
+	, m_CurrPath{ std::vector<b2Vec2>() }
+	, m_Active{ false }
+	, m_CanReachGoal{ false }
+	, m_TargetPos{ 0,0 }
 {
 }
 
@@ -46,7 +46,6 @@ void dae::AiComponent::ThreadLoop()
 
 			std::chrono::system_clock::time_point start = std::chrono::system_clock::now();
 			//wait for the newPath, update it, run loop again
-			m_CurrentPathProgress = 0;
 			newPath.wait();
 			m_CurrPath = newPath.get();
 			m_CurrentPathProgress = 0;
@@ -79,32 +78,44 @@ void dae::AiComponent::SetActive(bool value)
 		m_pGameObject->GetComponent<TransformComponent>()->CancelMoveToPos(0);
 }
 
+void dae::AiComponent::SetNewTarget(GameObject * newTargetObj)
+{
+	if (m_pTargetObj == nullptr || m_pTargetObj->GetDeleteMark())
+	{
+		m_Thread.join();
+		m_pTargetObj = newTargetObj;
+		m_Thread = std::thread(&AiComponent::ThreadLoop, this);
+	}
+	m_pTargetObj = newTargetObj;
+}
+
 void dae::AiComponent::Update()
 {
 	if (!m_Active) return;
 	if (m_CurrPath.empty()) return;
 
-	try //i do this because otherwise it crashed (very rarely) on the m_CurrPath.Back() because the thread updated it just after the above check but before this)
+	try //i do this because otherwise it crashed (very rarely) because the thread updates it when it wants too
 	{
 		if (b2Distance(m_CurrPath.back(), m_TargetPos) < m_pLevel->GetTileHeight() * 2)
 			m_CanReachGoal = true;
 		else
 			m_CanReachGoal = false;
+
+		if (m_CurrentPathProgress < m_CurrPath.size())
+		{
+			if (m_pLevel->GetTileByPos(m_CurrPath[m_CurrentPathProgress]) == m_pLevel->GetTileByPos(m_pTransformComp->GetMoveToPosition(), false))
+				++m_CurrentPathProgress;
+
+			if (m_CurrentPathProgress < m_CurrPath.size())
+				if (m_pTransformComp->MoveToPosition(m_CurrPath[m_CurrentPathProgress], m_Speed))
+					++m_CurrentPathProgress;
 		}
+	}
 	catch (std::exception& ex)
 	{
 		UNREFERENCED_PARAMETER(ex);
 	}
 
-	if (m_CurrentPathProgress < m_CurrPath.size())
-	{
-		if (m_pLevel->GetTileByPos(m_CurrPath[m_CurrentPathProgress]) == m_pLevel->GetTileByPos(m_pTransformComp->GetMoveToPosition(), false))
-			++m_CurrentPathProgress;
-
-		if (m_CurrentPathProgress < m_CurrPath.size())
-			if (m_pTransformComp->MoveToPosition(m_CurrPath[m_CurrentPathProgress], m_Speed))
-				++m_CurrentPathProgress;
-	}
 }
 
 

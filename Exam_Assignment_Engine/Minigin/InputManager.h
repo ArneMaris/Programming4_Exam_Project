@@ -42,6 +42,8 @@ namespace dae
 
 		void RegisterInputComponent(InputComponent* inputComp);
 
+		int GetAmountOfConnectedControllers();
+
 	private:
 		XINPUT_STATE m_CurrentGpState[MAX_CONTROLLERS]{};
 		XINPUT_STATE m_PreviousGpState[MAX_CONTROLLERS]{};

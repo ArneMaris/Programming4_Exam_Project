@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Components.h"
 #include "GridLevel.h"
+#include "MenuAndHud.h"
 
 StoneScript::StoneScript()
 	: m_Losening{false}
@@ -11,7 +12,10 @@ StoneScript::StoneScript()
 	, m_TileUnder{nullptr}
 	, m_LosenDuration{1}
 	, m_LosenTimer{0}
-	, m_FallingSpeed{60}
+	, m_FallingSpeed{80}
+	, m_ScoreGiven{false}
+	,m_pDigDug1{nullptr}
+	,m_pDigDug2{nullptr}
 {
 }
 
@@ -22,6 +26,8 @@ void StoneScript::Initialize()
 	pos.y -= float(m_Level->GetTileHeight());
 
 	m_TileUnder = m_Level->GetTileByPos(pos);
+	m_pDigDug1 = dae::GetObjByNameActiveScene(L"DigDug");
+	m_pDigDug2 = dae::GetObjByNameActiveScene(L"DigDug2");
 }
 
 void StoneScript::Update()
@@ -53,8 +59,41 @@ void StoneScript::Update()
 
 		if (tileUnder->GetIsWalkable() == false || tile->HasConnectionToTile(tileUnder) == false)
 		{
-			m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"Break");
-			m_pOwnerObject->SetLifeTime(0.38f);
+			if (!m_ScoreGiven)
+			{
+				m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"Break");
+				m_pOwnerObject->SetLifeTime(0.38f);
+				int score = 0;
+				switch (m_EnemiesHit)
+				{
+				case 1:
+					score = 1000;
+					break;
+				case 2:
+					score = 2500;
+					break;
+				case 3:
+					score = 4000;
+					break;
+				case 4:
+					score = 6000;
+					break;
+				case 5:
+					score = 8000;
+					break;
+				case 6:
+					score = 10000;
+					break;
+				case 7:
+					score = 12000;
+					break;
+				case 8:
+					score = 15000;
+					break;
+				}
+				static_cast<MenuAndHud*>(dae::GetObjByNameGlobalScene(L"MenuHud")->GetComponent<dae::ScriptComponent>()->GetScript())->AddScore(score);
+				m_ScoreGiven = true;
+			}
 		}
 		else
 		{
@@ -63,8 +102,18 @@ void StoneScript::Update()
 	}
 	if (m_TileUnder->GetIsWalkable() && !m_IsFalling)
 	{
-		m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"Losen");
-		m_Losening = true;
+		bool m_DigDugUnder = false;
+		if (m_pDigDug2 != nullptr)
+			if (m_TileUnder == m_Level->GetTileByPos(m_pDigDug2->GetTransform()->GetPosition()))
+				m_DigDugUnder = true;
+		if (m_TileUnder == m_Level->GetTileByPos(m_pDigDug1->GetTransform()->GetPosition()))
+			m_DigDugUnder = true;
+
+		if (!m_DigDugUnder)
+		{
+			m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"Losen");
+			m_Losening = true;
+		}
 	}
 }
 

@@ -5,18 +5,22 @@
 
 namespace dae
 {
+	//the same positive groupIndex will ALWAYS collide wich other of that groupIndex
+	//the same negative groupIndex will NEVER collide wich other of that groupIndex
 	struct ShapeSettings
 	{
 		float density;
 		float friction;
 		float restitution;
 		bool isTrigger;
+		int groupIndex;
 
-		ShapeSettings(bool IsTrigger, float Density, float Friction, float Restitution)
+		ShapeSettings(bool IsTrigger, float Density, float Friction, float Restitution, int groupIndex = 0)
 			:isTrigger{ IsTrigger }
 			, density{ Density }
 			, friction{ Friction }
 			, restitution{ Restitution }
+			, groupIndex{ groupIndex }
 		{}
 
 		ShapeSettings()
@@ -24,6 +28,7 @@ namespace dae
 			, density{ 1 }
 			, friction{ 0.5f }
 			, restitution{ 0.1f }
+			, groupIndex{0}
 		{}
 	};
 	class Scene;

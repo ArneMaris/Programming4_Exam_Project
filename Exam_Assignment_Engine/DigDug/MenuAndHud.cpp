@@ -8,6 +8,10 @@ MenuAndHud::MenuAndHud()
 	:m_Score{0}
 	,m_Lifes{3}
 	,m_LifesPlayer2{3}
+	, m_PlayerOneDead{false}
+	, m_PlayerTwoDead{false}
+	, m_Versus{ false }
+	, m_Ingame {false}
 {
 	auto font = dae::ResourceManager::GetInstance().LoadFont("ConnectionSerif.otf", 35);
 
@@ -46,7 +50,7 @@ MenuAndHud::MenuAndHud()
 
 	m_pSelectionObj = new dae::GameObject();
 	m_pSelectionObj->AddComponent(new dae::SpriteComponent("MenuSelection.png"));
-	m_pSelectionObj->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth /2 - 210), float(dae::GameInfo::windowHeight / 2 +50));
+	m_pSelectionObj->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth /2 - 210), float(dae::GameInfo::windowHeight / 2 + 50));
 	m_pSelectionObj->AddComponent(new dae::InputComponent(0, true));
 	m_pSelectionObj->GetComponent<dae::InputComponent>()->AddInputAction(new MenuInput::KeyUp, SDLK_w, dae::ControllerInput::DpadUp);
 	m_pSelectionObj->GetComponent<dae::InputComponent>()->AddInputAction(new MenuInput::KeyDown, SDLK_s, dae::ControllerInput::DpadDown);
@@ -116,18 +120,17 @@ void MenuAndHud::RemoveLife(bool playerOne)
 		--m_Lifes;
 		if (m_Lifes == 0)
 		{
+			m_pLifeSprites[0]->SetDoRender(false);
 			if (m_TwoPlayers)
 			{
-				//other digdug already dead, gameOver
-				if (dae::GetObjByNameActiveScene(L"DigDug2") == nullptr)
+				m_PlayerOneDead = true;
+
+				//check if other was gameOver already, gameOver scene if yes
+				if (m_PlayerTwoDead && m_LifesPlayer2 == 0)
 				{
 					dae::SceneManager::GetInstance().UnloadAllScenes();
 					m_pGameOverObj->GetComponent<dae::SpriteComponent>()->SetDoRender(true);
-					m_Ingame = false;
 				}
-				else
-					dae::GetObjByNameActiveScene(L"DigDug")->MarkForDelete();
-				//if other digdug not dead just delete this one
 			}
 			else
 			{
@@ -137,50 +140,77 @@ void MenuAndHud::RemoveLife(bool playerOne)
 
 		}
 		else
+			//it will only get here if there are 2 players ofcourse (function will otherwise never be called with parameter = false)
 		{
 			m_pLifeSprites[m_Lifes]->SetDoRender(false);
 
 			if (m_TwoPlayers)
 			{
-				//other digdug already dead, reload scene
-				if (dae::GetObjByNameActiveScene(L"DigDug2") == nullptr)
+				m_PlayerOneDead = true;
+
+				//check if other was dead already, reload scene if yes
+				if (m_PlayerTwoDead)
+				{
 					dae::SceneManager::GetInstance().ReloadActiveScene();
+					m_PlayerTwoDead = false;
+					m_PlayerOneDead = false;
+				}
 				else
-					dae::GetObjByNameActiveScene(L"DigDug")->MarkForDelete();
-					//if other digdug not dead just delete this one
+				{
+					for (auto& obj : dae::GetAllObjsInLayerActiveScene(1))
+					{
+						if (obj->GetComponent<dae::AiComponent>())
+						{
+							obj->GetComponent<dae::AiComponent>()->SetNewTarget(dae::GetObjByNameActiveScene(L"DigDug2"));
+						}
+					}
+				}
+
 			}
 			else
 			{
 				dae::SceneManager::GetInstance().ReloadActiveScene();
 			}
 		}
+
 	}
 	else
 	{
 		--m_LifesPlayer2;
 		if (m_LifesPlayer2 == 0)
 		{
-			//other digdug already dead, gameOver
-			if (dae::GetObjByNameActiveScene(L"DigDug") == nullptr)
+			m_pLifeSpritesPlayer2[0]->SetDoRender(false);
+			m_PlayerTwoDead = true;
+
+			//check if other was gameOver already, gameOver scene if yes
+			if (m_PlayerOneDead && m_Lifes == 0)
 			{
 				dae::SceneManager::GetInstance().UnloadAllScenes();
 				m_pGameOverObj->GetComponent<dae::SpriteComponent>()->SetDoRender(true);
-				m_Ingame = false;
 			}
-			else
-				dae::GetObjByNameActiveScene(L"DigDug2")->MarkForDelete();
-			//if other digdug not dead just delete this one
 		}
 		else
 		{
-			m_pLifeSpritesPlayer2[m_LifesPlayer2 - 1]->SetDoRender(false);
+			m_pLifeSpritesPlayer2[m_LifesPlayer2]->SetDoRender(false);
+			m_PlayerTwoDead = true;
 
-				//other digdug already dead, reload scene
-				if (dae::GetObjByNameActiveScene(L"DigDug") == nullptr)
-					dae::SceneManager::GetInstance().ReloadActiveScene();
-				else
-					dae::GetObjByNameActiveScene(L"DigDug2")->MarkForDelete();
-				//if other digdug not dead just delete this one
+			//check if other was dead already, reload scene if yes
+			if (m_PlayerOneDead)
+			{
+				dae::SceneManager::GetInstance().ReloadActiveScene();
+				m_PlayerTwoDead = false;
+				m_PlayerOneDead = false;
+			}
+			else
+			{
+				for (auto& obj : dae::GetAllObjsInLayerActiveScene(1))
+				{
+					if (obj->GetComponent<dae::AiComponent>())
+					{
+						obj->GetComponent<dae::AiComponent>()->SetNewTarget(dae::GetObjByNameActiveScene(L"DigDug"));
+					}
+				}
+			}
 		}
 	}
 }
@@ -197,10 +227,6 @@ void MenuAndHud::MoveDown()
 		m_pSelectionObj->GetTransform()->Translate({ 0,-53 });
 		m_CurrentMode = versus;
 		break;
-	case MenuAndHud::retry:
-		m_pSelectionObj->GetTransform()->Translate({ 0,-53 });
-		m_CurrentMode = exit;
-		break;
 	}
 }
 
@@ -216,10 +242,6 @@ void MenuAndHud::MoveUp()
 		m_pSelectionObj->GetTransform()->Translate({ 0,53 });
 		m_CurrentMode = coop;
 		break;
-	case MenuAndHud::exit:
-		m_pSelectionObj->GetTransform()->Translate({ 0,53 });
-		m_CurrentMode = retry;
-		break;
 	}
 }
 
@@ -227,6 +249,9 @@ void MenuAndHud::Confirm()
 {
 	m_Ingame = true;
 	m_TwoPlayers = false;
+	m_Versus = false;
+	m_PlayerTwoDead = false;
+	m_PlayerOneDead = false;
 	switch (m_CurrentMode)
 	{
 	case MenuAndHud::coop:
@@ -238,7 +263,7 @@ void MenuAndHud::Confirm()
 		}
 	case MenuAndHud::single:
 		m_pMainMenuObj->GetComponent<dae::SpriteComponent>()->SetDoRender(false);
-		m_CurrentMode = retry;
+		m_CurrentMode = back;
 		m_Lifes = 3;
 		for (auto& sprite : m_pLifeSprites)
 		{
@@ -248,24 +273,21 @@ void MenuAndHud::Confirm()
 		break;
 	case MenuAndHud::versus:
 		m_pMainMenuObj->GetComponent<dae::SpriteComponent>()->SetDoRender(false);
-		m_CurrentMode = retry;
+		m_CurrentMode = back;
 		m_Lifes = 3;
-		m_TwoPlayers = false;
+		m_Versus = true;
 		for (auto& sprite : m_pLifeSprites)
 		{
 			sprite->SetDoRender(true);
 		}
 		dae::SceneManager::GetInstance().SetRandomSceneActive();
 		break;
-	case MenuAndHud::retry:
-		m_pGameOverObj->GetComponent<dae::SpriteComponent>()->SetDoRender(false);
-		dae::SceneManager::GetInstance().SetRandomSceneActive();
-		break;
-	case MenuAndHud::exit:
+	case MenuAndHud::back:
 		m_CurrentMode = single;
-		m_pSelectionObj->GetTransform()->Translate({ 0,53 });
+		m_pSelectionObj->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth / 2 - 210), float(dae::GameInfo::windowHeight / 2 + 50));
 		m_pMainMenuObj->GetComponent<dae::SpriteComponent>()->SetDoRender(true);
 		m_pGameOverObj->GetComponent<dae::SpriteComponent>()->SetDoRender(false);
+		m_Ingame = false;
 		break;
 	}
 
