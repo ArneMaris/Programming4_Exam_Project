@@ -122,6 +122,8 @@ void Fygar::Setup()
 {
 	float moveSpeed{ 30 };
 
+	static_cast<DigDugLevel*>(dae::SceneManager::GetInstance().GetActiveScene())->AddEnemy();
+
 	//put all enemies in layer 1 for easier collision checks ;D
 	m_GameObject->SetLayer(1);
 	m_GameObject->SetName(L"Fygar");

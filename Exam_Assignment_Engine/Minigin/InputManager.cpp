@@ -22,11 +22,9 @@ void dae::InputManager::CleanUp()
 
 bool dae::InputManager::ProcessInput()
 {
-	if (GameInfo::gameEnded) return true;
-
 	SDL_Event ev;
 	SDL_PollEvent(&ev);
-	if (ev.type == SDL_QUIT) return false;
+	if (ev.type == SDL_QUIT) return true;
 	ImGui_ImplSDL2_ProcessEvent(&ev); //make sure ImGui also gets in the event
 
 	//get the keyboardState and send it to all inputComponents to handle
@@ -56,7 +54,7 @@ bool dae::InputManager::ProcessInput()
 			if (m_GamepadConnected[id])
 				inputComp->HandleControllerInput(m_CurrentGpState[id], m_PreviousGpState[id]);
 	}
-	return true;
+	return false;
 }
 
 void dae::InputManager::SwapInputBuffer()

@@ -6,6 +6,7 @@
 #include "GridLevel.h"
 #include "Prefabs.h"
 #include "MenuAndHud.h"
+#include "DigDugLevel.h"
 
 void EnemyStates::Run::OnStateEnter()
 {
@@ -38,7 +39,7 @@ void EnemyStates::Run::InState()
 		m_pOwnerObject->GetComponent<dae::StateMachineComponent>()->SetToState(L"Ghost");
 	}
 
-	if (rand() % 250 == 0 && m_pOwnerObject->GetComponent<dae::StateMachineComponent>()->GetCurrentStateName() == L"Run")
+	if (rand() % 200 == 0 && m_pOwnerObject->GetComponent<dae::StateMachineComponent>()->GetCurrentStateName() == L"Run")
 	{
 		//this will only work on the fygars (intented)
 		if (m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"FygarAttack"))
@@ -209,6 +210,7 @@ void EnemyStates::Pop::OnStateEnter()
 				menuHudScript->AddScore(1000);
 	}
 	m_pOwnerObject->SetLifeTime(1.5f);
+	static_cast<DigDugLevel*>(dae::SceneManager::GetInstance().GetActiveScene())->RemoveEnemy();
 }
 
 void EnemyStates::Pop::OnStateExit()

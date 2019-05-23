@@ -24,14 +24,7 @@ void dae::SceneManager::Initialize()
 }
 
 void dae::SceneManager::Update()
-{
-	if (GameInfo::gameEnded)
-	{
-		auto activeScene = GetActiveScene();
-		activeScene->CleanAndReload();
-		GameInfo::gameEnded = false;
-		return;
-	}
+{  
 	for(const auto& scene : m_pScenes)
 	{
 		if (scene->GetIsActive())
@@ -95,7 +88,7 @@ void dae::SceneManager::CheckDeleteMarkings()
 
 void dae::SceneManager::ReloadActiveScene()
 {
-	GameInfo::gameEnded = true;
+	GetActiveScene()->CleanAndReload();
 }
 
 b2World* dae::SceneManager::GetPhysicsWorld()

@@ -149,8 +149,10 @@ void dae::Scene::FixedUpdate()
 void dae::Scene::Reload()
 {
 	m_IsInitialized = false;
+	SceneManager::GetInstance().SetInitializingScene(this);
 	Initialize();
 	ActivateGameObjects();
+	SceneManager::GetInstance().SetInitializingScene(nullptr );
 }
 
 
@@ -182,7 +184,6 @@ void dae::Scene::ActivateGameObjects()
 		gameObject->Initialize();
 	}
 	SortRenderingOrder();
-	GameInfo::gameEnded = false;
 }
 
 void dae::Scene::SortRenderingOrder()

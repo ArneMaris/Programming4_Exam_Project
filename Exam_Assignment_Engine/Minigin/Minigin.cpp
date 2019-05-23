@@ -53,9 +53,7 @@ void dae::Minigin::Run()
 	auto lastTime = std::chrono::high_resolution_clock::now();
 	float lag = 0.0;
 
-
-	bool doContinue = true;
-	while (doContinue)
+	while (!GameInfo::gameEnded)
 	{
 		auto currentTime = std::chrono::high_resolution_clock::now();
 		GameInfo::deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
@@ -63,7 +61,7 @@ void dae::Minigin::Run()
 		lag += GameInfo::deltaTime;
 
 		//process the input for this frame
-		doContinue = input.ProcessInput(); 
+		GameInfo::gameEnded = input.ProcessInput();
 
 		//new ImGui frame
 		ImGui_ImplSDL2_NewFrame(window);
@@ -93,7 +91,6 @@ void dae::Minigin::Run()
 
 	}
 
-	GameInfo::gameEnded = true;
 	Cleanup();
 }
 

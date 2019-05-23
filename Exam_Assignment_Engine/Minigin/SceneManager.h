@@ -35,6 +35,8 @@ namespace dae
 
 		void CleanUp();
 
+		void SetInitializingScene(Scene* scene) { m_InitializingScene = scene; };
+
 	private:
 		bool m_Reloading = false;
 		std::vector<Scene*> m_pScenes;
