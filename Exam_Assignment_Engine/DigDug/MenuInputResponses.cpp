@@ -18,18 +18,6 @@ void MenuInput::KeyDown::ExecuteOnRelease()
 {
 }
 
-void MenuInput::KeyLeft::ExecuteOnPress()
-{
-}
-
-void MenuInput::KeyRight::ExecuteOnPress()
-{
-}
-
-void MenuInput::KeyRight::ExecuteOnRelease()
-{
-}
-
 void MenuInput::Stick::ExecuteOnPress()
 {
 }

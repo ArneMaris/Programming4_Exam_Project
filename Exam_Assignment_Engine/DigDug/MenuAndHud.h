@@ -15,6 +15,10 @@ public:
 	void AddScore(int score);
 	void RemoveLife(bool playerOne = true);
 
+	void MoveDown();
+	void MoveUp();
+	void Enter();
+
 private:
 	int m_Score;
 	int m_Lifes;
@@ -24,5 +28,9 @@ private:
 	dae::TextComponent* m_pTextComp;
 	std::vector<dae::SpriteComponent*> m_pLifeSprites;
 	std::vector<dae::SpriteComponent*> m_pLifeSpritesPlayer2;
+
+	dae::GameObject* m_pSelectionObj;
+	dae::GameObject* m_pMainMenuObj;
+	dae::GameObject* m_pGameOverObj;
 };
 

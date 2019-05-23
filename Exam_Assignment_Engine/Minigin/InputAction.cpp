@@ -34,8 +34,7 @@ void dae::InputAction::HandleKeyBoardInput(const UINT8* keyBoardState, const UIN
 	{
 		if (keyBoardState[m_Scancode] == 1 && m_KeyHeld)
 		{
-			if (SceneManager::GetInstance().GetActiveScene() != nullptr)
-				m_pResponse->ExecuteOnHold({ 0,0 });
+			m_pResponse->ExecuteOnHold({ 0,0 });
 		}
 		if (keyBoardState[m_Scancode] == 0 && m_KeyHeld)
 		{
@@ -97,7 +96,6 @@ void dae::InputAction::HandleControllerInput(XINPUT_STATE& gamePadState, XINPUT_
 		}
 		else if (axis.Length() >= float32(0.1f) && prevAxis.Length() >= float32(0.1f))
 		{
-			if (SceneManager::GetInstance().GetActiveScene() != nullptr)
 				m_pResponse->ExecuteOnHold(axis);
 		}
 	}

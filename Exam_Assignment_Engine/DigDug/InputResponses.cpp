@@ -30,8 +30,11 @@ void MoveController::ExecuteOnPress()
 
 void MoveController::ExecuteOnHold(const b2Vec2 axisValues)
 {
+	if (dae::SceneManager::GetInstance().GetActiveScene() == nullptr) return;
+
 	b2Vec2 frontPos;
 	frontPos = m_pOwnerObject->GetTransform()->GetPosition();
+
 	auto level = dae::SceneManager::GetInstance().GetActiveScene()->GetLevels()[1];
 	float moveSpeed = static_cast<DigDugCharacter*>(m_pOwnerObject->GetComponent<dae::ScriptComponent>()->GetScript())->GetMoveSpeed();
 
@@ -91,6 +94,7 @@ void MoveUpKey::ExecuteOnPress()
 
 void MoveUpKey::ExecuteOnHold(const b2Vec2 axisValues)
 {
+	if (dae::SceneManager::GetInstance().GetActiveScene() == nullptr) return;
 	UNREFERENCED_PARAMETER(axisValues);
 	b2Vec2 frontPos;
 	frontPos = m_pOwnerObject->GetTransform()->GetPosition();
@@ -118,6 +122,7 @@ void MoveDownKey::ExecuteOnPress()
 
 void MoveDownKey::ExecuteOnHold(const b2Vec2 axisValues)
 {
+	if (dae::SceneManager::GetInstance().GetActiveScene() == nullptr) return;
 	UNREFERENCED_PARAMETER(axisValues);
 	b2Vec2 frontPos;
 	frontPos = m_pOwnerObject->GetTransform()->GetPosition();
@@ -145,6 +150,7 @@ void MoveLeftKey::ExecuteOnPress()
 
 void MoveLeftKey::ExecuteOnHold(const b2Vec2 axisValues)
 {
+	if (dae::SceneManager::GetInstance().GetActiveScene() == nullptr) return;
 	UNREFERENCED_PARAMETER(axisValues);
 	b2Vec2 frontPos;
 	frontPos = m_pOwnerObject->GetTransform()->GetPosition();
@@ -170,6 +176,7 @@ void MoveRightKey::ExecuteOnPress()
 
 void MoveRightKey::ExecuteOnHold(const b2Vec2 axisValues)
 {
+	if (dae::SceneManager::GetInstance().GetActiveScene() == nullptr) return;
 	UNREFERENCED_PARAMETER(axisValues);
 	b2Vec2 frontPos;
 	frontPos = m_pOwnerObject->GetTransform()->GetPosition();

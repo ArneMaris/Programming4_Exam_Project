@@ -47,6 +47,24 @@ MenuAndHud::MenuAndHud()
 		dae::SceneManager::GetInstance().GetActiveScene()->AddGameObject(lifeObj);
 		m_pLifeSpritesPlayer2 = lifeObj->GetComponents<dae::SpriteComponent>();
 	}
+
+	m_pSelectionObj = new dae::GameObject();
+	m_pSelectionObj->AddComponent(new dae::SpriteComponent("MenuSelection.png"));
+	m_pSelectionObj->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth /2 - 210), float(dae::GameInfo::windowHeight / 2 +50));
+	dae::SceneManager::GetInstance().GetActiveScene()->AddGameObject(m_pSelectionObj);
+
+	m_pMainMenuObj = new dae::GameObject();
+	m_pMainMenuObj->AddComponent(new dae::SpriteComponent("StartMenu.png"));
+	m_pMainMenuObj->SetRenderOrder(0);
+	m_pMainMenuObj->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth / 2), float(dae::GameInfo::windowHeight / 2));
+	dae::SceneManager::GetInstance().GetActiveScene()->AddGameObject(m_pMainMenuObj);
+
+	m_pGameOverObj = new dae::GameObject();
+	m_pGameOverObj->AddComponent(new dae::SpriteComponent("GameOverMenu.png"));
+	m_pGameOverObj->SetRenderOrder(0);
+	m_pGameOverObj->GetComponent<dae::SpriteComponent>()->SetDoRender(false);
+	m_pGameOverObj->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth / 2), float(dae::GameInfo::windowHeight / 2));
+	dae::SceneManager::GetInstance().GetActiveScene()->AddGameObject(m_pGameOverObj);
 }
 
 
@@ -140,4 +158,16 @@ void MenuAndHud::RemoveLife(bool playerOne)
 			m_pLifeSpritesPlayer2[m_LifesPlayer2]->SetDoRender(false);
 		}
 	}
+}
+
+void MenuAndHud::MoveDown()
+{
+}
+
+void MenuAndHud::MoveUp()
+{
+}
+
+void MenuAndHud::Enter()
+{
 }
