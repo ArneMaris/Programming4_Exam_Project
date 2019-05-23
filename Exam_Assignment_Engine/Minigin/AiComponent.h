@@ -30,8 +30,6 @@ namespace dae
 		bool IsActive() const { return m_Active; };
 		bool GetCanReachGoal() const { return (m_Active == true ? m_CanReachGoal : false); };
 
-		void SetScene(Scene* scene) { m_pScene = scene; };
-
 	protected:
 		virtual void Update() override;
 		virtual void Initialize() override;

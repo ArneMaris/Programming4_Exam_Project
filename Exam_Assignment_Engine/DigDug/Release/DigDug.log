@@ -1,0 +1,17 @@
+﻿  pch.cpp
+  CollisionResponses.cpp
+  DigDugCharacter.cpp
+  EnemyStates.cpp
+  GlobalScene.cpp
+  MenuAndHud.cpp
+  MenuInputResponses.cpp
+  Prefabs.cpp
+  Game.cpp
+  InputResponses.cpp
+  DigDugStates.cpp
+  DigDugLevel.cpp
+     Creating library E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Release\DigDug.lib and object E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Release\DigDug.exp
+  Generating code
+  All 6586 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  DigDug.vcxproj -> E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Release\DigDug.exe

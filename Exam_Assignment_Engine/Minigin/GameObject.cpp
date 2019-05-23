@@ -31,9 +31,10 @@ dae::GameObject::GameObject(const std::wstring & name)
 
 dae::GameObject::~GameObject()
 {
-	for (auto it = m_pComponents.begin(); it != m_pComponents.end(); ++it)
+	for (auto& comp : m_pComponents)
 	{
-		delete (*it);
+		delete comp;
+		comp = nullptr;
 	}
 	m_pComponents.clear();
 	GameInfo::amountOfGameObjects--;
@@ -136,6 +137,8 @@ bool dae::GameObject::CheckIfAlreadyHasComponent(BaseComponent * compToAdd)
 	else if (dynamic_cast<ColliderComponent*>(compToAdd) && GetComponent<ColliderComponent>() != nullptr)
 		return true;
 	else if (dynamic_cast<InputComponent*>(compToAdd) && GetComponent<InputComponent>() != nullptr)
+		return true;
+	else if (dynamic_cast<AiComponent*>(compToAdd) && GetComponent<AiComponent>() != nullptr)
 		return true;
 
 	return false;

@@ -13,7 +13,7 @@ namespace dae
 		// only use this if you know what ur doing with box2D
 		b2Body* GetPhysicsBody() const;
 
-		~PhysicsBodyComponent() {m_Body->SetUserData(nullptr);};
+		~PhysicsBodyComponent();
 		PhysicsBodyComponent(const PhysicsBodyComponent& other) = delete;
 		PhysicsBodyComponent(PhysicsBodyComponent&& other) = delete;
 		PhysicsBodyComponent& operator=(const PhysicsBodyComponent& other) = delete;

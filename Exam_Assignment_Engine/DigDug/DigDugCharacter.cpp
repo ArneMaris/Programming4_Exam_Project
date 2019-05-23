@@ -9,7 +9,7 @@
 
 
 DigDugCharacter::DigDugCharacter()
-	:m_MoveSpeed{100}
+	:m_MoveSpeed{70}
 	,m_Digging{false}
 	,m_PrevTile{nullptr}
 	, m_DeadTimer{0}
@@ -84,11 +84,7 @@ void DigDugCharacter::Update()
 		{
 			m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"Gone");
 			static_cast<MenuAndHud*>(dae::GetObjByNameGlobalScene(L"MenuHud")->GetComponent<dae::ScriptComponent>()->GetScript())->RemoveLife();
-			m_pOwnerObject->GetTransform()->SetPosition(m_StartPos);
-			m_pStateMachineComp->SetToState(L"Idle");
-			m_pOwnerObject->GetTransform()->CancelMoveToPos(0);
-			m_pOwnerObject->GetComponent<dae::InputComponent>()->EnableInput();
-			m_DeadTimer = 0;
+			m_DeadTimer = -99999;
 		}
 
 	}

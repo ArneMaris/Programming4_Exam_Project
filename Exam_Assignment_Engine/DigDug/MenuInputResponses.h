@@ -35,6 +35,20 @@ namespace MenuInput
 		virtual void ExecuteOnPress() override;
 		virtual void ExecuteOnHold(const b2Vec2 axisValues) override;
 		virtual void ExecuteOnRelease() override;
+
+	private:
+		bool m_Pressed;
+	};
+
+	class Confirm final : public dae::InputResponse
+	{
+	public:
+		Confirm() = default;
+		~Confirm() = default;
+
+		//override these 3 functions to handle the input with your custom actions
+		virtual void ExecuteOnPress() override;
+		virtual void ExecuteOnRelease() override;
 	};
 
 }

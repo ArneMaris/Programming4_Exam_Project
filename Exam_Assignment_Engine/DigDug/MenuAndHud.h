@@ -5,6 +5,15 @@
 class MenuAndHud : public dae::Script
 {
 public:
+	enum Mode
+	{
+		single,
+		coop,
+		versus,
+		retry,
+		exit
+	};
+
 	MenuAndHud();
 	~MenuAndHud() = default;
 	virtual void Initialize() override;
@@ -17,13 +26,17 @@ public:
 
 	void MoveDown();
 	void MoveUp();
-	void Enter();
+	void Confirm();
+
+	bool GetIsTwoPlayers() const { return m_TwoPlayers; };
 
 private:
 	int m_Score;
 	int m_Lifes;
 	int m_LifesPlayer2;
 	bool m_TwoPlayers;
+
+	bool m_Ingame;
 
 	dae::TextComponent* m_pTextComp;
 	std::vector<dae::SpriteComponent*> m_pLifeSprites;
@@ -32,5 +45,7 @@ private:
 	dae::GameObject* m_pSelectionObj;
 	dae::GameObject* m_pMainMenuObj;
 	dae::GameObject* m_pGameOverObj;
+
+	Mode m_CurrentMode;
 };
 

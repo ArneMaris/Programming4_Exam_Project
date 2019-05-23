@@ -13,6 +13,7 @@ dae::Scene::Scene(const std::wstring& name, const b2Vec2& gravity)
 	, m_IsInitialized{false}
 	, m_IsActive { true }
 	, m_Gravity{gravity}
+	, m_pPhysicsWorld{nullptr}
 { 
 }
 
@@ -30,8 +31,8 @@ void dae::Scene::PreparePhysics()
 dae::Scene::~Scene()
 {
 	Cleanup();
-	delete m_CollCallbacks;
 	delete m_pPhysicsWorld;
+	delete m_CollCallbacks;
 }
 
 void dae::Scene::Cleanup()
@@ -61,13 +62,6 @@ void dae::Scene::Cleanup()
 
 	InputManager::GetInstance().CleanUp();
 }
-
-void dae::Scene::CleanAndReload()
-{
-	Cleanup();
-	Reload();
-}
-
 
 void dae::Scene::AddGameObject(GameObject* object)
 {
@@ -146,13 +140,13 @@ void dae::Scene::FixedUpdate()
 	}
 }
 
-void dae::Scene::Reload()
+void dae::Scene::Load()
 {
 	m_IsInitialized = false;
-	SceneManager::GetInstance().SetInitializingScene(this);
+	if (m_pPhysicsWorld == nullptr)
+		PreparePhysics();
 	Initialize();
 	ActivateGameObjects();
-	SceneManager::GetInstance().SetInitializingScene(nullptr );
 }
 
 
@@ -161,9 +155,15 @@ bool dae::Scene::GetIsActive() const
 	return m_IsActive;
 }
 
-void dae::Scene::SetIsActive(bool value)
+void dae::Scene::SetIsActive(bool value, bool runTime)
 {
 	m_IsActive = value;
+	if (!m_IsInitialized && m_IsActive && runTime)
+	{
+		SceneManager::GetInstance().SetInitializingScene(this);
+		Load();
+		SceneManager::GetInstance().SetInitializingScene(nullptr);
+	}
 }
 
 b2World* dae::Scene::GetPhysicsWorld() const
@@ -179,8 +179,6 @@ void dae::Scene::ActivateGameObjects()
 	}
 	for (auto& gameObject : m_pObjects)
 	{
-		if (gameObject->GetComponent<AiComponent>() != nullptr)
-			gameObject->GetComponent<AiComponent>()->SetScene(this);
 		gameObject->Initialize();
 	}
 	SortRenderingOrder();

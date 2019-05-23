@@ -29,6 +29,9 @@ public:
 	~Fygar() = default;
 
 	void Setup() override;
+
+	void BuildPlayerFygar();
+	void BuildEnemyFygar();
 };
 
 class FygarFlame : public dae::Prefab

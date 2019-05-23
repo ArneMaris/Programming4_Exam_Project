@@ -2,18 +2,13 @@
 #include "MenuAndHud.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
+#include "MenuInputResponses.h"
 
 MenuAndHud::MenuAndHud()
 	:m_Score{0}
 	,m_Lifes{3}
 	,m_LifesPlayer2{3}
 {
-
-	if (dae::GetObjByNameActiveScene(L"DigDug2") != nullptr)
-		m_TwoPlayers = true;
-	else
-		m_TwoPlayers = false;
-
 	auto font = dae::ResourceManager::GetInstance().LoadFont("ConnectionSerif.otf", 35);
 
 	auto texObj = new dae::GameObject();
@@ -33,24 +28,30 @@ MenuAndHud::MenuAndHud()
 	lifeObj->AddComponent(new dae::SpriteComponent("LifeIcon.png"));
 	lifeObj->AddComponent(new dae::SpriteComponent("LifeIcon.png"));
 	lifeObj->AddComponent(new dae::SpriteComponent("LifeIcon.png"));
+	for (auto& spriteComp : lifeObj->GetComponents<dae::SpriteComponent>())
+		spriteComp->SetDoRender(false);
 	lifeObj->GetTransform()->SetPosition(240, 60);
 	dae::SceneManager::GetInstance().GetActiveScene()->AddGameObject(lifeObj);
 	m_pLifeSprites = lifeObj->GetComponents<dae::SpriteComponent>();
 
-	if (m_TwoPlayers)
-	{
-		lifeObj = new dae::GameObject();
-		lifeObj->AddComponent(new dae::SpriteComponent("LifeIcon.png"));
-		lifeObj->AddComponent(new dae::SpriteComponent("LifeIcon.png"));
-		lifeObj->AddComponent(new dae::SpriteComponent("LifeIcon.png"));
-		lifeObj->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth - 240), 60);
-		dae::SceneManager::GetInstance().GetActiveScene()->AddGameObject(lifeObj);
-		m_pLifeSpritesPlayer2 = lifeObj->GetComponents<dae::SpriteComponent>();
-	}
+	lifeObj = new dae::GameObject();
+	lifeObj->AddComponent(new dae::SpriteComponent("LifeIcon.png"));
+	lifeObj->AddComponent(new dae::SpriteComponent("LifeIcon.png"));
+	lifeObj->AddComponent(new dae::SpriteComponent("LifeIcon.png"));
+	for (auto& spriteComp : lifeObj->GetComponents<dae::SpriteComponent>())
+		spriteComp->SetDoRender(false);
+	lifeObj->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth - 240), 60);
+	dae::SceneManager::GetInstance().GetActiveScene()->AddGameObject(lifeObj);
+	m_pLifeSpritesPlayer2 = lifeObj->GetComponents<dae::SpriteComponent>();
 
 	m_pSelectionObj = new dae::GameObject();
 	m_pSelectionObj->AddComponent(new dae::SpriteComponent("MenuSelection.png"));
 	m_pSelectionObj->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth /2 - 210), float(dae::GameInfo::windowHeight / 2 +50));
+	m_pSelectionObj->AddComponent(new dae::InputComponent(0, true));
+	m_pSelectionObj->GetComponent<dae::InputComponent>()->AddInputAction(new MenuInput::KeyUp, SDLK_w, dae::ControllerInput::DpadUp);
+	m_pSelectionObj->GetComponent<dae::InputComponent>()->AddInputAction(new MenuInput::KeyDown, SDLK_s, dae::ControllerInput::DpadDown);
+	m_pSelectionObj->GetComponent<dae::InputComponent>()->AddInputAction(new MenuInput::Stick, dae::ControllerInput::JoyStickLeft);
+	m_pSelectionObj->GetComponent<dae::InputComponent>()->AddInputAction(new MenuInput::Confirm, SDLK_SPACE, dae::ControllerInput::ButtonA);
 	dae::SceneManager::GetInstance().GetActiveScene()->AddGameObject(m_pSelectionObj);
 
 	m_pMainMenuObj = new dae::GameObject();
@@ -76,8 +77,14 @@ void MenuAndHud::Initialize()
 	{
 		spr->SetSpriteOffset({ xOffset,0 });
 		spr->SetScale({ 2, 2 });
-		spr->SetDoRender(true);
 		xOffset += 35;
+	}
+	xOffset = 0;
+	for (auto& spr : m_pLifeSpritesPlayer2)
+	{
+		spr->SetSpriteOffset({ xOffset,0 });
+		spr->SetScale({ 2, 2 });
+		xOffset -= 35;
 	}
 }
 
@@ -111,24 +118,41 @@ void MenuAndHud::RemoveLife(bool playerOne)
 		{
 			if (m_TwoPlayers)
 			{
-				if (m_LifesPlayer2 == 0)
+				//other digdug already dead, gameOver
+				if (dae::GetObjByNameActiveScene(L"DigDug2") == nullptr)
 				{
-					//UR GAME OVER BITCH
+					dae::SceneManager::GetInstance().UnloadAllScenes();
+					m_pGameOverObj->GetComponent<dae::SpriteComponent>()->SetDoRender(true);
+					m_Ingame = false;
 				}
-				else if (dae::GetObjByNameActiveScene(L"DigDug2") != nullptr)
-				{
-					dae::GetObjByNameActiveScene(L"DigDug2")->MarkForDelete();
-				}
+				else
+					dae::GetObjByNameActiveScene(L"DigDug")->MarkForDelete();
+				//if other digdug not dead just delete this one
 			}
 			else
 			{
-
-				//UR GAME OVER BITCH
+				dae::SceneManager::GetInstance().UnloadAllScenes();
+				m_pGameOverObj->GetComponent<dae::SpriteComponent>()->SetDoRender(true);
 			}
+
 		}
-		else if (m_Lifes > -1)
+		else
 		{
 			m_pLifeSprites[m_Lifes]->SetDoRender(false);
+
+			if (m_TwoPlayers)
+			{
+				//other digdug already dead, reload scene
+				if (dae::GetObjByNameActiveScene(L"DigDug2") == nullptr)
+					dae::SceneManager::GetInstance().ReloadActiveScene();
+				else
+					dae::GetObjByNameActiveScene(L"DigDug")->MarkForDelete();
+					//if other digdug not dead just delete this one
+			}
+			else
+			{
+				dae::SceneManager::GetInstance().ReloadActiveScene();
+			}
 		}
 	}
 	else
@@ -136,38 +160,114 @@ void MenuAndHud::RemoveLife(bool playerOne)
 		--m_LifesPlayer2;
 		if (m_LifesPlayer2 == 0)
 		{
-			if (m_TwoPlayers)
+			//other digdug already dead, gameOver
+			if (dae::GetObjByNameActiveScene(L"DigDug") == nullptr)
 			{
-				if (m_Lifes == 0)
-				{
-					//UR GAME OVER BITCH
-				}
-				else
-				{
-					dae::GetObjByNameActiveScene(L"DigDug")->MarkForDelete();
-				}
+				dae::SceneManager::GetInstance().UnloadAllScenes();
+				m_pGameOverObj->GetComponent<dae::SpriteComponent>()->SetDoRender(true);
+				m_Ingame = false;
 			}
-			else 
-			{
-
-				//UR GAME OVER BITCH
-			}
+			else
+				dae::GetObjByNameActiveScene(L"DigDug2")->MarkForDelete();
+			//if other digdug not dead just delete this one
 		}
-		else if(m_LifesPlayer2 > -1)
+		else
 		{
-			m_pLifeSpritesPlayer2[m_LifesPlayer2]->SetDoRender(false);
+			m_pLifeSpritesPlayer2[m_LifesPlayer2 - 1]->SetDoRender(false);
+
+				//other digdug already dead, reload scene
+				if (dae::GetObjByNameActiveScene(L"DigDug") == nullptr)
+					dae::SceneManager::GetInstance().ReloadActiveScene();
+				else
+					dae::GetObjByNameActiveScene(L"DigDug2")->MarkForDelete();
+				//if other digdug not dead just delete this one
 		}
 	}
 }
 
 void MenuAndHud::MoveDown()
 {
+	switch (m_CurrentMode)
+	{
+	case MenuAndHud::single:
+		m_pSelectionObj->GetTransform()->Translate({ 0,-53 });
+		m_CurrentMode = coop;
+		break;
+	case MenuAndHud::coop:
+		m_pSelectionObj->GetTransform()->Translate({ 0,-53 });
+		m_CurrentMode = versus;
+		break;
+	case MenuAndHud::retry:
+		m_pSelectionObj->GetTransform()->Translate({ 0,-53 });
+		m_CurrentMode = exit;
+		break;
+	}
 }
 
 void MenuAndHud::MoveUp()
 {
+	switch (m_CurrentMode)
+	{
+	case MenuAndHud::coop:
+		m_pSelectionObj->GetTransform()->Translate({ 0,53 });
+		m_CurrentMode = single;
+		break;
+	case MenuAndHud::versus:
+		m_pSelectionObj->GetTransform()->Translate({ 0,53 });
+		m_CurrentMode = coop;
+		break;
+	case MenuAndHud::exit:
+		m_pSelectionObj->GetTransform()->Translate({ 0,53 });
+		m_CurrentMode = retry;
+		break;
+	}
 }
 
-void MenuAndHud::Enter()
+void MenuAndHud::Confirm()
 {
+	m_Ingame = true;
+	m_TwoPlayers = false;
+	switch (m_CurrentMode)
+	{
+	case MenuAndHud::coop:
+		m_TwoPlayers = true;
+		m_LifesPlayer2 = 3;
+		for (auto& sprite : m_pLifeSpritesPlayer2)
+		{
+			sprite->SetDoRender(true);
+		}
+	case MenuAndHud::single:
+		m_pMainMenuObj->GetComponent<dae::SpriteComponent>()->SetDoRender(false);
+		m_CurrentMode = retry;
+		m_Lifes = 3;
+		for (auto& sprite : m_pLifeSprites)
+		{
+			sprite->SetDoRender(true);
+		}
+		dae::SceneManager::GetInstance().SetRandomSceneActive();
+		break;
+	case MenuAndHud::versus:
+		m_pMainMenuObj->GetComponent<dae::SpriteComponent>()->SetDoRender(false);
+		m_CurrentMode = retry;
+		m_Lifes = 3;
+		m_TwoPlayers = false;
+		for (auto& sprite : m_pLifeSprites)
+		{
+			sprite->SetDoRender(true);
+		}
+		dae::SceneManager::GetInstance().SetRandomSceneActive();
+		break;
+	case MenuAndHud::retry:
+		m_pGameOverObj->GetComponent<dae::SpriteComponent>()->SetDoRender(false);
+		dae::SceneManager::GetInstance().SetRandomSceneActive();
+		break;
+	case MenuAndHud::exit:
+		m_CurrentMode = single;
+		m_pSelectionObj->GetTransform()->Translate({ 0,53 });
+		m_pMainMenuObj->GetComponent<dae::SpriteComponent>()->SetDoRender(true);
+		m_pGameOverObj->GetComponent<dae::SpriteComponent>()->SetDoRender(false);
+		break;
+	}
+
+	
 }

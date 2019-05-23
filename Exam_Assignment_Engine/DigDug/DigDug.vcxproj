@@ -100,6 +100,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\ImGui\lib\DebugLib\x86;$(SolutionDir)3rdParty\Box2D\DebugLib\x86;$(SolutionDir)3rdParty\SDL2_ttf\lib\x86;$(SolutionDir)3rdParty\SDL2_image\lib\x86;$(SolutionDir)3rdParty\SDL2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>ImGui.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -119,6 +120,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\ImGui\lib\DebugLib\x64;$(SolutionDir)3rdParty\Box2D\DebugLib\x64;$(SolutionDir)3rdParty\SDL2_ttf\lib\x64;$(SolutionDir)3rdParty\SDL2_image\lib\x64;$(SolutionDir)3rdParty\SDL2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>ImGui.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -142,6 +144,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\ImGui\lib\ReleaseLib\x86;$(SolutionDir)3rdParty\Box2D\ReleaseLib\x86;$(SolutionDir)3rdParty\SDL2_ttf\lib\x86;$(SolutionDir)3rdParty\SDL2_image\lib\x86;$(SolutionDir)3rdParty\SDL2\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>ImGui.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -165,6 +168,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)3rdParty\ImGui\lib\ReleaseLib\x64;$(SolutionDir)3rdParty\Box2D\ReleaseLib\x64;$(SolutionDir)3rdParty\SDL2_ttf\lib\x64;$(SolutionDir)3rdParty\SDL2_image\lib\x64;$(SolutionDir)3rdParty\SDL2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>ImGui.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_ttf.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -172,22 +176,27 @@
     <ClInclude Include="DigDugCharacter.h" />
     <ClInclude Include="EnemyStates.h" />
     <ClInclude Include="GlobalScene.h" />
+    <ClInclude Include="InputResponsesPlayerFygar.h" />
     <ClInclude Include="MenuAndHud.h" />
     <ClInclude Include="MenuInputResponses.h" />
+    <ClInclude Include="PlayerFygarStates.h" />
     <ClInclude Include="Prefabs.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InputResponses.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="DigDugStates.h" />
     <ClInclude Include="DigDugLevel.h" />
+    <ClInclude Include="StoneScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CollisionResponses.cpp" />
     <ClCompile Include="DigDugCharacter.cpp" />
     <ClCompile Include="EnemyStates.cpp" />
     <ClCompile Include="GlobalScene.cpp" />
+    <ClCompile Include="InputResponsesPlayerFygar.cpp" />
     <ClCompile Include="MenuAndHud.cpp" />
     <ClCompile Include="MenuInputResponses.cpp" />
+    <ClCompile Include="PlayerFygarStates.cpp" />
     <ClCompile Include="Prefabs.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputResponses.cpp" />
@@ -199,6 +208,7 @@
     </ClCompile>
     <ClCompile Include="DigDugStates.cpp" />
     <ClCompile Include="DigDugLevel.cpp" />
+    <ClCompile Include="StoneScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Minigin\Minigin.vcxproj">

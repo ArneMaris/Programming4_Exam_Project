@@ -195,4 +195,3 @@ void MoveRightKey::ExecuteOnHold(const b2Vec2 axisValues)
 void MoveRightKey::ExecuteOnRelease()
 {
 }
-

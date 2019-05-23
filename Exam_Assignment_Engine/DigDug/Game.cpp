@@ -17,7 +17,7 @@ void Game::SetupGame()
 {
 	dae::SceneManager& sceneManager = dae::SceneManager::GetInstance();
 	sceneManager.AddGlobalScene(new GlobalScene());
-	sceneManager.AddScene(new DigDugLevel("Level1"), true);
+	sceneManager.AddScene(new DigDugLevel("Level1"), false);
 	sceneManager.AddScene(new DigDugLevel("Level2"), false);
 	sceneManager.AddScene(new DigDugLevel("Level3"), false);
 	sceneManager.AddScene(new DigDugLevel("Level4"), false);

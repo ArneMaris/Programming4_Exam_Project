@@ -48,3 +48,36 @@ void DigDugStates::Dead::OnStateExit()
 void DigDugStates::Dead::InState()
 {
 }
+
+void DigDugStates::Dragged::OnStateEnter()
+{
+	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"Dragged");
+}
+
+void DigDugStates::Dragged::OnStateExit()
+{
+}
+
+void DigDugStates::Dragged::InState()
+{
+	auto newHeight = m_pOwnerObject->GetTransform()->GetPosition().y;
+	if (!(newHeight < m_Height))
+	{
+		m_pOwnerObject->GetComponent<dae::StateMachineComponent>()->SetToState(L"Squashed");
+	}
+}
+
+void DigDugStates::Squashed::OnStateEnter()
+{
+	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"DieStone");
+	m_pOwnerObject->GetComponent<dae::InputComponent>()->DisableInput();
+}
+
+void DigDugStates::Squashed::OnStateExit()
+{
+}
+
+void DigDugStates::Squashed::InState()
+{
+}
+

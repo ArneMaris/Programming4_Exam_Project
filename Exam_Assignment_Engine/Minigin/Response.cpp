@@ -26,7 +26,7 @@ void dae::Response::RemoveObserver(std::shared_ptr<Observer> observer)
 	}
 	else
 	{
-		Logger::GetInstance().LogWarning(L"Trying to remove a non existing shape!");
+		Logger::GetInstance().LogWarning(L"Trying to remove a non existing observer!");
 	}
 }
 
@@ -34,7 +34,7 @@ void dae::Response::Notify(const NotifyEvent& notifyEvent)
 {
 	for (auto& obs : m_pObservers)
 	{
-		obs->OnNotify(notifyEvent, m_ResponseID);
+			obs->OnNotify(notifyEvent, m_ResponseID);
 	}
 }
 

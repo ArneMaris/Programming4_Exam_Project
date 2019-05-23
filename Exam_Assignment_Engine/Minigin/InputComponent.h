@@ -27,6 +27,8 @@ namespace dae
 		void DisableInput() {m_Enabled = false;};
 		void EnableInput() { m_Enabled = true; };
 
+		void SetScene(Scene* scene) { m_pScene = scene; };
+
 	protected:
 		virtual void Update() override;
 		virtual void Initialize() override;
@@ -42,6 +44,8 @@ namespace dae
 		bool m_Enabled;
 
 		std::vector<InputAction*> m_pInputActions;
+
+		Scene* m_pScene;
 	};
 
 }

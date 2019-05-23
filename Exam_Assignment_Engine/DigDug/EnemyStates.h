@@ -17,6 +17,7 @@ namespace EnemyStates
 		float m_PrevXPos = -999;
 	};
 
+
 	class Ghost : public dae::State
 	{
 	public:
@@ -27,6 +28,8 @@ namespace EnemyStates
 		virtual void OnStateExit() override;
 		virtual void InState() override;
 	};
+
+
 
 	class BlowUpOne : public dae::State
 	{
@@ -84,6 +87,29 @@ namespace EnemyStates
 	public:
 		Attacking() = default;
 		~Attacking() = default;
+
+		virtual void OnStateEnter() override;
+		virtual void OnStateExit() override;
+		virtual void InState() override;
+	};
+
+	class Dragged : public dae::State
+	{
+	public:
+		Dragged() = default;
+		~Dragged() = default;
+
+		virtual void OnStateEnter() override;
+		virtual void OnStateExit() override;
+		virtual void InState() override;
+	private:
+		float m_Height;
+	};
+	class Squashed : public dae::State
+	{
+	public:
+		Squashed() = default;
+		~Squashed() = default;
 
 		virtual void OnStateEnter() override;
 		virtual void OnStateExit() override;

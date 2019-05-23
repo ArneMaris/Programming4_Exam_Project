@@ -59,6 +59,15 @@
     <ClInclude Include="MenuInputResponses.h">
       <Filter>YourFiles\Responses</Filter>
     </ClInclude>
+    <ClInclude Include="InputResponsesPlayerFygar.h">
+      <Filter>YourFiles\Responses</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerFygarStates.h">
+      <Filter>YourFiles\States</Filter>
+    </ClInclude>
+    <ClInclude Include="StoneScript.h">
+      <Filter>YourFiles\PrefabsScripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -96,6 +105,15 @@
     </ClCompile>
     <ClCompile Include="MenuInputResponses.cpp">
       <Filter>YourFiles\Responses</Filter>
+    </ClCompile>
+    <ClCompile Include="InputResponsesPlayerFygar.cpp">
+      <Filter>YourFiles\Responses</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerFygarStates.cpp">
+      <Filter>YourFiles\States</Filter>
+    </ClCompile>
+    <ClCompile Include="StoneScript.cpp">
+      <Filter>YourFiles\PrefabsScripts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

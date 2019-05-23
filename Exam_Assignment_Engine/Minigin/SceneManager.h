@@ -20,6 +20,8 @@ namespace dae
 
 		void SetNextSceneActive();
 		void SetPreviousSceneActive();
+		void SetRandomSceneActive();
+		void UnloadAllScenes();
 
 		void Initialize();
 		void Update();
@@ -27,7 +29,6 @@ namespace dae
 		void FixedUpdate();
 		void CheckDeleteMarkings();
 
-		void SetReloaded() { m_Reloading = false; };
 
 		void ReloadActiveScene();
 
@@ -38,12 +39,14 @@ namespace dae
 		void SetInitializingScene(Scene* scene) { m_InitializingScene = scene; };
 
 	private:
-		bool m_Reloading = false;
 		std::vector<Scene*> m_pScenes;
 		Scene* m_GlobalScene = nullptr;
 		bool m_RenderGlobalSceneFront = false;
 
+		bool m_Reloading;
+
 		Scene* m_InitializingScene = nullptr;
+		Scene* m_CleanScene = nullptr;
 	};
 
 }

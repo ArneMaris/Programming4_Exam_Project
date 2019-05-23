@@ -61,6 +61,16 @@ bool dae::GridTile::HasConnectionToTile(unsigned int toTileId)
 	return false;
 }
 
+bool dae::GridTile::HasConnectionToTile(GridTile * toTile)
+{
+	for (auto& con : m_pConnections)
+	{
+		if (toTile->m_Id == con->GetBack()->m_Id)
+			return true;
+	}
+	return false;
+}
+
 const std::string dae::GridTile::GetTextureName()
 {
 	return ResourceManager::GetInstance().GetTextureName(m_pTexture);

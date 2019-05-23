@@ -74,11 +74,12 @@ void EnemyStates::Ghost::InState()
 	}
 }
 
+
 void EnemyStates::BlowUpOne::OnStateEnter()
 {
 	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"BlowUpOne");
 	m_pOwnerObject->GetComponent<dae::AiComponent>()->SetActive(false);
-	m_DeflateTimer = 2;
+	m_DeflateTimer = 1;
 }
 
 void EnemyStates::BlowUpOne::OnStateExit()
@@ -98,7 +99,7 @@ void EnemyStates::BlowUpOne::InState()
 void EnemyStates::BlowUpTwo::OnStateEnter()
 {
 	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"BlowUpTwo");
-	m_DeflateTimer = 1.7f;
+	m_DeflateTimer = 1.4f;
 }
 
 void EnemyStates::BlowUpTwo::OnStateExit()
@@ -118,7 +119,7 @@ void EnemyStates::BlowUpTwo::InState()
 void EnemyStates::BlowUpThree::OnStateEnter()
 {
 	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"BlowUpThree");
-	m_DeflateTimer = 1.4f;
+	m_DeflateTimer = 1.8f;
 }
 
 void EnemyStates::BlowUpThree::OnStateExit()
@@ -238,4 +239,41 @@ void EnemyStates::Attacking::OnStateExit()
 void EnemyStates::Attacking::InState()
 {
 	
+}
+
+void EnemyStates::Dragged::OnStateEnter()
+{
+	m_Height = m_pOwnerObject->GetTransform()->GetPosition().y;
+	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"BlowUpOne");
+	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->SetPaused(true);
+	if (m_pOwnerObject->GetComponent<dae::AiComponent>() != nullptr)
+		m_pOwnerObject->GetComponent<dae::AiComponent>()->SetActive(false);
+	if (m_pOwnerObject->GetComponent<dae::InputComponent>() != nullptr)
+		m_pOwnerObject->GetComponent<dae::InputComponent>()->DisableInput();
+}
+
+void EnemyStates::Dragged::OnStateExit()
+{
+}
+
+void EnemyStates::Dragged::InState()
+{
+	auto newHeight = m_pOwnerObject->GetTransform()->GetPosition().y;
+	if (!(newHeight < m_Height))
+	{
+		m_pOwnerObject->GetComponent<dae::StateMachineComponent>()->SetToState(L"Squashed");
+	}
+}
+
+void EnemyStates::Squashed::OnStateEnter()
+{
+	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"DieStone");
+}
+
+void EnemyStates::Squashed::OnStateExit()
+{
+}
+
+void EnemyStates::Squashed::InState()
+{
 }

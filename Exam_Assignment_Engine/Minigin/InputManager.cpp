@@ -17,7 +17,14 @@ dae::InputManager::InputManager()
 
 void dae::InputManager::CleanUp()
 {
-	m_pInputComponents.clear();
+	if (SceneManager::GetInstance().GetGlobalScene() != nullptr)
+	{
+		auto comp = m_pInputComponents.front();
+		m_pInputComponents.clear();
+		m_pInputComponents.push_back(comp);
+	}
+	else
+		m_pInputComponents.clear();
 }
 
 bool dae::InputManager::ProcessInput()
@@ -50,7 +57,7 @@ bool dae::InputManager::ProcessInput()
 	for (auto& inputComp : m_pInputComponents)
 	{
 		int id = inputComp->m_ControllerId;
-		if (id >= 0)
+		if (id >= 0 && id < MAX_CONTROLLERS)
 			if (m_GamepadConnected[id])
 				inputComp->HandleControllerInput(m_CurrentGpState[id], m_PreviousGpState[id]);
 	}

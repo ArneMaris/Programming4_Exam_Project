@@ -52,6 +52,12 @@ b2Body* dae::PhysicsBodyComponent::GetPhysicsBody() const
 	return m_Body;
 }
 
+dae::PhysicsBodyComponent::~PhysicsBodyComponent()
+{
+	m_Body->SetUserData(nullptr);
+	m_pPhysicsWorldRef->DestroyBody(m_Body);
+}
+
 void dae::PhysicsBodyComponent::Update()
 {
 

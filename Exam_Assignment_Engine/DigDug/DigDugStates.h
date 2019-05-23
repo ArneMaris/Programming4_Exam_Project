@@ -36,4 +36,27 @@ namespace DigDugStates
 		virtual void OnStateExit() override;
 		virtual void InState() override;
 	};
+
+	class Dragged : public dae::State
+	{
+	public:
+		Dragged() = default;
+		~Dragged() = default;
+
+		virtual void OnStateEnter() override;
+		virtual void OnStateExit() override;
+		virtual void InState() override;
+	private:
+		float m_Height;
+	};
+	class Squashed : public dae::State
+	{
+	public:
+		Squashed() = default;
+		~Squashed() = default;
+
+		virtual void OnStateEnter() override;
+		virtual void OnStateExit() override;
+		virtual void InState() override;
+	};
 }

@@ -6,19 +6,17 @@ void dae::SceneManager::Initialize()
 {
 	for (const auto& scene : m_pScenes)
 	{
-		if (!scene->IsInitialized())
+		if (!scene->IsInitialized() && scene->GetIsActive())
 		{
 			m_InitializingScene = scene;
-			scene->PreparePhysics();
-			scene->Initialize();
-			scene->ActivateGameObjects();
+			m_InitializingScene->Load();
 		}
 	}
 	if (m_GlobalScene != nullptr)
 	{
 		m_InitializingScene = m_GlobalScene;
-		m_GlobalScene->Initialize();
-		m_GlobalScene->ActivateGameObjects();
+		m_InitializingScene->Initialize();
+		m_InitializingScene->ActivateGameObjects();
 	}
 	m_InitializingScene = nullptr;
 }
@@ -84,11 +82,34 @@ void dae::SceneManager::CheckDeleteMarkings()
 	{
 		m_GlobalScene->CheckDeleteMarkings();
 	}
+	if (m_CleanScene != nullptr)
+	{
+		if (m_CleanScene == m_GlobalScene)
+		{
+			m_CleanScene = nullptr;
+			return;
+		}
+
+
+		m_CleanScene->Cleanup();
+		if (m_Reloading)
+		{
+			m_CleanScene->SetIsActive(true);
+			m_Reloading = false;
+		}
+		else
+		{
+			m_CleanScene->SetIsActive(false);
+		}
+
+		m_CleanScene = nullptr;
+	}
 }
 
 void dae::SceneManager::ReloadActiveScene()
 {
-	GetActiveScene()->CleanAndReload();
+	m_Reloading = true;
+	m_CleanScene = GetActiveScene();
 }
 
 b2World* dae::SceneManager::GetPhysicsWorld()
@@ -111,9 +132,9 @@ void dae::SceneManager::AddScene(Scene* scene, bool setActive)
 {
 	m_pScenes.push_back(scene);
 	if (setActive)
-		scene->SetIsActive(true);
+		scene->SetIsActive(true, false);
 	else
-		scene->SetIsActive(false);
+		scene->SetIsActive(false, false);
 }
 void dae::SceneManager::RemoveScene(Scene* scene)
 {
@@ -135,7 +156,10 @@ dae::Scene* dae::SceneManager::GetActiveScene()
 			}
 		}
 	}
-	//Logger::GetInstance().LogWarning(L"No active scenes found!");
+	if (m_GlobalScene != nullptr)
+		return m_GlobalScene;
+
+	Logger::GetInstance().LogWarning(L"No active scenes found! Returned nullptr");
 	return nullptr;
 }
 
@@ -145,7 +169,9 @@ void dae::SceneManager::SetActiveScene(const std::wstring & sceneName)
 	{
 		if (m_pScenes[i]->GetSceneName() == sceneName)
 		{
-			GetActiveScene()->CleanAndReload();
+			m_CleanScene = GetActiveScene();
+			if (m_CleanScene != nullptr && m_CleanScene != m_GlobalScene)
+				m_CleanScene->SetIsActive(false);
 			m_pScenes[i]->SetIsActive(true);
 			return;
 		}
@@ -159,16 +185,18 @@ void dae::SceneManager::SetNextSceneActive()
 	{
 		if (m_pScenes[i]->GetIsActive() == true)
 		{
-			m_pScenes[i]->SetIsActive(false);
-			m_pScenes[i]->CleanAndReload();
+			m_CleanScene = m_pScenes[i];
+			m_CleanScene->SetIsActive(false);
 			if (i + 1 < m_pScenes.size())
 				m_pScenes[i + 1]->SetIsActive(true);
 			else
 				m_pScenes[0]->SetIsActive(true);
 
-			break;
+			return;
 		}
 	}
+	if (!m_pScenes.empty())
+		m_pScenes.front()->SetIsActive(true);
 }
 
 void dae::SceneManager::SetPreviousSceneActive()
@@ -177,14 +205,27 @@ void dae::SceneManager::SetPreviousSceneActive()
 	{
 		if (m_pScenes[i]->GetIsActive() == true)
 		{
-			m_pScenes[i]->SetIsActive(false);
-			m_pScenes[i]->CleanAndReload();
+			m_CleanScene = m_pScenes[i];
+			m_CleanScene->SetIsActive(false);
 			if (i - 1 > 0)
 				m_pScenes[i - 1]->SetIsActive(true);
 			else 
 				m_pScenes[m_pScenes.size()-1]->SetIsActive(true);
 
-			break;
+			return;
 		}
 	}
+	if (!m_pScenes.empty())
+		m_pScenes.back()->SetIsActive(true);
+}
+
+void dae::SceneManager::SetRandomSceneActive()
+{
+	if (!m_pScenes.empty())
+		SetActiveScene(m_pScenes[rand() % m_pScenes.size()]->GetSceneName());
+}
+
+void dae::SceneManager::UnloadAllScenes()
+{
+	m_CleanScene = GetActiveScene();
 }

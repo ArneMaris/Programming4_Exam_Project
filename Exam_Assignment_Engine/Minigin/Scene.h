@@ -17,13 +17,13 @@ namespace dae
 		void CheckDeleteMarkings();
 		void PreparePhysics();
 
-		void Reload();
+		void Load();
 		void Cleanup();
 		virtual void Initialize() = 0;
 		void ActivateGameObjects();
 
 		bool GetIsActive() const;
-		void SetIsActive(bool value);
+		void SetIsActive(bool value, bool runTime = true);
 		b2World* GetPhysicsWorld() const;
 		void AddGameObject(GameObject* object);
 		void AddGameObject(Prefab* object);
@@ -47,13 +47,11 @@ namespace dae
 		std::vector<GameObject*> GetGameObjectsInLayer(int layer);
 
 		void SortRenderingOrder();
-		void CleanAndReload();
 
 		bool IsInitialized() const { return m_IsInitialized; };
 
 	protected:
 		bool m_IsInitialized;
-		std::vector<GridLevel*> m_pLevels;
 
 	private: 
 		virtual void Update() = 0; // different Update for every scene, called in BaseUpdate
@@ -63,6 +61,7 @@ namespace dae
 		std::wstring m_SceneName{};
 		std::vector<GameObject*> m_pObjects{};
 		std::vector<GameObject*> m_pAddedObjects{};
+		std::vector<GridLevel*> m_pLevels;
 
 		b2World *m_pPhysicsWorld;
 		b2ContactListener* m_CollCallbacks;

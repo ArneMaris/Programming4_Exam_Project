@@ -7,7 +7,7 @@
 dae::InputComponent::InputComponent(int controllerId, bool useKeyboardInput)
 	:m_ControllerId{ controllerId }
 	,m_UsingKeyboardInput {useKeyboardInput}
-	, m_Enabled{true}
+	,m_Enabled{true}
 {
 	InputManager::GetInstance().RegisterInputComponent(this);
 }
@@ -28,6 +28,8 @@ void dae::InputComponent::Update()
 
 void dae::InputComponent::Initialize()
 {
+	m_pScene = SceneManager::GetInstance().GetActiveScene();
+
 	if (m_pGameObject->GetComponent<StateMachineComponent>() != nullptr)
 	{
 		for (auto& trans : m_pGameObject->GetComponent<StateMachineComponent>()->GetStateTransitions())
@@ -47,7 +49,7 @@ void dae::InputComponent::Render() const
 
 void dae::InputComponent::HandleControllerInput(XINPUT_STATE& gamePadState, XINPUT_STATE& prevGamePadState)
 {
-	if (m_Enabled)
+	if (m_Enabled && SceneManager::GetInstance().GetActiveScene() == m_pScene)
 	{
 		for (auto& action : m_pInputActions)
 		{
@@ -58,7 +60,7 @@ void dae::InputComponent::HandleControllerInput(XINPUT_STATE& gamePadState, XINP
 
 void dae::InputComponent::HandleKeyboardInput(const UINT8* keyboardState, const UINT8* prevKeyboardState)
 {
-	if (m_Enabled)
+	if (m_Enabled && SceneManager::GetInstance().GetActiveScene() == m_pScene)
 	{
 		if (m_UsingKeyboardInput)
 		{

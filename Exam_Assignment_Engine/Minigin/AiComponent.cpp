@@ -33,7 +33,7 @@ void dae::AiComponent::ThreadLoop()
 {
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 	m_Active = true;
-	while (!GameInfo::gameEnded && !m_pGameObject->GetDeleteMark() && m_pScene->GetIsActive())
+	while (!GameInfo::gameEnded && !m_pGameObject->GetDeleteMark() && !m_pTargetObj->GetDeleteMark() && m_pScene->GetIsActive())
 	{
 		m_TargetPos = (m_pTargetObj->GetTransform()->GetPosition());
 		dae::GridTile* targetTile = m_pLevel->GetTileByPos(m_TargetPos);
@@ -68,6 +68,7 @@ void dae::AiComponent::Initialize()
 {
 	m_pTransformComp = m_pGameObject->GetTransform();
 	m_pTargetObj = GetObjByNameActiveScene(m_TargetName);
+	m_pScene = SceneManager::GetInstance().GetActiveScene();
 	m_Thread = std::thread(&AiComponent::ThreadLoop, this);
 }
 
@@ -80,12 +81,20 @@ void dae::AiComponent::SetActive(bool value)
 
 void dae::AiComponent::Update()
 {
-	if (!m_Active || m_CurrPath.empty()) return;
+	if (!m_Active) return;
+	if (m_CurrPath.empty()) return;
 
-	if (b2Distance(m_CurrPath.back(), m_TargetPos) < m_pLevel->GetTileHeight() * 2)
-		m_CanReachGoal = true;
-	else
-		m_CanReachGoal = false;
+	try //i do this because otherwise it crashed (very rarely) on the m_CurrPath.Back() because the thread updated it just after the above check but before this)
+	{
+		if (b2Distance(m_CurrPath.back(), m_TargetPos) < m_pLevel->GetTileHeight() * 2)
+			m_CanReachGoal = true;
+		else
+			m_CanReachGoal = false;
+		}
+	catch (std::exception& ex)
+	{
+		UNREFERENCED_PARAMETER(ex);
+	}
 
 	if (m_CurrentPathProgress < m_CurrPath.size())
 	{

@@ -15,6 +15,7 @@ namespace dae
 		const b2Vec2& GetPos() const { return m_Pos; };
 		bool GetIsWalkable() const { return m_IsWalkable; };
 		bool HasConnectionToTile(unsigned int toTileId);
+		bool HasConnectionToTile(GridTile* toTile);
 		std::vector<TileConnection*> GetConnections() const { return m_pConnections;};
 		const std::string GetTextureName();
 
