@@ -317,7 +317,7 @@ void Stone::Setup()
 	m_GameObject->SetLayer(3);
 	m_GameObject->AddComponent(new dae::PhysicsBodyComponent(b2BodyType::b2_kinematicBody));
 	m_GameObject->AddComponent(new dae::ColliderComponent(m_GameObject->GetComponent<dae::PhysicsBodyComponent>()));
-	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(20, 10, dae::ShapeSettings(false, 20, 0.5f, 0));
+	m_GameObject->GetComponent<dae::ColliderComponent>()->AddBoxShape(20, 18, dae::ShapeSettings(false, 20, 0.5f, 0));
 
 	m_GameObject->AddComponent(new dae::AnimatedSpriteComponent("Stone.png", 2, 3, 0.15f));
 	auto animComp = m_GameObject->GetComponent<dae::AnimatedSpriteComponent>();

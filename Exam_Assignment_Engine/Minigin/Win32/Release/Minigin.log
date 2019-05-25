@@ -1,33 +1,4 @@
-﻿  MiniginPCH.cpp
-  AiComponent.cpp
-  AnimatedSpriteComponent.cpp
-  ColliderComponent.cpp
-  FpsCounterComponent.cpp
-  GameInfo.cpp
-  GameObject.cpp
-  GridLevel.cpp
-  GridTile.cpp
-  InputAction.cpp
-  InputComponent.cpp
-  InputManager.cpp
-  Logger.cpp
-  Main.cpp
-  Minigin.cpp
-  CollisionCallbacks.cpp
-  PhysicsBodyComponent.cpp
-  PhysicsDebugDrawer.cpp
-  Renderer.cpp
-  ResourceManager.cpp
-  Scene.cpp
-  Compiling...
-  SceneManager.cpp
-  ScriptComponent.cpp
-  StateMachineComponent.cpp
-  StateTransition.cpp
-  Response.cpp
-  TextComponent.cpp
-  SpriteComponent.cpp
-  TransformComponent.cpp
+﻿  AiComponent.cpp
   Minigin.vcxproj -> E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\Win32\Release\Minigin.lib
   E:\AAA_Programming4_Exam_Project\Exam_Assignment_Engine\3rdParty\SDL2\lib\x86\SDL2.dll
   1 File(s) copied

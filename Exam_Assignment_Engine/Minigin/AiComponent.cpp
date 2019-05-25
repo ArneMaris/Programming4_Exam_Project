@@ -75,7 +75,7 @@ void dae::AiComponent::SetActive(bool value)
 {
 	m_Active = value;
 	if (!m_Active)
-		m_pGameObject->GetComponent<TransformComponent>()->CancelMoveToPos(0);
+		m_pGameObject->GetComponent<TransformComponent>()->CancelMoveToPos(5);
 }
 
 void dae::AiComponent::SetNewTarget(GameObject * newTargetObj)
@@ -96,7 +96,7 @@ void dae::AiComponent::Update()
 
 	try //i do this because otherwise it crashed (very rarely) because the thread updates it when it wants too
 	{
-		if (b2Distance(m_CurrPath.back(), m_TargetPos) < m_pLevel->GetTileHeight() * 2)
+		if (b2Distance(m_CurrPath.back(), m_TargetPos) < m_pLevel->GetTileHeight() * 2.5f)
 			m_CanReachGoal = true;
 		else
 			m_CanReachGoal = false;

@@ -69,7 +69,7 @@ void DigDugLevel::Initialize()
 	AddLevel(backGroundLevel);
 	AddLevel(overlayLevel);
 
-	EnablePhysicsDebugDrawing();
+	//EnablePhysicsDebugDrawing();
 }
 
 void DigDugLevel::RemoveEnemy()

@@ -63,7 +63,7 @@ void EnemyStates::Ghost::OnStateEnter()
 
 void EnemyStates::Ghost::OnStateExit()
 {
-
+	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"Run");
 }
 
 void EnemyStates::Ghost::InState()
