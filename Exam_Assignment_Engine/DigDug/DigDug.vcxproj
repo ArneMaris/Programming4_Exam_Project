@@ -81,7 +81,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath />
+    <IncludePath>E:\Visual studios\Libraries\LeapSDK\include;E:\Visual studios\Libraries\SDL2_mixer-2.0.2\include;E:\Visual studios\Libraries\SDL2_image-devel-2.0.1-VC\SDL2_image-2.0.1\include;E:\Visual studios\Libraries\SDL2_ttf-devel-2.0.14-VC\SDL2_ttf-2.0.14\include;E:\Visual studios\Libraries\SDL2-2.0.6\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
