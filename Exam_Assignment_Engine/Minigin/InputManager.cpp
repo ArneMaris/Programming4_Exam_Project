@@ -17,7 +17,7 @@ dae::InputManager::InputManager()
 
 void dae::InputManager::CleanUp()
 {
-	m_pInputComponents.clear();
+	//m_pInputComponents.clear();
 }
 
 bool dae::InputManager::ProcessInput()
