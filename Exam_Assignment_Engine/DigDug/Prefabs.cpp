@@ -43,9 +43,9 @@ void DigDug::Setup()
 	std::vector<dae::InputResponse*> moveResponses;
 	moveResponses.push_back(new MoveController());
 	m_GameObject->GetComponent<dae::InputComponent>()->AddInputAction(moveResponses.back(), dae::ControllerInput::JoyStickLeft);
-	moveResponses.push_back(new MoveUpKey());
 	if (controllerId == 0)
 	{
+		moveResponses.push_back(new MoveUpKey());
 		m_GameObject->GetComponent<dae::InputComponent>()->AddInputAction(moveResponses.back(), SDLK_w);
 		moveResponses.push_back(new MoveLeftKey());
 		m_GameObject->GetComponent<dae::InputComponent>()->AddInputAction(moveResponses.back(), SDLK_a);

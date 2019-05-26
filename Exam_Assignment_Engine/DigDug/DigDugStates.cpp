@@ -75,6 +75,7 @@ void DigDugStates::Squashed::OnStateEnter()
 {
 	m_pOwnerObject->GetTransform()->SetRotation(0);
 	m_Timer = 0;
+	m_LifeLost = false;
 	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"DieStone");
 	m_pOwnerObject->GetComponent<dae::InputComponent>()->DisableInput();
 }
@@ -86,10 +87,15 @@ void DigDugStates::Squashed::OnStateExit()
 void DigDugStates::Squashed::InState()
 {
 	m_Timer += dae::GameInfo::deltaTime;
-	if (m_Timer > 0.48f)
+	if (m_Timer > 0.48f && m_LifeLost == false)
 	{
 		m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"Gone");
-		static_cast<MenuAndHud*>(dae::GetObjByNameGlobalScene(L"MenuHud")->GetComponent<dae::ScriptComponent>()->GetScript())->RemoveLife();
+		if (m_pOwnerObject->GetName() == L"DigDug")
+			static_cast<MenuAndHud*>(dae::GetObjByNameGlobalScene(L"MenuHud")->GetComponent<dae::ScriptComponent>()->GetScript())->RemoveLife(true);
+		else
+			static_cast<MenuAndHud*>(dae::GetObjByNameGlobalScene(L"MenuHud")->GetComponent<dae::ScriptComponent>()->GetScript())->RemoveLife(false);
+
+		m_LifeLost = true;
 	}
 }
 

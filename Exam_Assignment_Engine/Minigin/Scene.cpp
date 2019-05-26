@@ -43,7 +43,6 @@ void dae::Scene::Cleanup()
 		*it = nullptr;
 	}
 	m_pObjects.clear();
-	m_pObjects.shrink_to_fit();
 
 	for (auto it = m_pAddedObjects.begin(); it != m_pAddedObjects.end(); ++it)
 	{
@@ -51,14 +50,12 @@ void dae::Scene::Cleanup()
 		*it = nullptr;
 	}
 	m_pAddedObjects.clear();
-	m_pAddedObjects.shrink_to_fit();
 
 	for (auto it = m_pLevels.begin(); it != m_pLevels.end(); ++it)
 	{
 		delete (*it);
 	}
 	m_pLevels.clear();
-	m_pLevels.shrink_to_fit();
 
 	InputManager::GetInstance().CleanUp();
 }

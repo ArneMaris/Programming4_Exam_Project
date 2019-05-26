@@ -19,6 +19,7 @@ dae::InputComponent::~InputComponent()
 		delete action;
 	}
 	m_pInputActions.clear();
+	InputManager::GetInstance().UnregisterInputComponent(this);
 }
 
 void dae::InputComponent::Update()

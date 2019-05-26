@@ -252,6 +252,7 @@ void MenuAndHud::Confirm()
 	m_Versus = false;
 	m_PlayerTwoDead = false;
 	m_PlayerOneDead = false;
+	m_pSelectionObj->GetTransform()->SetPosition(float(dae::GameInfo::windowWidth / 2 - 210), float(dae::GameInfo::windowHeight / 2 + 50));
 	switch (m_CurrentMode)
 	{
 	case MenuAndHud::coop:
@@ -269,7 +270,7 @@ void MenuAndHud::Confirm()
 		{
 			sprite->SetDoRender(true);
 		}
-		dae::SceneManager::GetInstance().SetRandomSceneActive();
+		dae::SceneManager::GetInstance().SetActiveScene(L"DigDugLevel1");
 		break;
 	case MenuAndHud::versus:
 		m_pMainMenuObj->GetComponent<dae::SpriteComponent>()->SetDoRender(false);
@@ -280,7 +281,7 @@ void MenuAndHud::Confirm()
 		{
 			sprite->SetDoRender(true);
 		}
-		dae::SceneManager::GetInstance().SetRandomSceneActive();
+		dae::SceneManager::GetInstance().SetActiveScene(L"DigDugLevel1");
 		break;
 	case MenuAndHud::back:
 		m_CurrentMode = single;

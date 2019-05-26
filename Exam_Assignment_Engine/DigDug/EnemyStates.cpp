@@ -78,7 +78,8 @@ void EnemyStates::Ghost::InState()
 void EnemyStates::BlowUpOne::OnStateEnter()
 {
 	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"BlowUpOne");
-	m_pOwnerObject->GetComponent<dae::AiComponent>()->SetActive(false);
+	if (m_pOwnerObject->GetComponent<dae::AiComponent>() != nullptr)
+		m_pOwnerObject->GetComponent<dae::AiComponent>()->SetActive(false);
 	m_DeflateTimer = 1;
 }
 
@@ -138,6 +139,7 @@ void EnemyStates::BlowUpThree::InState()
 
 void EnemyStates::Pop::OnStateEnter()
 {
+	static_cast<DigDugLevel*>(dae::SceneManager::GetInstance().GetActiveScene())->RemoveEnemy();
 	m_pOwnerObject->GetComponent<dae::AnimatedSpriteComponent>()->PlayAnimation(L"Pop");
 	m_pOwnerObject->GetComponent<dae::ColliderComponent>()->SetActive(false);
 	auto tile = dae::SceneManager::GetInstance().GetActiveScene()->GetLevels()[0]->GetTileByPos(m_pOwnerObject->GetTransform()->GetPosition());
@@ -146,19 +148,26 @@ void EnemyStates::Pop::OnStateEnter()
 	auto menuHudScript = static_cast<MenuAndHud*>(dae::GetObjByNameGlobalScene(L"MenuHud")->GetComponent<dae::ScriptComponent>()->GetScript());
 
 	bool killedFygarHorizontal = false;
-	if (m_pOwnerObject->GetName() == L"Fygar")
+	if (m_pOwnerObject->GetName() == L"Fygar" || m_pOwnerObject->GetName() == L"PlayerFygar")
 	{
 		auto digDug1 = dae::GetObjByNameActiveScene(L"DigDug");
 		auto digDug2 = dae::GetObjByNameActiveScene(L"DigDug2");
 		dae::GameObject* killerDigDug = nullptr;
 		if (digDug2 != nullptr)
 		{
-			float dist1 = b2Distance(digDug1->GetTransform()->GetPosition(), m_pOwnerObject->GetTransform()->GetPosition());
-			float dist2 = b2Distance(digDug2->GetTransform()->GetPosition(), m_pOwnerObject->GetTransform()->GetPosition());
-			if (dist1 < dist2)
-				killerDigDug = digDug1;
+			if (digDug1 != nullptr)
+			{
+				float dist1 = b2Distance(digDug1->GetTransform()->GetPosition(), m_pOwnerObject->GetTransform()->GetPosition());
+				float dist2 = b2Distance(digDug2->GetTransform()->GetPosition(), m_pOwnerObject->GetTransform()->GetPosition());
+				if (dist1 < dist2)
+					killerDigDug = digDug1;
+				else
+					killerDigDug = digDug2;
+			}
 			else
+			{
 				killerDigDug = digDug2;
+			}
 		}
 		else
 		{
@@ -174,7 +183,7 @@ void EnemyStates::Pop::OnStateEnter()
 	{
 		if (m_pOwnerObject->GetName() == L"Pooka")
 			menuHudScript->AddScore(200);
-		else if (m_pOwnerObject->GetName() == L"Fygar")
+		else if (m_pOwnerObject->GetName() == L"Fygar" || m_pOwnerObject->GetName() == L"PlayerFygar")
 			if (killedFygarHorizontal)
 				menuHudScript->AddScore(800);
 			else
@@ -184,7 +193,7 @@ void EnemyStates::Pop::OnStateEnter()
 	{
 		if (m_pOwnerObject->GetName() == L"Pooka")
 			menuHudScript->AddScore(300);
-		else if (m_pOwnerObject->GetName() == L"Fygar")
+		else if (m_pOwnerObject->GetName() == L"Fygar" || m_pOwnerObject->GetName() == L"PlayerFygar")
 			if (killedFygarHorizontal)
 				menuHudScript->AddScore(1200);
 			else
@@ -194,7 +203,7 @@ void EnemyStates::Pop::OnStateEnter()
 	{
 		if (m_pOwnerObject->GetName() == L"Pooka")
 			menuHudScript->AddScore(400);
-		else if (m_pOwnerObject->GetName() == L"Fygar")
+		else if (m_pOwnerObject->GetName() == L"Fygar" || m_pOwnerObject->GetName() == L"PlayerFygar")
 			if (killedFygarHorizontal)
 				menuHudScript->AddScore(1600);
 			else
@@ -204,14 +213,14 @@ void EnemyStates::Pop::OnStateEnter()
 	{
 		if (m_pOwnerObject->GetName() == L"Pooka")
 			menuHudScript->AddScore(500);
-		else if (m_pOwnerObject->GetName() == L"Fygar")
+		else if (m_pOwnerObject->GetName() == L"Fygar" || m_pOwnerObject->GetName() == L"PlayerFygar")
 			if (killedFygarHorizontal)
 				menuHudScript->AddScore(2000);
 			else
 				menuHudScript->AddScore(1000);
 	}
 	m_pOwnerObject->SetLifeTime(1.5f);
-	static_cast<DigDugLevel*>(dae::SceneManager::GetInstance().GetActiveScene())->RemoveEnemy();
+
 }
 
 void EnemyStates::Pop::OnStateExit()

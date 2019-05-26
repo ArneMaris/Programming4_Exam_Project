@@ -17,14 +17,7 @@ dae::InputManager::InputManager()
 
 void dae::InputManager::CleanUp()
 {
-	if (SceneManager::GetInstance().GetGlobalScene() != nullptr)
-	{
-		auto comp = m_pInputComponents.front();
-		m_pInputComponents.clear();
-		m_pInputComponents.push_back(comp);
-	}
-	else
-		m_pInputComponents.clear();
+	m_pInputComponents.clear();
 }
 
 bool dae::InputManager::ProcessInput()
@@ -76,6 +69,11 @@ void dae::InputManager::SwapInputBuffer()
 void dae::InputManager::RegisterInputComponent(InputComponent * inputComp)
 {
 	m_pInputComponents.push_back(inputComp);
+}
+
+void dae::InputManager::UnregisterInputComponent(InputComponent * inputComp)
+{
+	m_pInputComponents.erase(std::remove(m_pInputComponents.begin(), m_pInputComponents.end(), inputComp), m_pInputComponents.end());
 }
 
 int dae::InputManager::GetAmountOfConnectedControllers()

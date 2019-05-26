@@ -60,5 +60,6 @@ namespace DigDugStates
 		virtual void InState() override;
 	private:
 		float m_Timer;
+		bool m_LifeLost;
 	};
 }

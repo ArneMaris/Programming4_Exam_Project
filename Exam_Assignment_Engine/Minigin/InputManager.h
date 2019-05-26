@@ -41,6 +41,7 @@ namespace dae
 		bool ProcessInput();
 
 		void RegisterInputComponent(InputComponent* inputComp);
+		void UnregisterInputComponent(InputComponent* inputComp);
 
 		int GetAmountOfConnectedControllers();
 

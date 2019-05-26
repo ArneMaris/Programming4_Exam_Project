@@ -58,7 +58,7 @@ dae::GridLevel::~GridLevel()
 	{
 		delete (*it);
 	}
-	for (auto& tileConfig : m_TilesMap)
+	for (auto tileConfig : m_TilesMap)
 	{
 		delete tileConfig.second.spawnThisOnTile;
 	}

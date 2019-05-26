@@ -17,6 +17,7 @@ DigDugLevel::DigDugLevel(const std::string& levelPath)
 
 void DigDugLevel::Initialize()
 {
+	m_EnemiesLeft = 0;
 	dae::Logger::GetInstance().EnableInfoLogging();
 	auto& resourceManager = dae::ResourceManager::GetInstance();
 
@@ -75,9 +76,8 @@ void DigDugLevel::Initialize()
 void DigDugLevel::RemoveEnemy()
 {
 	--m_EnemiesLeft;
-	if (m_EnemiesLeft == 0)
+   	if (m_EnemiesLeft == 0)
 	{
-		//DIGDUG WINS, load next scene
    		dae::SceneManager::GetInstance().SetNextSceneActive();
 	}
 }

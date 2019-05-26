@@ -26,8 +26,7 @@ void StoneScript::Initialize()
 	pos.y -= float(m_Level->GetTileHeight());
 
 	m_TileUnder = m_Level->GetTileByPos(pos);
-	m_pDigDug1 = dae::GetObjByNameActiveScene(L"DigDug");
-	m_pDigDug2 = dae::GetObjByNameActiveScene(L"DigDug2");
+
 }
 
 void StoneScript::Update()
@@ -102,12 +101,15 @@ void StoneScript::Update()
 	}
 	if (m_TileUnder->GetIsWalkable() && !m_IsFalling)
 	{
+		m_pDigDug1 = dae::GetObjByNameActiveScene(L"DigDug");
+		m_pDigDug2 = dae::GetObjByNameActiveScene(L"DigDug2");
 		bool m_DigDugUnder = false;
 		if (m_pDigDug2 != nullptr)
 			if (m_TileUnder == m_Level->GetTileByPos(m_pDigDug2->GetTransform()->GetPosition()))
 				m_DigDugUnder = true;
-		if (m_TileUnder == m_Level->GetTileByPos(m_pDigDug1->GetTransform()->GetPosition()))
-			m_DigDugUnder = true;
+		if (m_pDigDug1 != nullptr)
+			if (m_TileUnder == m_Level->GetTileByPos(m_pDigDug1->GetTransform()->GetPosition()))
+				m_DigDugUnder = true;
 
 		if (!m_DigDugUnder)
 		{
